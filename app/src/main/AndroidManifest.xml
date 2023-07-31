@@ -13,6 +13,36 @@
         android:theme="@style/Theme.Android"
         tools:targetApi="31">
         <activity
+            android:name=".Chatting.ChattingRoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Chatting.GosuListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Chatting.UserChatListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Community.CommunityCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Community.CommunityDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Community.CommunityListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".User.MypageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".User.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".User.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".User.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
