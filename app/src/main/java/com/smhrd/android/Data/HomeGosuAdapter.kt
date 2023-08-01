@@ -1,6 +1,7 @@
 package com.smhrd.android.Data
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -19,11 +20,8 @@ class HomeGosuAdapter (var datas : ArrayList<MemberVO>, var context: Context) : 
     }
     //아이템을 View Holder에 바인딩
     override fun onBindViewHolder(holder: HomeGosuViewHolder, position: Int) {
-       val member : MemberVO = datas[position]
 
-        holder.itemView.setOnClickListener(){
 
-        }
 
     }
 
