@@ -6,12 +6,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import com.smhrd.android.R
 
 class MypageActivity : AppCompatActivity() {
     lateinit var mypageIv_img : ImageView
     lateinit var mypageBtn_img : ImageButton
-    lateinit var mypageTv_nick : EditText
+    lateinit var mypageTv_nick : TextView
     lateinit var mypageBtn_infoChange : Button
     lateinit var mypageBtn_likesGosu : Button
 
