@@ -35,21 +35,23 @@ class CommunityFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_community, container, false)
 
         btn_write = view.findViewById(R.id.btnwrite)
-//        tv_title = view.findViewById(R.id.tv_title)
+        rc = view.findViewById(R.id.rcBoard)
+
 
         btn_write.setOnClickListener {
             val intent = Intent(requireActivity(), CommunityCreateActivity::class.java)
             startActivity(intent)
         }
-        rc = view.findViewById(R.id.rcBoard)
+
 
         val data = ArrayList<BoardIdVO>()
         val result = JSONArray()
-        val jsonObject1 = JSONObject()
-        jsonObject1.put("title", "게시글1")
-        jsonObject1.put("content", "첫 번째 게시글입니다.")
-        jsonObject1.put("writer", "작성자1")
-
+        data.add(BoardIdVO("title","내용","작성자1","오늘","이미지1",1,1,null))
+        data.add(BoardIdVO("title","내용","작성자1","오늘","이미지1",1,1,null))
+        data.add(BoardIdVO("title","내용","작성자1","오늘","이미지1",1,1,null))
+        data.add(BoardIdVO("title","내용","작성자1","오늘","이미지1",1,1,null))
+        data.add(BoardIdVO("title","내용","작성자1","오늘","이미지1",1,1,null))
+        data.add(BoardIdVO("title","내용","작성자1","오늘","이미지1",1,1,null))
 
 
         val adapter = CommunityAdapter(requireActivity(), data)

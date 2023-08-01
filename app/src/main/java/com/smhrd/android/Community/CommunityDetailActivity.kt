@@ -8,7 +8,9 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.FirebaseDatabase
 import com.smhrd.android.R
 
 class CommunityDetailActivity : AppCompatActivity() {
@@ -31,10 +33,37 @@ class CommunityDetailActivity : AppCompatActivity() {
         rc_comment = findViewById(R.id.rc_comment)
         ibtn_back = findViewById(R.id.ibtn_back)
 
+    }
 
+    fun updateComment(commentId: String, updatedComment: String) {
+        // Firebase Realtime Database의 댓글 데이터 참조 경로
+        val commentRef = FirebaseDatabase.getInstance().getReference("memberList").child(commentId)
 
+        // 댓글 데이터 수정
+        commentRef.child("comment").setValue(updatedComment)
+            .addOnSuccessListener {
+                // 데이터 수정이 완료되었을 때의 처리
+                Toast.makeText(this, "댓글이 수정되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                // 데이터 수정 중 에러가 발생했을 때의 처리
+                Toast.makeText(this, "댓글 수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+    }
 
+    fun deleteComment(commentId: String) {
+        // Firebase Realtime Database의 댓글 데이터 참조 경로
+        val commentRef = FirebaseDatabase.getInstance().getReference("memberList").child(commentId)
 
-
+        // 댓글 데이터 삭제
+        commentRef.removeValue()
+            .addOnSuccessListener {
+                // 데이터 삭제가 완료되었을 때의 처리
+                Toast.makeText(this, "댓글이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                // 데이터 삭제 중 에러가 발생했을 때의 처리
+                Toast.makeText(this, "댓글 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
     }
 }
