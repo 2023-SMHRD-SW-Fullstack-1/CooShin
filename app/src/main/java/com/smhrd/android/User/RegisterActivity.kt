@@ -57,9 +57,11 @@ class RegisterActivity : AppCompatActivity() {
 
                         if (dataSnapshot.exists()) {
                             // 중복 ID
+                            Log.d("id중복",inputId)
                             Toast.makeText(applicationContext, "이미 사용 중인 ID 입니다. 다른 ID를 입력해주세요.", Toast.LENGTH_SHORT).show()
                         } else {
                             // 사용 가능한 ID
+                            Log.d("idOK",inputId)
                             Toast.makeText(applicationContext, "사용 가능한 ID입니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -79,6 +81,11 @@ class RegisterActivity : AppCompatActivity() {
             var inputTel = registerEt_tel.text.toString()
             var inputNick = registerEt_nick.text.toString()
 
+            //하나라도 비어있는지 확인하기
+            if(inputId.isEmpty() || inputPw.isEmpty() || inputTel.isEmpty() || inputNick.isEmpty()) {
+                Toast.makeText(applicationContext, "모든 입력 필드를 채워주세요!", Toast.LENGTH_SHORT).show()
+            }
+
             var memberVO = MemberVO(
                 memberPw = inputPw,
                 memberTel = inputTel,
@@ -97,15 +104,13 @@ class RegisterActivity : AppCompatActivity() {
                     // 저장 성공
                     Toast.makeText(applicationContext, "회원 가입 완료", Toast.LENGTH_SHORT).show()
                     // MainActivity로 이동
-                   // val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                    val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                    val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
 
                 }
                 .addOnFailureListener { e ->
                     // 저장 실패
-                    //Toast.makeText(applicationContext, "회원 가입 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                     Toast.makeText(applicationContext, "회원 가입 실패", Toast.LENGTH_SHORT).show()
                     Log.d("register error", e.toString())
                 }

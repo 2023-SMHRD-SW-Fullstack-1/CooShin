@@ -8,8 +8,10 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
@@ -28,6 +30,21 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loginBtn_join : Button
     lateinit var googleSignInClient: GoogleSignInClient
 
+    //구글 로그인을 위한 함수~
+    companion object {
+        private const val RC_SIGN_IN = 9001
+    }
+
+    private fun getGoogleClient(): GoogleSignInClient {
+        val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            //.requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
+            .requestProfile()
+            .requestEmail()
+            .build()
+
+        return GoogleSignIn.getClient(this, googleSignInOption)
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +57,8 @@ class LoginActivity : AppCompatActivity() {
         loginBtn_join = findViewById(R.id.loginBtn_join)
         val database = Firebase.database
         val loginRef = database.getReference("memberList")
+
         googleSignInClient = getGoogleClient()
-        val RC_SIGN_IN = 9001
 
         //일반 로그인 버튼 눌렀을 때
         loginBtn_login.setOnClickListener {
@@ -59,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
                     if (user?.member?.memberPw  == inputPw) {
                         // 로그인 성공
                         Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                        memberInfoSpf(inputId)
                         // 메인 액티비티로 이동
                         var intent = Intent(this@LoginActivity,MainActivity::class.java)
                         startActivity(intent)
@@ -72,13 +90,11 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "해당 아이디가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
             }.addOnFailureListener {
-                error->
+                    error->
                 // Database 조회 실패했을때 에러
                 Toast.makeText(applicationContext, "로그인 실패! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                 Log.d("error", error.toString())
             }
-
-
         }
 
         //google로그인 버튼 눌렀을 때
@@ -88,10 +104,43 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginBtn_join.setOnClickListener {
-            var  intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+            val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                Log.d("구글로그인성공","로그인 성공")
+                Toast.makeText(applicationContext, "구글 로그인 성공!", Toast.LENGTH_SHORT).show()
+            } catch (e: ApiException) {
+                Log.w("GoogleSignIn", "Google sign in failed", e)
+                Toast.makeText(applicationContext, "구글 로그인 실패! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    //SharedPreferences
+    fun memberInfoSpf(memberId: String) {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("memberId", memberId)
+        editor.apply()
+    }
+    fun getmemberInfoSpf(): String? {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        return sharedPreferences.getString("memberId", null)
+    }
+    fun clearmemberInfoSpf() {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
     }
 }
