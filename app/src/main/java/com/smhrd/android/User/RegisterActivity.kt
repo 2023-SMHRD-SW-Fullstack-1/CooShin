@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.smhrd.android.Data.MemberVO
 import com.smhrd.android.R
 
 class RegisterActivity : AppCompatActivity() {
@@ -27,6 +30,8 @@ class RegisterActivity : AppCompatActivity() {
         registerBtn_idCheck = findViewById(R.id.registerBtn_idCheck)
         registerBtn_join = findViewById(R.id.registerBtn_join)
 
+        val database = Firebase.database
+
         //id 중복확인 버튼 눌렀을 때
         registerBtn_idCheck.setOnClickListener {
          var inputId = registerEt_id.text.toString()
@@ -38,6 +43,16 @@ class RegisterActivity : AppCompatActivity() {
             var inputPw = registerEt_pw.text.toString()
             var inputTel = registerEt_tel.text.toString()
             var inputNick = registerEt_nick.text.toString()
+
+            var member = MemberVO(
+                memberPw = inputPw,
+                memberTel = inputTel,
+                memberNick = inputNick,
+                memberImg = null,
+                teacherId = null,
+                likeList = null
+            )
+
         }
     }
 }
