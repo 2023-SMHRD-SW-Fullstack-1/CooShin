@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="25dp"
+    android:paddingBottom="25dp">
+
+    <ImageView
+        android:id="@+id/ivTeacherProfileImg"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvTeacherName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="고수 이름"
+        app:layout_constraintBottom_toBottomOf="@+id/ivTeacherProfileImg"
+        app:layout_constraintStart_toEndOf="@+id/ivTeacherProfileImg"
+        app:layout_constraintTop_toTopOf="@+id/ivTeacherProfileImg" />
+
+    <TextView
+        android:id="@+id/tvLastChatTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="마지막 채팅 시간"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTeacherName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvTeacherName" />
+
+    <TextView
+        android:id="@+id/tvTeacherCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="고수 주소"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvTeacherName"
+        app:layout_constraintTop_toBottomOf="@+id/tvTeacherName" />
+
+    <TextView
+        android:id="@+id/tvTeacherService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="고수 서비스 이름"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvTeacherCity"
+        app:layout_constraintTop_toBottomOf="@+id/tvTeacherCity" />
+
+    <TextView
+        android:id="@+id/tvServicePrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="총 200,000원"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTeacherCity"
+        app:layout_constraintEnd_toEndOf="@+id/tvLastChatTime"
+        app:layout_constraintTop_toTopOf="@+id/tvTeacherCity" />
+
+    <TextView
+        android:id="@+id/tvLastChatContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="마지막 채팅 내용"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvTeacherService"
+        app:layout_constraintTop_toBottomOf="@+id/tvTeacherService" />
+</androidx.constraintlayout.widget.ConstraintLayout>
