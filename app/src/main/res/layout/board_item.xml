@@ -45,5 +45,15 @@
         app:layout_constraintStart_toEndOf="@+id/c_Likes"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/c_Views"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/c_writer" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

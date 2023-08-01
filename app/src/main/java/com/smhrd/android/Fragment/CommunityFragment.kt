@@ -9,12 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.smhrd.android.Community.CommunityAdapter
 import com.smhrd.android.Community.CommunityCreateActivity
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.CommentVO
 import com.smhrd.android.Data.MemberIdVO
 import com.smhrd.android.R
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class CommunityFragment : Fragment() {
@@ -40,11 +44,22 @@ class CommunityFragment : Fragment() {
         rc = view.findViewById(R.id.rcBoard)
 
         val data = ArrayList<BoardIdVO>()
+        val result = JSONArray()
+        val jsonObject1 = JSONObject()
+        jsonObject1.put("title", "게시글1")
+        jsonObject1.put("content", "첫 번째 게시글입니다.")
+        jsonObject1.put("writer", "작성자1")
 
-//        val result = data.
 
 
-        return inflater.inflate(R.layout.fragment_community, container, false)
+        val adapter = CommunityAdapter(requireActivity(), data)
+
+        rc.layoutManager = LinearLayoutManager(view.context)
+        rc.adapter = adapter
+
+
+
+        return view
     }
 
 }
