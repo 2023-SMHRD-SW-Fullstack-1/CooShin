@@ -29,12 +29,15 @@ class RegisterActivity : AppCompatActivity() {
 
         //id 중복확인 버튼 눌렀을 때
         registerBtn_idCheck.setOnClickListener {
-
+         var inputId = registerEt_id.text.toString()
         }
 
         //회원가입 버튼 눌렀을 때
         registerBtn_join.setOnClickListener {
-
+            var inputId = registerEt_id.text.toString()
+            var inputPw = registerEt_pw.text.toString()
+            var inputTel = registerEt_tel.text.toString()
+            var inputNick = registerEt_nick.text.toString()
         }
     }
 }
