@@ -70,12 +70,14 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
 
-            loginRef.child(inputId).child("member").get().addOnSuccessListener { dataSnapshot ->
+            loginRef.child(inputId).get().addOnSuccessListener { dataSnapshot ->
                 if (dataSnapshot.exists()) {
-                    val user = dataSnapshot.getValue(MemberIdVO::class.java)
-                    if (user?.member?.memberPw  == inputPw) {
+                    val memberIdVO = dataSnapshot.getValue(MemberIdVO::class.java)
+                    val user = memberIdVO?.member
+                    if (user?.memberPw  == inputPw) {
                         // 로그인 성공
                         Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                        Log.d("로그인성공시닉네임",user.memberNick)
                         memberInfoSpf(inputId)
                         // 메인 액티비티로 이동
                         var intent = Intent(this@LoginActivity,MainActivity::class.java)

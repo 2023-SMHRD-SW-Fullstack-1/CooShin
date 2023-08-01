@@ -1,7 +1,7 @@
 package com.smhrd.android.Data
 
-data class MemberIdVO (val member : MemberVO,  val chatList: MutableMap<String, ArrayList<ChatVO>>?,
-                       val board : MutableList<String>?)
+data class MemberIdVO (val member : MemberVO?=null,  val chatList: MutableMap<String, ArrayList<ChatVO>>?=null,
+                       val board : MutableList<String>?=null)
 
 
 //MemberIdVO를 저장할 때 유의사항
