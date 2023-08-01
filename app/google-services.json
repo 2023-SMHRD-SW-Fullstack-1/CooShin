@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "340145926161",
+    "project_id": "sumgo-e4e21",
+    "storage_bucket": "sumgo-e4e21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340145926161:android:41f12c5061a8a453d5c1b0",
+        "android_client_info": {
+          "package_name": "com.smhrd.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340145926161-dh7qrelljc8f7ikot9n2akd0hedn5mi3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCV7BB__dEPdno4WBZ6v0dQSP51stIiglc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340145926161-dh7qrelljc8f7ikot9n2akd0hedn5mi3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
