@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,10 @@ class HomeFragment : Fragment() {
         //componet 가져오기
         rvPopularGosu = view.findViewById(R.id.rvPopularGosu)
         rvCommunity = view.findViewById(R.id.rvCommunity)
+
+        val spf = requireActivity().getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        var userId = spf.getString("memberId", null)
+        Log.d("로그인 후 유저 아이디 :", userId.toString())
 
 
 

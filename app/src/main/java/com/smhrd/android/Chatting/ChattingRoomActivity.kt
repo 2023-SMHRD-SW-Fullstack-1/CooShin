@@ -2,6 +2,7 @@ package com.smhrd.android.Chatting
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,10 @@ class ChattingRoomActivity : AppCompatActivity() {
         btnSend = findViewById(R.id.btnSend)
         edtMsg = findViewById(R.id.edtMsg)
 
+        val spf = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        var userId = spf.getString("memberId", null)
+
+
         var data = ArrayList<DummyChatItemVO>()
 
         data.add(DummyChatItemVO("안녕하세요", "오후 04:34"))
@@ -38,6 +43,10 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         rv.layoutManager = LinearLayoutManager(applicationContext)
         rv.adapter = adapter
+
+        btnSend.setOnClickListener {
+            Log.d("userId : ", userId.toString())
+        }
 
 
     }
