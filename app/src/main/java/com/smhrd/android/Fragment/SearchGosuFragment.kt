@@ -1,60 +1,120 @@
 package com.smhrd.android.Fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import androidx.fragment.app.Fragment
 import com.smhrd.android.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchGosuFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SearchGosuFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        arguments?.let {
+//
+//        }
+//    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var citySpinner: Spinner
+    lateinit var sigunguSpinner: Spinner
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_gosu, container, false)
+        var views = inflater.inflate(R.layout.fragment_search_gosu, container, false)
+
+        // Spinner
+//        Spinner yearSpinner =(Spinner) findViewById (R.id.spinner_year);
+//        ArrayAdapter yearAdapter = ArrayAdapter . createFromResource (this,
+//        R.array.date_year, android.R.layout.simple_spinner_item);
+//        yearAdapter.setDropDownViewResource(
+//            android.R.layout.simple_spinner_
+//                    dropdown_item
+//        );
+//        yearSpinner.setAdapter(yearAdapter);
+//
+//        Spinner monthSpinner =(Spinner) findViewById (R.id.spinner_month);
+//        ArrayAdapter monthAdapter = ArrayAdapter . createFromResource (this,
+//        R.array.date_month, android.R.layout.simple_spinner_item);
+//        monthAdapter.setDropDownViewResource(
+//            android.R.layout.simple_spinner_
+//                    dropdown_item
+//        );
+//        monthSpinner.setAdapter(monthAdapter);
+//        [출처] 안드로이드 스피너(Selectbox) 구현 방법|작성자 히키코보라
+//    }
+
+        //Spinner
+        sigunguSpinner = views.findViewById(R.id.spinLocal_sigungu)
+
+        citySpinner = views.findViewById(R.id.spinLocal_city)
+        var cityAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.spinner_region,
+            android.R.layout.simple_spinner_item
+        )
+        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        citySpinner.adapter = cityAdapter
+
+        initAddressSpinner()
+
+        var sigunguAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.spinner_region,
+            android.R.layout.simple_spinner_item
+        )
+        sigunguAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sigunguSpinner.adapter = sigunguAdapter
+
+
+
+        return views
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchGosuFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchGosuFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+    fun initAddressSpinner(){
+        citySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ): Unit {
+                // 시군구, 동의 스피너를 초기화한다.
+                when (position) {
+                    0 -> sigunguSpinner.adapter = null
+                    1 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_seoul)
+                    2 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_busan)
+                    3 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_daegu)
+                    4 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_incheon)
+                    5 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_gwangju)
+                    6 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_daejeon)
+                    7 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_ulsan)
+                    8 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_sejong)
+                    9 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_gyeonggi)
+                    10 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_gangwon)
+                    11 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_chung_buk)
+                    12 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_chung_nam)
+                    13 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_jeon_buk)
+                    14 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_jeon_nam)
+                    15 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_gyeong_buk)
+                    16 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_gyeong_nam)
+                    17 -> sigunguSpinner.adapter.getItem(R.array.spinner_region_jeju)
                 }
             }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+        }
     }
 }
+
+
+
+
