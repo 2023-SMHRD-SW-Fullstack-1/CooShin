@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.smhrd.android.Data.CommunityVO
+import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.R
 
-class CommunityAdapter(var context : Context, var data : ArrayList<CommunityVO>):
+class CommunityAdapter(var context : Context, var data : ArrayList<BoardIdVO>):
 RecyclerView.Adapter<CommunityViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityViewHolder {
 
         return CommunityViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.activity_community_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.board_item, parent, false)
         )
 
     }
@@ -23,11 +23,15 @@ RecyclerView.Adapter<CommunityViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: CommunityViewHolder, position: Int) {
-        val commuinity = data[position]
+        val board = data[position]
 
-        holder.c_title.text = commuinity.title
-        holder.c_writer.text = commuinity.writer
-        holder.c_content.text = commuinity.content
+        holder.c_title.text = board.boardTitle
+        holder.c_writer.text = board.boardWriter
+        holder.c_date.text = board.boardDate
+        holder.c_Likes.text = board.boardLikes.toString()
+
+        //editText타입
+
 
 
     }

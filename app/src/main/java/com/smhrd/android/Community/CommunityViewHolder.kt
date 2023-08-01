@@ -10,12 +10,14 @@ class CommunityViewHolder(var itemView : View) : RecyclerView.ViewHolder(itemVie
 
     var c_title : TextView
     var c_writer : TextView
-    var c_content : EditText
+    var c_date : TextView
+    var c_Likes : TextView
 
     init{
         c_title = itemView.findViewById(R.id.c_title)
         c_writer = itemView.findViewById(R.id.c_writer)
-        c_content = itemView.findViewById(R.id.c_content)
+        c_date = itemView.findViewById(R.id.c_date)
+        c_Likes = itemView.findViewById(R.id.c_Likes)
     }
 
 
