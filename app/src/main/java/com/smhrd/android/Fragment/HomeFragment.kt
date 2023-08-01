@@ -18,6 +18,7 @@ import com.smhrd.android.R
 import com.smhrd.android.User.LoginActivity
 import com.smhrd.android.User.MypageActivity
 
+
 class HomeFragment : Fragment() {
 
     lateinit var rvPopularGosu : RecyclerView
@@ -27,10 +28,12 @@ class HomeFragment : Fragment() {
 
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // inflate 란? xml파일을 View객체로 바꿔주는 것
         var view = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -63,4 +66,5 @@ class HomeFragment : Fragment() {
 
         return view
     }
+
 }

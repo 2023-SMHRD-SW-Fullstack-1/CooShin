@@ -65,8 +65,6 @@ class MainActivity : AppCompatActivity() {
                         ChattingFragment()
                     ).commit()
                 }
-
-
             }
             //boolean : true / false(이벤트 인식을 잘 못함)
             true
