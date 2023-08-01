@@ -6,14 +6,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import com.smhrd.android.R
 
 class MypageActivity : AppCompatActivity() {
     lateinit var mypageIv_img : ImageView
     lateinit var mypageBtn_img : ImageButton
-    lateinit var mypageTv_nick : EditText
+    lateinit var mypageTv_nick : TextView
     lateinit var mypageBtn_infoChange : Button
     lateinit var mypageBtn_likesGosu : Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +26,13 @@ class MypageActivity : AppCompatActivity() {
         mypageTv_nick = findViewById(R.id.mypageTv_nick)
         mypageBtn_infoChange = findViewById(R.id.mypageBtn_infoChange)
         mypageBtn_likesGosu = findViewById(R.id.mypageBtn_likesGosu)
+
+        val memberId = getMemberInfoFromSpf()
+
+        if (memberId != null) {
+            // 닉네임 설정: memberId + "고객님"
+            mypageTv_nick.text = "${memberId}고객님"
+        }
 
         //마이페이지 프로필 이미지 버튼 눌렀을 때
         mypageBtn_img.setOnClickListener {
@@ -39,5 +48,13 @@ class MypageActivity : AppCompatActivity() {
         mypageBtn_likesGosu.setOnClickListener {
 
         }
+
+
+    }
+
+    // SharedPreferences에서 memberId 가져오는 함수
+    fun getMemberInfoFromSpf(): String? {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        return sharedPreferences.getString("memberId", null)
     }
 }
