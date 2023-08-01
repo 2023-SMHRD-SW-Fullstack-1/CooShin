@@ -34,7 +34,7 @@ class CommunityCreateActivity : AppCompatActivity() {
         ibcamera  = findViewById(R.id.ibCamera)
 
         val spf = getSharedPreferences("mySPF", Context.MODE_PRIVATE)
-        
+
 
 
     }
