@@ -19,6 +19,7 @@ class ChattingRoomActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatting_room)
 
+
         rv = findViewById(R.id.rv)
         btnSend = findViewById(R.id.btnSend)
         edtMsg = findViewById(R.id.edtMsg)
@@ -38,6 +39,7 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         rv.layoutManager = LinearLayoutManager(applicationContext)
         rv.adapter = adapter
+
 
 
     }
