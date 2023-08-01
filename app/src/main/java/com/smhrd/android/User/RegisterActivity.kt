@@ -26,7 +26,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var registerEt_nick : EditText
     lateinit var registerBtn_idCheck : Button
     lateinit var registerBtn_join : Button
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -50,7 +50,7 @@ class RegisterActivity : AppCompatActivity() {
                 //return@setOnClickListener
             }
 
-            database.getReference("memberId").child(inputId)
+            database.getReference("memberList").child(inputId)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         //dataSnapshot.exists() 데이터가 존재하는지 확인!
@@ -66,8 +66,8 @@ class RegisterActivity : AppCompatActivity() {
 
                     override fun onCancelled(databaseError: DatabaseError) {
                         // 에러 메시지 출력
-                        Toast.makeText(applicationContext, "오류 발생: ${databaseError.message}", Toast.LENGTH_SHORT).show()
-                        Log.d("register idcheck error", databaseError.toString())
+                        Toast.makeText(applicationContext, "오류 발생", Toast.LENGTH_SHORT).show()
+                        Log.d("register idcheck error", databaseError.message.toString())
                     }
                 })
         }
@@ -92,7 +92,7 @@ class RegisterActivity : AppCompatActivity() {
                 chatList = null,
                 board = null
             )
-            database.getReference("memberUd").child(inputId).setValue(memberIdVO)
+            database.getReference("memberList").child(inputId).setValue(memberIdVO)
                 .addOnSuccessListener {
                     // 저장 성공
                     Toast.makeText(applicationContext, "회원 가입 완료", Toast.LENGTH_SHORT).show()
@@ -100,7 +100,7 @@ class RegisterActivity : AppCompatActivity() {
                    // val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                     val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
                     startActivity(intent)
-                    finish() // 선택 사항: RegisterActivity를 종료하려면 이 코드를 추가하세요.
+                    finish()
 
                 }
                 .addOnFailureListener { e ->

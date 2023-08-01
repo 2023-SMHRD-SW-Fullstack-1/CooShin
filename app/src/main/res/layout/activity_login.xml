@@ -38,10 +38,11 @@
         android:id="@+id/loginBtn_google"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="124dp"
+        android:layout_marginBottom="160dp"
         android:text="구글로 시작"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="@+id/loginEt_pw"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/loginEt_pw" />
 
     <EditText
@@ -100,4 +101,15 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.244"
         app:layout_constraintStart_toStartOf="@+id/guideline4" />
+
+    <Button
+        android:id="@+id/loginBtn_join"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="회원가입"
+        app:layout_constraintEnd_toEndOf="@+id/loginBtn_google"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/loginBtn_google"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn_google" />
 </androidx.constraintlayout.widget.ConstraintLayout>
