@@ -1,5 +1,6 @@
 package com.smhrd.android.Fragment
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.smhrd.android.Data.SearchTeacherAdapter
+import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
 
 class SearchGosuFragment : Fragment() {
@@ -20,6 +25,8 @@ class SearchGosuFragment : Fragment() {
 
     lateinit var citySpinner: Spinner
     lateinit var sigunguSpinner: Spinner
+    lateinit var rvTeacherList : RecyclerView
+    var data = ArrayList<TeacherIdVO>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,6 +78,9 @@ class SearchGosuFragment : Fragment() {
         sigunguAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sigunguSpinner.adapter = sigunguAdapter
 
+        var adapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, data)
+        rvTeacherList.layoutManager = LinearLayoutManager(requireContext())
+        rvTeacherList.adapter = adapter
 
 
         return views

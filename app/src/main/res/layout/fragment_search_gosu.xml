@@ -52,7 +52,7 @@
         app:layout_constraintTop_toTopOf="@+id/spinService_search" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/rvTeacherList_search"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="3dp"
