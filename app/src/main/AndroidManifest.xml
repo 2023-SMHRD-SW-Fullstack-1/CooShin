@@ -29,15 +29,11 @@
         <activity
             android:name=".Community.CommunityDetailActivity"
             android:exported="false" />
-        <activity
-            android:name=".Community.CommunityListActivity"
-            android:exported="false" />
+        
         <activity
             android:name=".User.MypageActivity"
             android:exported="false" />
-        <activity
-            android:name=".User.MainActivity"
-            android:exported="false" />
+
         <activity
             android:name=".User.RegisterActivity"
             android:exported="false" />
