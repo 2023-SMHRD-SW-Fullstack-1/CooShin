@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loginBtn_join : Button
     lateinit var googleSignInClient: GoogleSignInClient
 
-    //구글 로그인을 위한 함수~
+    //구글 로그인을 위한 함수
     companion object {
         private const val RC_SIGN_IN = 9001
     }
@@ -78,7 +78,7 @@ class LoginActivity : AppCompatActivity() {
                         // 로그인 성공
                         Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
                         Log.d("로그인성공시닉네임",user.memberNick)
-                        memberInfoSpf(inputId)
+                        memberInfoSpf(inputId, user.memberNick)
                         // 메인 액티비티로 이동
                         var intent = Intent(this@LoginActivity,MainActivity::class.java)
                         startActivity(intent)
@@ -129,10 +129,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //SharedPreferences
-    fun memberInfoSpf(memberId: String) {
+    //로그인 했을때 Id, 닉네임 값 저장!
+    fun memberInfoSpf(memberId: String,memberNick :String) {
         val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("memberId", memberId)
+        editor.putString("memberNick", memberNick)
         editor.apply()
     }
     fun getmemberInfoSpf(): String? {

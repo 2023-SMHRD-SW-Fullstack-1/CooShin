@@ -7,6 +7,8 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.smhrd.android.R
 
 class MypageActivity : AppCompatActivity() {
@@ -27,11 +29,13 @@ class MypageActivity : AppCompatActivity() {
         mypageBtn_infoChange = findViewById(R.id.mypageBtn_infoChange)
         mypageBtn_likesGosu = findViewById(R.id.mypageBtn_likesGosu)
 
-        val memberId = getMemberInfoFromSpf()
+        val database = Firebase.database
+
+        val (memberId, memberNick) = getMemberInfoFromSpf()
 
         if (memberId != null) {
             // 닉네임 설정: memberId + "고객님"
-            mypageTv_nick.text = "${memberId}고객님"
+            mypageTv_nick.text = "${memberNick}고객님"
         }
 
         //마이페이지 프로필 이미지 버튼 눌렀을 때
@@ -53,8 +57,11 @@ class MypageActivity : AppCompatActivity() {
     }
 
     // SharedPreferences에서 memberId 가져오는 함수
-    fun getMemberInfoFromSpf(): String? {
+    fun getMemberInfoFromSpf(): Pair<String?,String?> {
         val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
-        return sharedPreferences.getString("memberId", null)
+       // return sharedPreferences.getString("memberId", null )
+        val memberId = sharedPreferences.getString("memberId", null)
+        val memberNick = sharedPreferences.getString("memberNick", null)
+        return Pair(memberId, memberNick)
     }
 }
