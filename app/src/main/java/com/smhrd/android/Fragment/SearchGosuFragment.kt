@@ -16,12 +16,6 @@ import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
 
 class SearchGosuFragment : Fragment() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//
-//        }
-//    }
 
     lateinit var citySpinner: Spinner
     lateinit var sigunguSpinner: Spinner
@@ -34,27 +28,6 @@ class SearchGosuFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         var views = inflater.inflate(R.layout.fragment_search_gosu, container, false)
-
-        // Spinner
-//        Spinner yearSpinner =(Spinner) findViewById (R.id.spinner_year);
-//        ArrayAdapter yearAdapter = ArrayAdapter . createFromResource (this,
-//        R.array.date_year, android.R.layout.simple_spinner_item);
-//        yearAdapter.setDropDownViewResource(
-//            android.R.layout.simple_spinner_
-//                    dropdown_item
-//        );
-//        yearSpinner.setAdapter(yearAdapter);
-//
-//        Spinner monthSpinner =(Spinner) findViewById (R.id.spinner_month);
-//        ArrayAdapter monthAdapter = ArrayAdapter . createFromResource (this,
-//        R.array.date_month, android.R.layout.simple_spinner_item);
-//        monthAdapter.setDropDownViewResource(
-//            android.R.layout.simple_spinner_
-//                    dropdown_item
-//        );
-//        monthSpinner.setAdapter(monthAdapter);
-//        [출처] 안드로이드 스피너(Selectbox) 구현 방법|작성자 히키코보라
-//    }
 
         //Spinner
         sigunguSpinner = views.findViewById(R.id.spinLocal_sigungu)
