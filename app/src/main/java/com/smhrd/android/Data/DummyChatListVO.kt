@@ -1,7 +1,7 @@
 package com.smhrd.android.Data
 
 data class DummyChatListVO(
-    var ivTeacherProfileImg: String,
+    var ivTeacherProfileImg: Int,
     var tvTeacherName: String,
     var tvLastChatTime: String,
     var tvTeacherCity: String,

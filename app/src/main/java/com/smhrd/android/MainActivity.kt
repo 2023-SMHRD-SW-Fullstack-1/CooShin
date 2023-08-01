@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.FrameLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.smhrd.android.Fragment.ChattingFragment
 import com.smhrd.android.Fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +31,12 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(
                         R.id.fl,
                         HomeFragment()
+                    ).commit()
+                }
+                R.id.tab4 -> {
+                    supportFragmentManager.beginTransaction().replace(
+                        R.id.fl,
+                        ChattingFragment()
                     ).commit()
                 }
 

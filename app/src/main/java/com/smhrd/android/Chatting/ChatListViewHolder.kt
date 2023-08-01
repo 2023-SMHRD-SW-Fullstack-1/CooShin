@@ -3,10 +3,11 @@ package com.smhrd.android.Chatting
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.smhrd.android.R
 
-class ChatListViewHolder(itemView: View) : ViewHolder(itemView) {
+class ChatListViewHolder(itemView: View, private val onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
 
     lateinit var ivTeacherProfileImg: ImageView
     lateinit var tvTeacherName: TextView
@@ -24,5 +25,12 @@ class ChatListViewHolder(itemView: View) : ViewHolder(itemView) {
         tvTeacherService = itemView.findViewById(R.id.tvTeacherService)
         tvServicePrice = itemView.findViewById(R.id.tvServicePrice)
         tvLastChatContent = itemView.findViewById(R.id.tvLastChatContent)
+
+        itemView.setOnClickListener {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                onItemClickListener.onItemClick(position)
+            }
+        }
     }
 }
