@@ -19,7 +19,7 @@ import com.google.firebase.ktx.Firebase
 import com.smhrd.android.Data.MemberIdVO
 import com.smhrd.android.MainActivity
 import com.smhrd.android.R
-import java.lang.Exception
+import com.google.gson.Gson
 
 class LoginActivity : AppCompatActivity() {
 
@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getGoogleClient(): GoogleSignInClient {
         val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            //.requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
+//.requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
             .requestProfile()
             .requestEmail()
             .build()
@@ -60,17 +60,17 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = getGoogleClient()
 
-        //일반 로그인 버튼 눌렀을 때
-        loginBtn_login.setOnClickListener {
+//일반 로그인 버튼 눌렀을 때
+        loginBtn_login.setOnClickListener{
             var inputId = loginEt_id.text.toString()
             var inputPw = loginEt_Pw.text.toString()
 
-            //id나 pw중 입력하지 않았을때
+//id나 pw중 입력하지 않았을때
             if (inputId.isEmpty() || inputPw.isEmpty()) {
                 Toast.makeText(applicationContext, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
 
-            loginRef.child(inputId).get().addOnSuccessListener { dataSnapshot ->
+            loginRef.child(inputId).get().addOnSuccessListener{dataSnapshot->
                 if (dataSnapshot.exists()) {
                     val memberIdVO = dataSnapshot.getValue(MemberIdVO::class.java)
                     val user = memberIdVO?.member
@@ -84,14 +84,14 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     } else {
-                        // 비밀번호 틀렸을때
+                    // 비밀번호 틀렸을때
                         Toast.makeText(applicationContext, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     // 아이디 없음
                     Toast.makeText(applicationContext, "해당 아이디가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
-            }.addOnFailureListener {
+            }.addOnFailureListener{
                     error->
                 // Database 조회 실패했을때 에러
                 Toast.makeText(applicationContext, "로그인 실패! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
@@ -100,12 +100,12 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //google로그인 버튼 눌렀을 때
-        loginBtn_google.setOnClickListener {
+        loginBtn_google.setOnClickListener{
             val signInIntent = googleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
 
-        loginBtn_join.setOnClickListener {
+        loginBtn_join.setOnClickListener{
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
             finish()
@@ -131,18 +131,18 @@ class LoginActivity : AppCompatActivity() {
     //SharedPreferences
     //로그인 했을때 Id, 닉네임 값 저장!
     fun memberInfoSpf(memberId: String,memberNick :String) {
-        val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("memberId", memberId)
         editor.putString("memberNick", memberNick)
         editor.apply()
     }
     fun getmemberInfoSpf(): String? {
-        val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
         return sharedPreferences.getString("memberId", null)
     }
     fun clearmemberInfoSpf() {
-        val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear()
         editor.apply()

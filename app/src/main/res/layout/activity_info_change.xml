@@ -41,24 +41,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="숨고에 오신 것을 환영합니다."
+        android:text="회원 정보 수정"
         android:textSize="20dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
-
-    <EditText
-        android:id="@+id/registerEt_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="가입할 ID를 입력하세요."
-        android:inputType="text"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.286"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerTv_id" />
 
     <EditText
         android:id="@+id/infochangeEt_updatePw"
@@ -68,9 +56,19 @@
         android:hint="비밀번호를 입력하세요."
         android:inputType="textPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.286"
+        app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updatePw" />
+
+    <TextView
+        android:id="@+id/infochangeTv_updatePw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PW"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintHorizontal_bias="0.126"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/infochangeTv_title" />
 
     <EditText
         android:id="@+id/infochangeEt_updateTel"
@@ -88,34 +86,12 @@
         android:id="@+id/infochangeBtn_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
-        android:text="가입하기"
+        android:layout_marginBottom="168dp"
+        android:text="회원정보수정"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="@+id/guideline8" />
-
-    <TextView
-        android:id="@+id/registerTv_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="ID"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.117"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/infochangeTv_title" />
-
-    <TextView
-        android:id="@+id/infochangeTv_updatePw"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="PW"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.123"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerEt_id" />
 
     <TextView
         android:id="@+id/infochangeTv_updateTel"
@@ -151,15 +127,4 @@
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updateNick" />
 
-    <Button
-        android:id="@+id/registerBtn_idCheck"
-        android:layout_width="95dp"
-        android:layout_height="42dp"
-        android:text="중복확인"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/registerEt_id"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toEndOf="@+id/registerEt_id"
-        app:layout_constraintTop_toTopOf="@+id/registerEt_id" />
 </androidx.constraintlayout.widget.ConstraintLayout>
