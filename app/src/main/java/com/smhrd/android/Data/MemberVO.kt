@@ -1,3 +1,5 @@
 package com.smhrd.android.Data
 
-data class MemberVO(var dummy:String)
+
+data class MemberVO(var b : Int)
+
