@@ -15,14 +15,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.smhrd.android.Data.MemberIdVO
 import com.smhrd.android.MainActivity
 import com.smhrd.android.R
 import com.google.gson.Gson
+import com.smhrd.android.Data.MemberVO
 
 class LoginActivity : AppCompatActivity() {
 
@@ -73,33 +77,39 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
 
-            loginRef.child(inputId).get().addOnSuccessListener{dataSnapshot->
-                if (dataSnapshot.exists()) {
-                    val memberIdVO = dataSnapshot.getValue(MemberIdVO::class.java)
-                    val user = memberIdVO?.member
-                    if (user?.memberPw  == inputPw) {
-                        // 로그인 성공
-                        Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                        Log.d("로그인성공시닉네임",user.memberNick)
-                        memberInfoSpf(inputId, user.memberNick)
-                        // 메인 액티비티로 이동
+
+
+            loginRef.child(inputId).child("member").addListenerForSingleValueEvent(object :
+                ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("로그인 에러", error.message)
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        val member = dataSnapshot.getValue(MemberVO::class.java)
+                        Log.d("memberVO", member.toString())
+                        Log.d("비밀번호 비교", "저장된 비밀번호: ${member?.memberPw}, 입력한 비밀번호: $inputPw")
+                        if (member?.memberPw == inputPw) {
+                            // 로그인 성공
+                            Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                        Log.d("로그인성공시닉네임",member.memberNick)
+                        memberInfoSpf(inputId, member.memberNick)
+                            // 메인 액티비티로 이동
                         var intent = Intent(this@LoginActivity,MainActivity::class.java)
                         startActivity(intent)
-                        finish()
+                            finish()
+                        } else {
+                            // 비밀번호 불일치
+                            Toast.makeText(applicationContext, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
-                    // 비밀번호 틀렸을때
-                        Toast.makeText(applicationContext, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                        // 유저가 존재하지 않음
+                        Toast.makeText(applicationContext, "해당 사용자가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                     }
-                } else {
-                    // 아이디 없음
-                    Toast.makeText(applicationContext, "해당 아이디가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
-            }.addOnFailureListener{
-                    error->
-                // Database 조회 실패했을때 에러
-                Toast.makeText(applicationContext, "로그인 실패! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
-                Log.d("error", error.toString())
-            }
+            })
+
         }
 
         //google로그인 버튼 눌렀을 때
@@ -134,6 +144,7 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, "구글 로그인 성공!", Toast.LENGTH_SHORT).show()
                 googleEmailSPF(account)
                 val userEmail = account.email
+              // val user
                 Log.d("googleemail",userEmail.toString())
             } catch (e: ApiException) {
                 Log.d( "Google sign in failed", e.toString())
@@ -164,7 +175,7 @@ class LoginActivity : AppCompatActivity() {
  fun googleEmailSPF(account: GoogleSignInAccount) {
     val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
     with(sharedPreferences.edit()) {
-        //putString("googleid", account.id)
+     //   putString("googleid", account.id)
 //        putString("user_display_name", account.displayName)
         putString("googleEmail", account.email)
         apply()
