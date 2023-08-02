@@ -33,6 +33,8 @@ class CommunityDetailActivity : AppCompatActivity() {
         rc_comment = findViewById(R.id.rc_comment)
         ibtn_back = findViewById(R.id.ibtn_back)
 
+
+
     }
 
     fun updateComment(commentId: String, updatedComment: String) {

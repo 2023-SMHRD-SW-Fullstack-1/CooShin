@@ -1,6 +1,7 @@
 package com.smhrd.android.User
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,9 +17,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.smhrd.android.Community.CommunityCreateActivity
 import com.smhrd.android.Data.MemberIdVO
 import com.smhrd.android.MainActivity
 import com.smhrd.android.R
+
 import java.lang.Exception
 
 class LoginActivity : AppCompatActivity() {
@@ -29,6 +32,9 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loginBtn_google : Button
     lateinit var loginBtn_join : Button
     lateinit var googleSignInClient: GoogleSignInClient
+
+    //추가한 변수
+    private var loggedInUserId: String? = null
 
     //구글 로그인을 위한 함수~
     companion object {
@@ -76,9 +82,21 @@ class LoginActivity : AppCompatActivity() {
                     val user = memberIdVO?.member
                     if (user?.memberPw  == inputPw) {
                         // 로그인 성공
+
+
+                        //새로 추가한 것 community에서 아이디 가져오려고 씀
+                        loggedInUserId = inputId
+                        val communityCreateIntent = Intent(this@LoginActivity, CommunityCreateActivity::class.java)
+                        saveLoggedInUserId(loggedInUserId!!)
+                        communityCreateIntent.putExtra("loggedInUserId", loggedInUserId)
+                        Log.d("LoggedInUserId", loggedInUserId ?: "null")
+
+
                         Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
                         Log.d("로그인성공시닉네임",user.memberNick)
                         memberInfoSpf(inputId)
+                        startActivity(intent)
+
                         // 메인 액티비티로 이동
                         var intent = Intent(this@LoginActivity,MainActivity::class.java)
                         startActivity(intent)
@@ -143,6 +161,14 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.clear()
+        editor.apply()
+    }
+
+    //이것도 추가
+    fun saveLoggedInUserId(userId: String) {
+        val sharedPreferences = getSharedPreferences("mySPF", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("loggedInUserId", userId)
         editor.apply()
     }
 }
