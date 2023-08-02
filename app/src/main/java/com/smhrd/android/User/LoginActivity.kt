@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
@@ -37,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getGoogleClient(): GoogleSignInClient {
         val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//.requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
+        .requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
             .requestProfile()
             .requestEmail()
             .build()
@@ -60,12 +61,12 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = getGoogleClient()
 
-//일반 로그인 버튼 눌렀을 때
+        //일반 로그인 버튼 눌렀을 때
         loginBtn_login.setOnClickListener{
             var inputId = loginEt_id.text.toString()
             var inputPw = loginEt_Pw.text.toString()
 
-//id나 pw중 입력하지 않았을때
+        //id나 pw중 입력하지 않았을때
             if (inputId.isEmpty() || inputPw.isEmpty()) {
                 Toast.makeText(applicationContext, "아이디와 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
             }
@@ -122,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("구글로그인성공","로그인 성공")
                 Toast.makeText(applicationContext, "구글 로그인 성공!", Toast.LENGTH_SHORT).show()
             } catch (e: ApiException) {
-                Log.w("GoogleSignIn", "Google sign in failed", e)
+                Log.d( "Google sign in failed", e.toString())
                 Toast.makeText(applicationContext, "구글 로그인 실패! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
@@ -137,14 +138,14 @@ class LoginActivity : AppCompatActivity() {
         editor.putString("memberNick", memberNick)
         editor.apply()
     }
-    fun getmemberInfoSpf(): String? {
-        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
-        return sharedPreferences.getString("memberId", null)
-    }
-    fun clearmemberInfoSpf() {
-        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.clear()
-        editor.apply()
-    }
+//    fun getmemberInfoSpf(): String? {
+//        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
+//        return sharedPreferences.getString("memberId", null)
+//    }
+//    fun clearmemberInfoSpf() {
+//        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.clear()
+//        editor.apply()
+//    }
 }
