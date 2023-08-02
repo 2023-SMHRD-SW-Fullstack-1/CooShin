@@ -7,6 +7,8 @@ import android.util.Log
 import android.widget.Button
 import android.widget.FrameLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.smhrd.android.Fragment.ChattingFragment
 import com.smhrd.android.Fragment.CommunityFragment
 import com.smhrd.android.Fragment.HomeFragment
@@ -17,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var fl : FrameLayout
     lateinit var bnv : BottomNavigationView
-    lateinit var btnLogin : Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,11 @@ class MainActivity : AppCompatActivity() {
 
         fl = findViewById(R.id.fl)
         bnv = findViewById(R.id.bnv)
-        btnLogin = findViewById(R.id.btnLogin)
+
+
+        //firebase
+        val database = Firebase.database
+        val myRef = database.getReference("memberList")
 
         supportFragmentManager.beginTransaction().replace(R.id.fl, HomeFragment()).commit()
 
@@ -63,12 +69,6 @@ class MainActivity : AppCompatActivity() {
             //boolean : true / false(이벤트 인식을 잘 못함)
             true
 
-        }
-
-        //로그인 버튼 클릭했을 때
-        btnLogin.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
         }
 
 

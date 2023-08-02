@@ -10,10 +10,12 @@ class HomeGosuViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
     lateinit var ivGosu : ImageView
     lateinit var tvGosuName : TextView
+    lateinit var tvReviewStar : TextView
 
     init {
         ivGosu = itemView.findViewById(R.id.ivGosu)
         tvGosuName = itemView.findViewById(R.id.tvGosuName)
+        tvReviewStar = itemView.findViewById(R.id.tvReviewStar)
     }
 
 }
