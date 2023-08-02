@@ -18,6 +18,7 @@ import com.smhrd.android.Data.MemberVO
 import com.smhrd.android.MainActivity
 import com.smhrd.android.R
 
+
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var registerEt_id : EditText

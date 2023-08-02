@@ -41,9 +41,11 @@
         android:layout_marginBottom="160dp"
         android:text="구글로 시작"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="@+id/loginEt_pw"
+        app:layout_constraintEnd_toEndOf="@+id/loginBtn_login"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/loginEt_pw" />
+        app:layout_constraintStart_toStartOf="@+id/loginTv_social"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn_login"
+        app:layout_constraintVertical_bias="0.705" />
 
     <EditText
         android:id="@+id/loginEt_id"
@@ -96,20 +98,23 @@
         android:id="@+id/loginTv_social"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="소셜 로그인"
         app:layout_constraintBottom_toTopOf="@+id/loginBtn_google"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintHorizontal_bias="0.244"
-        app:layout_constraintStart_toStartOf="@+id/guideline4" />
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn_login"
+        app:layout_constraintVertical_bias="0.75" />
 
     <Button
         android:id="@+id/loginBtn_join"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="28dp"
         android:text="회원가입"
         app:layout_constraintEnd_toEndOf="@+id/loginBtn_google"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/loginBtn_google"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn_google" />
 </androidx.constraintlayout.widget.ConstraintLayout>
