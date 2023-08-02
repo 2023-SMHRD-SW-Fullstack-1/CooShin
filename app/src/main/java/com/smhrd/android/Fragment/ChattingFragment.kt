@@ -2,22 +2,79 @@ package com.smhrd.android.Fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.GenericTypeIndicator
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.smhrd.android.Chatting.ChatListAdapter
 import com.smhrd.android.Chatting.ChattingRoomActivity
 import com.smhrd.android.Chatting.OnItemClickListener
 import com.smhrd.android.Data.DummyChatListVO
+import com.smhrd.android.Data.MemberIdVO
 import com.smhrd.android.R
 
 class ChattingFragment : Fragment() {
 
     lateinit var rv: RecyclerView
+
+    private fun readFirebaseData(userId: String) {
+        val db = Firebase.database
+        val chatRoomIdList = ArrayList<String>()
+        val chatRoomList = ArrayList<DummyChatListVO>()
+
+        db.getReference("memberList").child(userId).child("chatRoom").get()
+            .addOnSuccessListener { snapshot ->
+                Log.i("firebase", "Got value ${snapshot.value}")
+                val list = snapshot.getValue(object : GenericTypeIndicator<List<String>>() {})
+                if (list != null) {
+                    for (i in 0 until list.size) {
+                        chatRoomIdList.add(list[i])
+                        Log.d("chatRoomIdList :", chatRoomIdList[i])
+                        chatRoomList.add(
+                            DummyChatListVO(
+                                null,
+                                chatRoomIdList[i],
+                                "오후 04:30",
+                                "광주광역시 북구",
+                                "레슨",
+                                "총 200,000원",
+                                "안녕하세요"
+                            )
+                        )
+                        Log.d("chatRoomList :", chatRoomList[i].tvTeacherName.toString())
+                    }
+
+                    // 데이터를 읽어오고 나서 어댑터 설정을 진행합니다.
+                    setupRecyclerView(chatRoomList)
+                }
+            }.addOnFailureListener { e ->
+                Log.e("firebase", "Error getting data", e)
+            }
+    }
+
+    // RecyclerView 어댑터 설정
+    private fun setupRecyclerView(chatRoomList: ArrayList<DummyChatListVO>) {
+        val adapter = ChatListAdapter(requireActivity(), chatRoomList, object : OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                var intent = Intent(requireActivity(), ChattingRoomActivity::class.java)
+                startActivity(intent)
+            }
+        })
+
+        rv.layoutManager = LinearLayoutManager(requireActivity())
+        rv.adapter = adapter
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,40 +84,13 @@ class ChattingFragment : Fragment() {
 
         rv = view.findViewById(R.id.rv)
 
-        var chatList = ArrayList<DummyChatListVO>()
+        // 로그인한 경우 유저 아이디
+        val spf =
+            requireActivity().getSharedPreferences("memberInfoSpf", AppCompatActivity.MODE_PRIVATE)
+        var userId = spf.getString("memberId", null).toString()
 
-        chatList.add(
-            DummyChatListVO(
-                R.drawable.profiledefault,
-                "김신영",
-                "4시 30분",
-                "광주광역시 북구",
-                "레슨",
-                "총 200,000원",
-                "안녕하세요"
-            )
-        )
-        chatList.add(
-            DummyChatListVO(
-                R.drawable.profiledefault,
-                "박정현",
-                "오후 12:22",
-                "광주광역시 서구",
-                "레슨",
-                "총 300,000원",
-                "반갑습니다"
-            )
-        )
-
-        var adapter = ChatListAdapter(requireActivity(), chatList, object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                var intent = Intent(requireActivity(), ChattingRoomActivity::class.java)
-                startActivity(intent)
-            }
-        })
-
-        rv.layoutManager = LinearLayoutManager(requireActivity())
-        rv.adapter = adapter
+        // Firebase 데이터 읽어오는 함수 호출
+        readFirebaseData(userId)
 
         return view
     }

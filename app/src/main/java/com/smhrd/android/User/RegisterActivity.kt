@@ -96,7 +96,7 @@ class RegisterActivity : AppCompatActivity() {
             )
             var memberIdVO = MemberIdVO(
                 member = memberVO,
-                chatList = null,
+                chatRoom = null,
                 board = null
             )
             database.getReference("memberList").child(inputId).setValue(memberIdVO)
