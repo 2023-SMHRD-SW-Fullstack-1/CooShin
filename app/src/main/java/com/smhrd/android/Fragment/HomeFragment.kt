@@ -28,6 +28,8 @@ import com.smhrd.android.Data.ReviewVO
 import com.smhrd.android.R
 import com.smhrd.android.User.LoginActivity
 import com.smhrd.android.User.MypageActivity
+import java.util.Arrays
+import java.util.Collections
 
 
 class HomeFragment : Fragment() {
@@ -75,12 +77,13 @@ class HomeFragment : Fragment() {
         var boardList = ArrayList<BoardIdVO>()
         var review = ArrayList<ReviewVO>()
 
+
         database = FirebaseDatabase.getInstance().getReference("board")
+
+        //가데이터
         boardList.add(BoardIdVO("제목1", "내용1", "작성자1", "20230802", "", 18, 3, null ))
         boardList.add(BoardIdVO("제목2", "내용2", "작성자2", "20230805", "", 8, 1, null ))
         boardList.add(BoardIdVO("제목3", "내용3", "작성자3", "20230807", "", 28, 15, null ))
-
-
 
         memberList.add(MemberVO("asdf", "01000000000", "asdf"))
         memberList.add(MemberVO("qwer", "01000000000", "qwer"))
@@ -89,32 +92,27 @@ class HomeFragment : Fragment() {
         review.add(ReviewVO("asdf", "짱", "", "20230802", 2))
         review.add(ReviewVO("zxcv", "최고", "", "20230802", 3))
 
-        //인기있는 고수 출력
-        rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-        var adapter = HomeGosuAdapter(memberList, review, requireContext())
-        rvPopularGosu.adapter = adapter
-//        val listener = object : ValueEventListener {
-//
-//            override fun onDataChange(data: DataSnapshot) {
-//                for (data in data.children) {
-//                    val board = data.getValue(CommunityFragment::class.java) ?: continue
-//                    boardList.add(BoardIdVO("제목2", "내용1", "작성자1", "20230802", "", 22, 20, null))
-//                    boardList.add(BoardIdVO("제목3", "내용1", "작성자1", "20230802", "", 30, 25, null))
-//                    boardList.add(BoardIdVO("제목6", "내용1", "작성자1", "20230802", "", 2, 30, null))
-//                }
-//                val top = boardList.sortedByDescending { it.boardLikes }.take(2)
-//                val adapter = adapter
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                TODO("Not yet implemented")
-//            }
-//        }
+        //인기있는 코신 출력
+        for(i in 0 until review.size) {
+            val reviewStar =  review.get(i).reviewStars
+            if(reviewStar > 4){
+                rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
+                var adapter = HomeGosuAdapter(memberList, review, requireContext())
+                rvPopularGosu.adapter = adapter
+            }
+        }
 
-        //커뮤니티
-        rvCommunity.layoutManager = GridLayoutManager(context, 2)
-        var adapter2 = HomeCommunityAdapter(boardList, requireContext())
-        rvCommunity.adapter = adapter2
+        //커뮤니티 출력
+        for(i in 0 until boardList.size){
+            val boardLikes =  boardList.get(i).boardLikes
+            if(boardLikes!!.toInt() > 3){
+
+                rvCommunity.layoutManager = GridLayoutManager(context, 2)
+                var adapter2 = HomeCommunityAdapter(boardList, requireContext())
+                rvCommunity.adapter = adapter2
+            }
+        }
+
 
         //C 클릭했을 때
         ivC.setOnClickListener {
@@ -148,10 +146,12 @@ class HomeFragment : Fragment() {
         ivPHP.setOnClickListener {
 
         }
+
         //일반 로그인 spf
         val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         var loginMember = spf?.getString("memberId", "")
         Log.d("loginMember", loginMember.toString())
+
         //구글 로그인 spf
         val spf2 = activity?.getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
         var googleMember = spf2?.getString("googleEmail", "")
@@ -164,7 +164,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        if (loginMember.toString() == ""|| googleMember.toString() == "") {
+        if (loginMember.toString() == "" && googleMember.toString() == "") {
             //로그인 안되어 있을 때
             btnLogout.visibility = View.INVISIBLE
         } else {
@@ -180,15 +180,11 @@ class HomeFragment : Fragment() {
             }
         }
 
-
         //마이페이지 버튼 클릭했을 때
         ibMyPage.setOnClickListener {
             val intent = Intent(requireActivity(), MypageActivity::class.java)
             startActivity(intent)
         }
-
-
-
 
         return view
     }
