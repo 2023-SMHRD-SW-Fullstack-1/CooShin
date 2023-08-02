@@ -11,6 +11,9 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.R
 
 class CommunityCreateActivity : AppCompatActivity() {
@@ -32,8 +35,19 @@ class CommunityCreateActivity : AppCompatActivity() {
         back = findViewById(R.id.back)
         ibGallery = findViewById(R.id.ibGallery)
         ibcamera  = findViewById(R.id.ibCamera)
+        val database = Firebase.database
 
         val spf = getSharedPreferences("mySPF", Context.MODE_PRIVATE)
+
+
+
+        //임의의 boardId를 만들어주고 setvalue해서 boardidVO에 게시물을 넣어준다
+//        database.getReference("boardList").child(boardId).setValue(BoardIdVO)
+//
+//        //boardid를 list형태로 가져오고 거기에 내가 만든 임의의 boardId값을 넣어준다.
+//        var list : MutableList<String> = database.getReference("memberList").child(id).get("board")
+//        list.add
+
 
 
 

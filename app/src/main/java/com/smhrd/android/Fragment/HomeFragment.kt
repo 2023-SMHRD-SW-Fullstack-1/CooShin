@@ -15,6 +15,11 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
@@ -40,6 +45,8 @@ class HomeFragment : Fragment() {
     lateinit var ivJS: ImageButton
     lateinit var ivVB: ImageButton
     lateinit var ivPHP: ImageButton
+
+    lateinit var database : DatabaseReference
 
 
     override fun onCreateView(
@@ -67,9 +74,12 @@ class HomeFragment : Fragment() {
         var memberList = ArrayList<MemberVO>()
         var boardList = ArrayList<BoardIdVO>()
         var review = ArrayList<ReviewVO>()
+
+        database = FirebaseDatabase.getInstance().getReference("board")
         boardList.add(BoardIdVO("제목1", "내용1", "작성자1", "20230802", "", 18, 3, null ))
         boardList.add(BoardIdVO("제목2", "내용2", "작성자2", "20230805", "", 8, 1, null ))
         boardList.add(BoardIdVO("제목3", "내용3", "작성자3", "20230807", "", 28, 15, null ))
+
 
 
         memberList.add(MemberVO("asdf", "01000000000", "asdf"))
@@ -83,6 +93,23 @@ class HomeFragment : Fragment() {
         rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
         var adapter = HomeGosuAdapter(memberList, review, requireContext())
         rvPopularGosu.adapter = adapter
+//        val listener = object : ValueEventListener {
+//
+//            override fun onDataChange(data: DataSnapshot) {
+//                for (data in data.children) {
+//                    val board = data.getValue(CommunityFragment::class.java) ?: continue
+//                    boardList.add(BoardIdVO("제목2", "내용1", "작성자1", "20230802", "", 22, 20, null))
+//                    boardList.add(BoardIdVO("제목3", "내용1", "작성자1", "20230802", "", 30, 25, null))
+//                    boardList.add(BoardIdVO("제목6", "내용1", "작성자1", "20230802", "", 2, 30, null))
+//                }
+//                val top = boardList.sortedByDescending { it.boardLikes }.take(2)
+//                val adapter = adapter
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                TODO("Not yet implemented")
+//            }
+//        }
 
         //커뮤니티
         rvCommunity.layoutManager = GridLayoutManager(context, 2)
@@ -121,10 +148,14 @@ class HomeFragment : Fragment() {
         ivPHP.setOnClickListener {
 
         }
-
+        //일반 로그인 spf
         val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         var loginMember = spf?.getString("memberId", "")
         Log.d("loginMember", loginMember.toString())
+        //구글 로그인 spf
+        val spf2 = activity?.getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+        var googleMember = spf2?.getString("googleEmail", "")
+        Log.d("googleMember", googleMember.toString())
 
 
         //로그인 버튼 클릭했을 때
@@ -133,7 +164,7 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        if (loginMember.toString() == "") {
+        if (loginMember.toString() == ""|| googleMember.toString() == "") {
             //로그인 안되어 있을 때
             btnLogout.visibility = View.INVISIBLE
         } else {
