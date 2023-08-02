@@ -127,6 +127,8 @@ class LoginActivity : AppCompatActivity() {
                             // 로그인 성공
                             Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
                             Log.d("로그인성공시닉네임", member.memberNick)
+                            Log.d("datasnapshot",dataSnapshot.toString())
+                            Log.d("inputid",inputId)
                             memberInfoSpf(inputId, member.memberNick)
                             // 메인 액티비티로 이동
 

@@ -57,12 +57,17 @@ class CommunityCreateActivity : AppCompatActivity() {
 
 //            val firebaseUser = FirebaseAuth.getInstance().currentUser
 
-            val loggedInUserId = intent.getStringExtra("loggedInUserId")
-            val user = MemberIdVO().member
-            Log.d("userid", loggedInUserId.toString())
+//            val loggedInUserId = intent.getStringExtra("loggedInUserId")
+//            val user = MemberIdVO().member
 
 
-            if (title.isNotEmpty() && content.isNotEmpty() && loggedInUserId != null) {
+            val spf = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+            var loginMember = spf?.getString("memberId", "")
+            Log.d("loginMember", loginMember.toString())
+
+
+            if (title.isNotEmpty() && content.isNotEmpty()) {
+
                 // Create a new MemberIdVO object to add the board to the member's board list
                 val memberIdVO = MemberIdVO(
                     member = MemberVO() // Set email and pw to null as they are not needed here
@@ -74,7 +79,7 @@ class CommunityCreateActivity : AppCompatActivity() {
                 val boardIdVO = BoardIdVO(
                     boardTitle = title,
                     boardContent = content,
-                    boardWriter = loggedInUserId,
+                    boardWriter = loginMember,
                     boardDate = SimpleDateFormat(
                         "yyyy-MM-dd HH:mm:ss",
                         Locale.getDefault()
@@ -92,26 +97,28 @@ class CommunityCreateActivity : AppCompatActivity() {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 // Add the boardId to the member's board list
-                                databaseReference.child("memberList")
-                                    .child(loggedInUserId)
-                                    .child("board")
-                                    .child(boardId)
-                                    .setValue(true)
-                                    .addOnCompleteListener { memberTask ->
-                                        if (memberTask.isSuccessful) {
-                                            Toast.makeText(
-                                                this,
-                                                "Post saved successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        } else {
-                                            Toast.makeText(
-                                                this,
-                                                "Failed to save post",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                if (loginMember != null) {
+                                    databaseReference.child("memberList")
+                                        .child(loginMember)
+                                        .child("board")
+                                        .child(boardId)
+                                        .setValue(true)
+                                        .addOnCompleteListener { memberTask ->
+                                            if (memberTask.isSuccessful) {
+                                                Toast.makeText(
+                                                    this,
+                                                    "Post saved successfully",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            } else {
+                                                Toast.makeText(
+                                                    this,
+                                                    "Failed to save post",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
                                         }
-                                    }
+                                }
                             } else {
                                 Toast.makeText(
                                     this,

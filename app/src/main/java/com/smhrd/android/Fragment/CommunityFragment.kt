@@ -51,16 +51,19 @@ class CommunityFragment : Fragment() {
         btn_write.setOnClickListener {
             val intent = Intent(requireActivity(), CommunityCreateActivity::class.java)
 
-            val loggedInUserId = getLoggedInUserId() // Replace this with the correct method to get the logged-in user ID
-            Log.d("ee", loggedInUserId.toString())
-            if (loggedInUserId != null) {
+            val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+            var loginMember = spf?.getString("memberId", "")
+            Log.d("loginMember", loginMember.toString())
+//            val loggedInUserId = getLoggedInUserId() // Replace this with the correct method to get the logged-in user ID
+//            Log.d("ee", loggedInUserId.toString())
+//            if (loggedInUserId != null) {
+////                intent.putExtra("loggedInUserId", loggedInUserId)
 //                intent.putExtra("loggedInUserId", loggedInUserId)
-                intent.putExtra("loggedInUserId", loggedInUserId)
                 startActivity(intent)
-            } else {
-                // Handle the case where the logged-in user ID is null (e.g., user is not logged in).
-                Toast.makeText(requireContext(), "Please log in first.", Toast.LENGTH_SHORT).show()
-            }
+//            } else {
+//                // Handle the case where the logged-in user ID is null (e.g., user is not logged in).
+//                Toast.makeText(requireContext(), "Please log in first.", Toast.LENGTH_SHORT).show()
+//            }
         }
 
 

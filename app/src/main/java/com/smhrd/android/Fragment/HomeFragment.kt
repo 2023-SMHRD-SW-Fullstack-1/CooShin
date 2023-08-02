@@ -141,21 +141,21 @@ class HomeFragment : Fragment() {
 
         }
 
-//        if (loginMember.toString() == "") {
-//            //로그인 안되어 있을 때
-//            btnLogout.visibility = View.INVISIBLE
-//        } else {
-//            //로그인되어 있을 때
-//            btnLogin.visibility = View.INVISIBLE
-//            btnLogout.setOnClickListener {
-//                Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
-//                var editor = spf?.edit()
-//                editor?.clear()
-//                editor?.commit()
-//                btnLogout.visibility = View.INVISIBLE
-//                btnLogin.visibility = View.VISIBLE
-//            }
-//        }
+        if (loginMember.toString() == "") {
+            //로그인 안되어 있을 때
+            btnLogout.visibility = View.INVISIBLE
+        } else {
+            //로그인되어 있을 때
+            btnLogin.visibility = View.INVISIBLE
+            btnLogout.setOnClickListener {
+                Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+                var editor = spf?.edit()
+                editor?.remove("memberId")
+                editor?.commit()
+                btnLogout.visibility = View.INVISIBLE
+                btnLogin.visibility = View.VISIBLE
+            }
+        }
 
 
         //마이페이지 버튼 클릭했을 때
@@ -164,15 +164,15 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        btnLogout.setOnClickListener {
-            val sharedPreferences = requireActivity().getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.remove("memberId")
-            editor.apply()
-
-            btnLogout.visibility = View.INVISIBLE
-            btnLogin.visibility = View.VISIBLE
-        }
+//        btnLogout.setOnClickListener {
+//            val sharedPreferences = requireActivity().getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+//            val editor = sharedPreferences.edit()
+//            editor.remove("memberId")
+//            editor.apply()
+//
+//            btnLogout.visibility = View.INVISIBLE
+//            btnLogin.visibility = View.VISIBLE
+//        }
 
 
 
