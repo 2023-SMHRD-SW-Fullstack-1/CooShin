@@ -1,19 +1,26 @@
 package com.smhrd.android.User
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.content.Context
-import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.smhrd.android.Data.MemberIdVO
+import com.google.gson.Gson
+import com.smhrd.android.Data.MemberVO
+import com.smhrd.android.MainActivity
 import com.smhrd.android.R
+
 
 class InfoChangeActivity : AppCompatActivity() {
     lateinit var infochangeEt_updatePw: EditText
@@ -31,49 +38,70 @@ class InfoChangeActivity : AppCompatActivity() {
         infochangeEt_updateNick = findViewById(R.id.infochangeEt_updateNick)
         infochangeBtn_update = findViewById(R.id.infochangeBtn_update)
 
+        //firebase에서 데이터를 가져오기 위함!
+        val database = FirebaseDatabase.getInstance()
+        val reference = database.getReference("memberList")
+
         val memberId = getMemberInfoFromSpf()
         if (memberId != null) {
-            fetchMemberInfo(memberId, { member ->
-                Log.d("infochange",member.member?.memberPw.toString() )
-                infochangeEt_updatePw.setText(member.member?.memberPw)
-                infochangeEt_updateTel.setText(member.member?.memberTel)
-                infochangeEt_updateNick.setText(member.member?.memberNick)
-            }, {
-                // Handle failure here
-            })
-        }
-
-        //회원정보 수정 버튼 눌렀을때
-        infochangeBtn_update.setOnClickListener {
-
-        }
-    }
-
-    private fun fetchMemberInfo(
-        memberId: String,
-        onSuccessListener: (member: MemberIdVO) -> Unit,
-        onFailureListener: () -> Unit
-    ) {
-        val ref = database.getReference("MemberList").child(memberId)
-
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val memberInfo = dataSnapshot.getValue(MemberIdVO::class.java)
-                if (memberInfo != null) {
-                    onSuccessListener(memberInfo)
-                } else {
-                    onFailureListener()
+            reference.child(memberId).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val member = dataSnapshot.child("member").getValue(MemberVO::class.java)
+                    //MemberVO타입 member가 null이 아니라면 화면에 회원정보 띄우기
+                    if (member != null) {
+                        Log.d("member.참조닉네임", member.memberNick)
+                        infochangeEt_updatePw.setText(member.memberPw)
+                        infochangeEt_updateTel.setText(member.memberTel)
+                        infochangeEt_updateNick.setText(member.memberNick)
+                    } else {
+                        Toast.makeText(applicationContext,"회원 정보 불러오기 실패",Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                onFailureListener()
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d("firebase에러",databaseError.toString())
+                }
+            })
+        } else {
+            // memberId가 SharedPreferences에 저장되어 있지 않을 때
+        }
+
+        //회원정보수정 버튼 눌렀을때 업데이트 하기!
+        infochangeBtn_update.setOnClickListener {
+            // EditText에서 새로운 값 가져오기
+            val newPw = infochangeEt_updatePw.text.toString()
+            val newTel = infochangeEt_updateTel.text.toString()
+            val newNick = infochangeEt_updateNick.text.toString()
+
+            // 유효성 검사도 추가하기
+            // memberId가 null이 아닌 경우에만 업데이트
+            memberId?.let {
+                // pw,tel,nick  업데이트
+                reference.child(it).child("member").child("memberPw").setValue(newPw)
+                reference.child(it).child("member").child("memberTel").setValue(newTel)
+                reference.child(it).child("member").child("memberNick").setValue(newNick)
+                    .addOnSuccessListener {
+                        // 업데이트 완료
+                        Toast.makeText(applicationContext, "회원 정보 수정 성공", Toast.LENGTH_SHORT).show()
+                        var intent = Intent(this,MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener { exception ->
+                        // 업데이트 실패 시
+                        Toast.makeText(applicationContext, "회원 정보 수정 실패: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    }
+            } ?: run {
+                // memberId 없을때
+
+                Toast.makeText(applicationContext, "회원 정보 변경 실패: memberId 없음", Toast.LENGTH_SHORT).show()
             }
-        })
+        }
+
+    }
+    //memberId SPF가져오기
+    fun getMemberInfoFromSpf(): String? {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("memberId", null)
     }
 
-    private fun getMemberInfoFromSpf(): String? {
-        val sharedPreferences = getSharedPreferences("your_spf_name", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("member_id", null)
-    }
 }
