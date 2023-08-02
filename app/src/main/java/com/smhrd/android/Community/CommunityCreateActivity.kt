@@ -39,14 +39,14 @@ class CommunityCreateActivity : AppCompatActivity() {
 
         val spf = getSharedPreferences("mySPF", Context.MODE_PRIVATE)
 
-        1
+
 
         //임의의 boardId를 만들어주고 setvalue해서 boardidVO에 게시물을 넣어준다
-        database.getReference("boardList").child(boardId).setValue(BoardIdVO)
-
-        //boardid를 list형태로 가져오고 거기에 내가 만든 임의의 boardId값을 넣어준다.
-        var list : MutableList<String> = database.getReference("memberList").child(id).get("board")
-        list.add
+//        database.getReference("boardList").child(boardId).setValue(BoardIdVO)
+//
+//        //boardid를 list형태로 가져오고 거기에 내가 만든 임의의 boardId값을 넣어준다.
+//        var list : MutableList<String> = database.getReference("memberList").child(id).get("board")
+//        list.add
 
 
 
