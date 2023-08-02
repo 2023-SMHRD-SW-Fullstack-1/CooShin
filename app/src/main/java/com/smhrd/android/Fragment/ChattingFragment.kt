@@ -35,16 +35,19 @@ class ChattingFragment : Fragment() {
 
         db.getReference("memberList").child(userId).child("chatRoom").get()
             .addOnSuccessListener { snapshot ->
-                Log.i("firebase", "Got value ${snapshot.value}")
                 val list = snapshot.getValue(object : GenericTypeIndicator<List<String>>() {})
+
                 if (list != null) {
                     for (i in 0 until list.size) {
-                        chatRoomIdList.add(list[i])
-                        Log.d("chatRoomIdList :", chatRoomIdList[i])
+                        var roomId = list[i]
+
+                        chatRoomIdList.add(roomId)
+
                         chatRoomList.add(
                             DummyChatListVO(
-                                null,
                                 chatRoomIdList[i],
+                                null,
+                                "김신영",
                                 "오후 04:30",
                                 "광주광역시 북구",
                                 "레슨",
@@ -52,7 +55,6 @@ class ChattingFragment : Fragment() {
                                 "안녕하세요"
                             )
                         )
-                        Log.d("chatRoomList :", chatRoomList[i].tvTeacherName.toString())
                     }
 
                     // 데이터를 읽어오고 나서 어댑터 설정을 진행합니다.
@@ -65,12 +67,16 @@ class ChattingFragment : Fragment() {
 
     // RecyclerView 어댑터 설정
     private fun setupRecyclerView(chatRoomList: ArrayList<DummyChatListVO>) {
-        val adapter = ChatListAdapter(requireActivity(), chatRoomList, object : OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                var intent = Intent(requireActivity(), ChattingRoomActivity::class.java)
-                startActivity(intent)
-            }
-        })
+        val adapter =
+            ChatListAdapter(requireActivity(), chatRoomList, object : OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    var intent = Intent(requireActivity(), ChattingRoomActivity::class.java)
+
+                    intent.putExtra("roomId", chatRoomList[position].roomId.toString())
+
+                    startActivity(intent)
+                }
+            })
 
         rv.layoutManager = LinearLayoutManager(requireActivity())
         rv.adapter = adapter

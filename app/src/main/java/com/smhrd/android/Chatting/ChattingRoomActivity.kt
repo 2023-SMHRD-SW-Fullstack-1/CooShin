@@ -1,5 +1,6 @@
 package com.smhrd.android.Chatting
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +34,8 @@ class ChattingRoomActivity : AppCompatActivity() {
         val spf = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
         var userId = spf.getString("memberId", null)
 
-        Log.d("화면 렌더링", userId.toString())
+        var intent = getIntent()
+        var roomId = intent.getStringExtra("roomId")
 
         val database = Firebase.database
 
@@ -67,7 +69,7 @@ class ChattingRoomActivity : AppCompatActivity() {
         inputData.setOnClickListener {
             Log.d("거래하기 클릭!", userId.toString())
 
-            database.getReference("roomList").setValue(chatRoom)
+            database.getReference("roomList").setValue(" asdf room qwer ")
         }
     }
 }
