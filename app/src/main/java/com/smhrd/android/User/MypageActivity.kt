@@ -40,7 +40,7 @@ class MypageActivity : AppCompatActivity() {
         mypageBtn_likesGosu = findViewById(R.id.mypageBtn_likesGosu)
         mypageBtn_addGosu = findViewById(R.id.mypageBtn_addGosu)
 
-        //firebase에서 데이터를 가져오기 위함!
+//firebase에서 데이터를 가져오기 위함!
         val database = FirebaseDatabase.getInstance()
         val reference = database.getReference("memberList")
 
@@ -52,9 +52,9 @@ class MypageActivity : AppCompatActivity() {
                     val memberNick = dataSnapshot.child("memberNick").getValue(String::class.java)
                     Log.d("memberNick", memberNick.toString())
 
-                    // memberNick이 null이 아니라면 화면에 회원정보 띄우기
+// memberNick이 null이 아니라면 화면에 회원정보 띄우기
                     if (memberNick != null) {
-                        mypageTv_nick.text = "${memberNick}고객님"
+                        mypageTv_nick.text= "${memberNick}고객님"
                     }
                 }
 
@@ -65,24 +65,24 @@ class MypageActivity : AppCompatActivity() {
         }
 
 
-        // 마이페이지 프로필 이미지 버튼 눌렀을 때
-        mypageBtn_img.setOnClickListener {
+// 마이페이지 프로필 이미지 버튼 눌렀을 때
+        mypageBtn_img.setOnClickListener{
 
         }
 
-        // 마이페이지 회원정보수정 눌렀을때
-        mypageBtn_infoChange.setOnClickListener {
+// 마이페이지 회원정보수정 눌렀을때
+        mypageBtn_infoChange.setOnClickListener{
             val intent = Intent(this@MypageActivity, InfoChangeActivity::class.java)
             startActivity(intent)
         }
 
-        // 마이페이지 찜한 고수 눌렀을때
-        mypageBtn_likesGosu.setOnClickListener {
+// 마이페이지 찜한 고수 눌렀을때
+        mypageBtn_likesGosu.setOnClickListener{
 
         }
 
-        //마이페이지 고수 등록 눌렀을때
-        mypageBtn_addGosu.setOnClickListener {
+//마이페이지 고수 등록 눌렀을때
+        mypageBtn_addGosu.setOnClickListener{
             val intent = Intent(this@MypageActivity, AddGosuActivity::class.java)
             startActivity(intent)
         }
@@ -99,5 +99,6 @@ class MypageActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         return sharedPreferences.getString("memberId", null)
     }
-    }
+}
+
 
