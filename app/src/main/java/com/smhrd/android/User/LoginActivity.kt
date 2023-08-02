@@ -41,10 +41,6 @@ class LoginActivity : AppCompatActivity() {
     //추가한 변수
     private var loggedInUserId: String? = null
 
-    //구글 로그인을 위한 함수~
-
-    //구글 로그인을 위한 함수
-
     companion object {
         private const val RC_SIGN_IN = 9001
     }
@@ -103,11 +99,8 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
                         Log.d("로그인성공시닉네임",user.memberNick)
 
-                        memberInfoSpf(inputId)
-                        startActivity(intent)
-
-
                         memberInfoSpf(inputId, user.memberNick)
+                        startActivity(intent)
 
                         // 메인 액티비티로 이동
                         var intent = Intent(this@LoginActivity,MainActivity::class.java)

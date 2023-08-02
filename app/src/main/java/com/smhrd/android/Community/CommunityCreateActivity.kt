@@ -85,6 +85,7 @@ class CommunityCreateActivity : AppCompatActivity() {
                     comment = commentList
                 )
 
+
                 if (boardId != null) {
                     // Save the BoardIdVO object under "boardList" with the generated boardId
                     databaseReference.child("boardList").child(boardId).setValue(boardIdVO)
