@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.smhrd.android.R
 
-class HomeGosuAdapter (var datas : ArrayList<MemberVO>, var context: Context) : RecyclerView.Adapter<HomeGosuViewHolder>() {
+class HomeGosuAdapter (var datas : ArrayList<MemberVO>, var review : ArrayList<ReviewVO>, var context: Context) : RecyclerView.Adapter<HomeGosuViewHolder>() {
     //View Holder 생성
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeGosuViewHolder {
         return HomeGosuViewHolder(
@@ -21,6 +21,8 @@ class HomeGosuAdapter (var datas : ArrayList<MemberVO>, var context: Context) : 
     //아이템을 View Holder에 바인딩
     override fun onBindViewHolder(holder: HomeGosuViewHolder, position: Int) {
 
+        holder.tvGosuName.text = datas[position].memberNick
+        holder.tvReviewStar.text = review[position].reviewStars.toString()
 
 
     }
