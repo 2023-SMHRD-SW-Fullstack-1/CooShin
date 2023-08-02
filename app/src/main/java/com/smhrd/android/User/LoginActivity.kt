@@ -1,6 +1,7 @@
 package com.smhrd.android.User
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -36,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         private const val RC_SIGN_IN = 9001
     }
 
-    private fun getGoogleClient(): GoogleSignInClient {
+     fun getGoogleClient(): GoogleSignInClient {
         val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
         .requestScopes(Scope("https://www.googleapis.com/auth/pubsub"))
             .requestProfile()
@@ -113,6 +115,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    fun signOut() {
+        googleSignInClient.signOut()
+            .addOnCompleteListener(this) {
+                // 로그아웃 성공 시 처리, 예: 토스트 메시지
+                Toast.makeText(applicationContext, "구글 로그아웃 성공!", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -122,6 +132,9 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)
                 Log.d("구글로그인성공","로그인 성공")
                 Toast.makeText(applicationContext, "구글 로그인 성공!", Toast.LENGTH_SHORT).show()
+                googleEmailSPF(account)
+                val userEmail = account.email
+                Log.d("googleemail",userEmail.toString())
             } catch (e: ApiException) {
                 Log.d( "Google sign in failed", e.toString())
                 Toast.makeText(applicationContext, "구글 로그인 실패! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
@@ -148,4 +161,13 @@ class LoginActivity : AppCompatActivity() {
 //        editor.clear()
 //        editor.apply()
 //    }
+ fun googleEmailSPF(account: GoogleSignInAccount) {
+    val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+    with(sharedPreferences.edit()) {
+        //putString("googleid", account.id)
+//        putString("user_display_name", account.displayName)
+        putString("googleEmail", account.email)
+        apply()
+    }
+}
 }
