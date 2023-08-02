@@ -11,8 +11,9 @@
         android:layout_width="90dp"
         android:layout_height="25dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        android:scrollbarSize="29dp"
+        app:layout_constraintStart_toStartOf="@+id/tvServiceSelect"
+        app:layout_constraintTop_toBottomOf="@+id/tvServiceSelect" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -44,7 +45,7 @@
 
     <Spinner
         android:id="@+id/spinLocal_city"
-        android:layout_width="90dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/spinService_search"
@@ -66,11 +67,31 @@
 
     <Spinner
         android:id="@+id/spinLocal_sigungu"
-        android:layout_width="90dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/spinLocal_city"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toEndOf="@+id/spinLocal_city"
         app:layout_constraintTop_toTopOf="@+id/spinLocal_city"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvServiceSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="언어"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <TextView
+        android:id="@+id/tvRegionSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="지역"
+        app:layout_constraintBottom_toBottomOf="@+id/tvServiceSelect"
+        app:layout_constraintStart_toStartOf="@+id/spinLocal_city"
+        app:layout_constraintTop_toTopOf="@+id/tvServiceSelect" />
 </androidx.constraintlayout.widget.ConstraintLayout>

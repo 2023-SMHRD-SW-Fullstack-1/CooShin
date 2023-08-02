@@ -1,7 +1,8 @@
 package com.smhrd.android.Fragment
 
-import android.content.SharedPreferences
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,22 +13,35 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.smhrd.android.Data.MemberIdVO
-import com.smhrd.android.Data.MemberVO
-import com.smhrd.android.Data.ReviewVO
-import com.smhrd.android.Data.SearchTeacherAdapter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.smhrd.android.Teacher.SearchTeacherAdapter
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
+import com.smhrd.android.Teacher.SearchTeacherOnClick
+import com.smhrd.android.Teacher.SearchTeacher_detailActivity
+import org.json.JSONArray
+import org.json.JSONObject
 
 class SearchGosuFragment : Fragment() {
 
     lateinit var citySpinner: Spinner
     lateinit var sigunguSpinner: Spinner
     lateinit var rvTeacherList : RecyclerView
+    lateinit var serviceSpinner :Spinner
+    val gson = Gson()
     var data = ArrayList<TeacherIdVO>()
     var sigunguId : Int = 0
-    val database = Firebase.database("https://sumgo-e4e21-default-rtdb.firebaseio.com").reference
+    val database = Firebase.database
+    var cityValue : String? = null
+    var sigunguValue : String? = null
+    var serviceValue : String? = null
+
+    inner class reLoadRV(var service : String? = null, var city : String? = null, val sigungu : String? = null){
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,10 +51,20 @@ class SearchGosuFragment : Fragment() {
         // Inflate the layout for this fragment
         var views = inflater.inflate(R.layout.fragment_search_gosu, container, false)
 
-        //Spinner
+        //===================================Spinner===============================================
         sigunguSpinner = views.findViewById(R.id.spinLocal_sigungu)
         citySpinner = views.findViewById(R.id.spinLocal_city)
-        initAddressSpinner()
+        serviceSpinner = views.findViewById(R.id.spinService_search)
+
+        //언어 선택 스피너
+        var serviceAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.spinner_language,
+            android.R.layout.simple_spinner_item
+        )
+        serviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        serviceSpinner.adapter = serviceAdapter
+
 
         //도시
         var cityAdapter = ArrayAdapter.createFromResource(
@@ -50,54 +74,60 @@ class SearchGosuFragment : Fragment() {
         )
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         citySpinner.adapter = cityAdapter
-        
-        //시군구
-        if(sigunguId != 0){
-            var sigunguAdapter = ArrayAdapter.createFromResource(
-                requireContext(),
-                R.array.spinner_region_seoul,
-                android.R.layout.simple_spinner_item
-            )
-            sigunguAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            sigunguSpinner.adapter = sigunguAdapter
-        }
-        
-        //리싸이클러 뷰
+
+        initAddressSpinner()
+
+        //기본 시군구 ( 도시 선택 X)
+        var sigunguAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.spinner_none,
+            android.R.layout.simple_spinner_item
+        )
+        sigunguAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        sigunguSpinner.adapter = sigunguAdapter
+        //===============================Spinner End=============================================
+
+
+
+        //================================Recycler View=========================================
+
+        //리싸이클러 뷰 data에 teacheridVO넣어줄 것
         rvTeacherList = views.findViewById(R.id.rvTeacherList_search)
-//
-////        임의데이터 수집
-//        var arr = ArrayList<ReviewVO>()
-//        arr.add(ReviewVO("id2","좋았어요", "8888", "23일",4))
-////
-//        database.getReference("teacherList").child("teacher1").setValue(TeacherIdVO("김김김", "자바", "안녕하세요 자바 김김김입니다", "Male",
-//            "Java", "서울","13:00~18:00", "13:00~18:00", 44, arr))
 
-        var memberVO = MemberVO(
-            memberPw = "123123",
-            memberTel = "01010101102",
-            memberNick = "alex",
-            memberImg = null,
-            teacherId = null,
-            likeList = null
-        )
-        var memberIdVO = MemberIdVO(
-            member = memberVO,
-            chatList = null,
-            board = null
-        )
-        database.child("memberList").child("connecting").setValue(memberIdVO)
+        requireActivity().runOnUiThread {
+            database.getReference("teacherList").get().addOnSuccessListener{
+                var jsonResult = gson.toJson(it.getValue())
 
+                // JSON 문자열을 Map으로 파싱
+                val mapType = object : TypeToken<Map<String, TeacherIdVO>>() {}.type
+                val dataMap: Map<String, TeacherIdVO> = gson.fromJson(jsonResult, mapType)
 
+                // 모든 key값들을 추출하여 출력
+                for (value in dataMap.values) {
+                    //값들을 전부 data에 저장
+                    data.add(value)
+                    Log.d("r", data.get(0).teacherOneLine)
+                }
 
+                var rvAdapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, data,  object : SearchTeacherOnClick {
+                    override fun onItemClick(position: Int) {
+                        var intent = Intent(requireActivity(), SearchTeacher_detailActivity::class.java)
+                        var selectedTeacherId = findKeyByValue(dataMap, data[position])
+                        Log.d("ss", selectedTeacherId.toString())
+                        intent.putExtra("teacherId", selectedTeacherId.toString())
+//                        intent.putExtra("teacherVO", data[position].toString())
+                        startActivity(intent)
+                    }
+                })
+                rvTeacherList.layoutManager = LinearLayoutManager(requireContext())
+                rvTeacherList.adapter = rvAdapter
+            }
+        }
 
-        var adapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, data)
-        rvTeacherList.layoutManager = LinearLayoutManager(requireContext())
-        rvTeacherList.adapter = adapter
 
 
         return views
     }
-
 
     fun initAddressSpinner(){
         citySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -107,16 +137,17 @@ class SearchGosuFragment : Fragment() {
                 position: Int,
                 id: Long
             ): Unit {
-              sigunguId = when (position) {
-                    1 -> R.array.spinner_region_seoul
-                    2 -> R.array.spinner_region_busan
-                    3 -> R.array.spinner_region_daegu
-                    4 -> R.array.spinner_region_incheon
-                    5 -> R.array.spinner_region_gwangju
-                    6 -> R.array.spinner_region_daejeon
-                    7 -> R.array.spinner_region_ulsan
-                    8 ->R.array.spinner_region_sejong
-                    9 -> R.array.spinner_region_gyeonggi
+                sigunguId = when (position) {
+                    0 ->  R.array.spinner_none
+                    1 ->  R.array.spinner_region_seoul
+                    2 ->  R.array.spinner_region_busan
+                    3 ->  R.array.spinner_region_daegu
+                    4 ->  R.array.spinner_region_incheon
+                    5 ->  R.array.spinner_region_gwangju
+                    6 ->  R.array.spinner_region_daejeon
+                    7 ->  R.array.spinner_region_ulsan
+                    8 ->  R.array.spinner_region_sejong
+                    9 ->  R.array.spinner_region_gyeonggi
                     10 -> R.array.spinner_region_gangwon
                     11 -> R.array.spinner_region_chung_buk
                     12 -> R.array.spinner_region_chung_nam
@@ -125,14 +156,32 @@ class SearchGosuFragment : Fragment() {
                     15 -> R.array.spinner_region_gyeong_buk
                     16 -> R.array.spinner_region_gyeong_nam
                     17 -> R.array.spinner_region_jeju
-                    else -> R.array.spinner_region
+                    else -> R.array.spinner_none
                 }
+
+                //시군구
+                if(sigunguId != 0){
+                    var sigunguAdapter = ArrayAdapter.createFromResource(
+                        requireContext(),
+                        sigunguId,
+                        android.R.layout.simple_spinner_item
+                    )
+                    sigunguAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    sigunguSpinner.adapter = sigunguAdapter
+                }
+
+                cityValue = citySpinner.selectedItem.toString()
+                reLoadRV(serviceValue, cityValue, sigunguValue)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
 
         }
+    }
+
+    fun findKeyByValue(map: Map<String, Any>, value: Any): String? {
+        return map.entries.find { it.value == value }?.key
     }
 }
 
