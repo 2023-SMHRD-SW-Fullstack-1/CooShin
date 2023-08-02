@@ -46,24 +46,15 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.92214113" />
 
-    <ImageView
-        android:id="@+id/mypageIv_img"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline13"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/mypageTv_title"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/mypageTv_nick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="20dp"
         android:text="고객님"
+        android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/mypageIv_img" />
 
@@ -71,19 +62,31 @@
         android:id="@+id/mypageBtn_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/mypageIv_img"
+        android:layout_marginStart="109dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="68dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline13"
-        app:layout_constraintHorizontal_bias="0.452"
-        app:layout_constraintStart_toStartOf="@+id/mypageIv_img"
-        app:layout_constraintTop_toTopOf="@+id/mypageIv_img"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintStart_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/mypageTv_title"
         app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <Button
+        android:id="@+id/mypageBtn_likesGosu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="찜한 고수"
+        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        app:layout_constraintHorizontal_bias="0.082"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/mypageTv_searchGosu" />
 
     <TextView
         android:id="@+id/mypageTv_searchGosu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="96dp"
         android:text="고수찾기"
         app:layout_constraintEnd_toStartOf="@+id/guideline13"
         app:layout_constraintHorizontal_bias="0.068"
@@ -91,24 +94,46 @@
         app:layout_constraintTop_toBottomOf="@+id/mypageTv_nick" />
 
     <Button
-        android:id="@+id/mypageBtn_likesGosu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="찜한 고수"
-        app:layout_constraintEnd_toStartOf="@+id/guideline13"
-        app:layout_constraintHorizontal_bias="0.082"
-        app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/mypageTv_searchGosu" />
-
-    <Button
         android:id="@+id/mypageBtn_infoChange"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:text="회원정보수정"
         app:layout_constraintEnd_toStartOf="@+id/guideline13"
-        app:layout_constraintHorizontal_bias="0.901"
+        app:layout_constraintHorizontal_bias="0.913"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/mypageTv_nick" />
+
+    <ImageView
+        android:id="@+id/mypageIv_img"
+        android:layout_width="105dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/mypageTv_title"
+        app:srcCompat="@drawable/defaultprofileimage" />
+
+    <TextView
+        android:id="@+id/mypageTv_addGosu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="고수등록"
+        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/mypageBtn_likesGosu" />
+
+    <Button
+        android:id="@+id/mypageBtn_addGosu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="고수 프로필 등록"
+        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        app:layout_constraintHorizontal_bias="0.078"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/mypageTv_addGosu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,11 +32,11 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_register)
 
         registerEt_id = findViewById(R.id.registerEt_id)
-        registerEt_pw = findViewById(R.id.registerEt_pw)
-        registerEt_tel = findViewById(R.id.registerEt_tel)
-        registerEt_nick = findViewById(R.id.registerEt_nick)
+        registerEt_pw = findViewById(R.id.infochangeEt_updatePw)
+        registerEt_tel = findViewById(R.id.infochangeEt_updateTel)
+        registerEt_nick = findViewById(R.id.infochangeEt_updateNick)
         registerBtn_idCheck = findViewById(R.id.registerBtn_idCheck)
-        registerBtn_join = findViewById(R.id.registerBtn_join)
+        registerBtn_join = findViewById(R.id.infochangeBtn_update)
 
         val database = Firebase.database
 

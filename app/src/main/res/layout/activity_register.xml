@@ -37,7 +37,7 @@
         app:layout_constraintGuide_percent="0.92" />
 
     <TextView
-        android:id="@+id/registerTv"
+        android:id="@+id/infochangeTv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/registerTv_id" />
 
     <EditText
-        android:id="@+id/registerEt_pw"
+        android:id="@+id/infochangeEt_updatePw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -70,10 +70,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.286"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerTv_pw" />
+        app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updatePw" />
 
     <EditText
-        android:id="@+id/registerEt_tel"
+        android:id="@+id/infochangeEt_updateTel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -82,10 +82,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.279"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerTv_tel" />
+        app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updateTel" />
 
     <Button
-        android:id="@+id/registerBtn_join"
+        android:id="@+id/infochangeBtn_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="128dp"
@@ -104,10 +104,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.117"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerTv" />
+        app:layout_constraintTop_toBottomOf="@+id/infochangeTv_title" />
 
     <TextView
-        android:id="@+id/registerTv_pw"
+        android:id="@+id/infochangeTv_updatePw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -118,7 +118,7 @@
         app:layout_constraintTop_toBottomOf="@+id/registerEt_id" />
 
     <TextView
-        android:id="@+id/registerTv_tel"
+        android:id="@+id/infochangeTv_updateTel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -126,10 +126,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.129"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerEt_pw" />
+        app:layout_constraintTop_toBottomOf="@+id/infochangeEt_updatePw" />
 
     <TextView
-        android:id="@+id/registerTv_nick"
+        android:id="@+id/infochangeTv_updateNick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
@@ -137,10 +137,10 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerEt_tel" />
+        app:layout_constraintTop_toBottomOf="@+id/infochangeEt_updateTel" />
 
     <EditText
-        android:id="@+id/registerEt_nick"
+        android:id="@+id/infochangeEt_updateNick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -149,7 +149,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.294"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerTv_nick" />
+        app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updateNick" />
 
     <Button
         android:id="@+id/registerBtn_idCheck"
