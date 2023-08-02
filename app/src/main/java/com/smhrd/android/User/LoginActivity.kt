@@ -13,19 +13,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.smhrd.android.Community.CommunityCreateActivity
 import com.smhrd.android.Data.MemberIdVO
 import com.smhrd.android.MainActivity
 import com.smhrd.android.R
-
-
-import java.lang.Exception
-
-import com.google.gson.Gson
 
 
 class LoginActivity : AppCompatActivity() {
@@ -99,11 +92,13 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "로그인 성공!", Toast.LENGTH_SHORT).show()
                         Log.d("로그인성공시닉네임",user.memberNick)
 
-                        memberInfoSpf(inputId, user.memberNick)
+
                         startActivity(intent)
 
                         // 메인 액티비티로 이동
                         var intent = Intent(this@LoginActivity,MainActivity::class.java)
+                        memberInfoSpf(inputId, user.memberNick)
+//                        getmemberInfoSpf(inputId, user.toString())
                         startActivity(intent)
                         finish()
                     } else {
@@ -160,22 +155,30 @@ class LoginActivity : AppCompatActivity() {
         editor.putString("memberNick", memberNick)
         editor.apply()
     }
-    fun getmemberInfoSpf(): String? {
+    fun getmemberInfoSpf(inputId: String, toString: String): String? {
         val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
         return sharedPreferences.getString("memberId", null)
     }
-    fun clearmemberInfoSpf() {
-        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.clear()
-        editor.apply()
-    }
+//    fun clearmemberInfoSpf() {
+//        val sharedPreferences = getSharedPreferences("memberInfoSpf",MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.clear()
+//        editor.apply()
+//    }
 
     //이것도 추가
     fun saveLoggedInUserId(userId: String) {
         val sharedPreferences = getSharedPreferences("mySPF", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("loggedInUserId", userId)
+        editor.apply()
+    }
+
+    private fun logout() {
+        // Clear the stored logged-in user ID from SharedPreferences
+        val sharedPreferences = getSharedPreferences("mySPF", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.remove("loggedInUserId")
         editor.apply()
     }
 }

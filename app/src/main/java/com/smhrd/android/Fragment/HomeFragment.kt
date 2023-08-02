@@ -15,6 +15,7 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
@@ -41,11 +42,15 @@ class HomeFragment : Fragment() {
     lateinit var ivVB: ImageButton
     lateinit var ivPHP: ImageButton
 
+    //
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        mAuth = FirebaseAuth.getInstance()
 
         // inflate 란? xml파일을 View객체로 바꿔주는 것
         var view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -83,6 +88,8 @@ class HomeFragment : Fragment() {
         rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
         var adapter = HomeGosuAdapter(memberList, review, requireContext())
         rvPopularGosu.adapter = adapter
+
+
 
         //커뮤니티
         rvCommunity.layoutManager = GridLayoutManager(context, 2)
@@ -131,23 +138,24 @@ class HomeFragment : Fragment() {
         btnLogin.setOnClickListener {
             val intent = Intent(requireActivity(), LoginActivity::class.java)
             startActivity(intent)
+
         }
 
-        if (loginMember.toString() == "") {
-            //로그인 안되어 있을 때
-            btnLogout.visibility = View.INVISIBLE
-        } else {
-            //로그인되어 있을 때
-            btnLogin.visibility = View.INVISIBLE
-            btnLogout.setOnClickListener {
-                Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
-                var editor = spf?.edit()
-                editor?.clear()
-                editor?.commit()
-                btnLogout.visibility = View.INVISIBLE
-                btnLogin.visibility = View.VISIBLE
-            }
-        }
+//        if (loginMember.toString() == "") {
+//            //로그인 안되어 있을 때
+//            btnLogout.visibility = View.INVISIBLE
+//        } else {
+//            //로그인되어 있을 때
+//            btnLogin.visibility = View.INVISIBLE
+//            btnLogout.setOnClickListener {
+//                Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+//                var editor = spf?.edit()
+//                editor?.clear()
+//                editor?.commit()
+//                btnLogout.visibility = View.INVISIBLE
+//                btnLogin.visibility = View.VISIBLE
+//            }
+//        }
 
 
         //마이페이지 버튼 클릭했을 때
@@ -156,9 +164,21 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        btnLogout.setOnClickListener {
+            val sharedPreferences = requireActivity().getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.remove("memberId")
+            editor.apply()
+
+            btnLogout.visibility = View.INVISIBLE
+            btnLogin.visibility = View.VISIBLE
+        }
+
+
 
 
 
         return view
     }
+
 }
