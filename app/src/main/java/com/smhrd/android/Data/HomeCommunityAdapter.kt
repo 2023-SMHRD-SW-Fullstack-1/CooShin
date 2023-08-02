@@ -3,6 +3,7 @@ package com.smhrd.android.Data
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.smhrd.android.R
 
@@ -19,6 +20,12 @@ class HomeCommunityAdapter (var datas : ArrayList<BoardIdVO>, var context: Conte
     }
     //아이템을 View Holder에 바인딩
     override fun onBindViewHolder(holder: HomeCommunityViewHolder, position: Int) {
+        var img : ImageView = holder.ivBoardImg
+
+        var BoardVO : BoardIdVO = datas.get(position)
+
+        holder.tvBoardLikes.text = datas[position].boardLikes.toString()
+        holder.tvBoardTitle.text = datas[position].boardTitle
 
     }
 
