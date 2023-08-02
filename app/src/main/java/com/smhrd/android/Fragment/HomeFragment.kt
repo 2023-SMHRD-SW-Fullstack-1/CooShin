@@ -11,10 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ListView
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.smhrd.android.Data.BoardIdVO
+import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
 import com.smhrd.android.Data.MemberVO
+import com.smhrd.android.Data.ReviewVO
 import com.smhrd.android.R
 import com.smhrd.android.User.LoginActivity
 import com.smhrd.android.User.MypageActivity
@@ -22,12 +32,21 @@ import com.smhrd.android.User.MypageActivity
 
 class HomeFragment : Fragment() {
 
-    lateinit var rvPopularGosu : RecyclerView
-    lateinit var rvCommunity : RecyclerView
-    lateinit var btnLogin : Button
-    lateinit var ibMyPage : ImageButton
+    lateinit var rvPopularGosu: RecyclerView
+    lateinit var rvCommunity: RecyclerView
+    lateinit var btnLogin: Button
+    lateinit var btnLogout: Button
+    lateinit var ibMyPage: ImageButton
+    lateinit var ivC: ImageButton
+    lateinit var ivCPlus: ImageButton
+    lateinit var ivCShap: ImageButton
+    lateinit var ivPython: ImageButton
+    lateinit var ivJava: ImageButton
+    lateinit var ivJS: ImageButton
+    lateinit var ivVB: ImageButton
+    lateinit var ivPHP: ImageButton
 
-
+    lateinit var database : DatabaseReference
 
 
     override fun onCreateView(
@@ -42,20 +61,126 @@ class HomeFragment : Fragment() {
         rvPopularGosu = view.findViewById(R.id.rvPopularGosu)
         rvCommunity = view.findViewById(R.id.rvCommunity)
         btnLogin = view.findViewById(R.id.btnLogin)
+        btnLogout = view.findViewById(R.id.btnLogout)
         ibMyPage = view.findViewById(R.id.ibMyPage)
-        var list = ArrayList<MemberVO>()
+        ivC = view.findViewById(R.id.ivC)
+        ivCPlus = view.findViewById(R.id.ivCPlus)
+        ivCShap = view.findViewById(R.id.ivCShap)
+        ivPython = view.findViewById(R.id.ivPhython)
+        ivJava = view.findViewById(R.id.ivJava)
+        ivJS = view.findViewById(R.id.ivJS)
+        ivVB = view.findViewById(R.id.ivVB)
+        ivPHP = view.findViewById(R.id.ivPHP)
+        var memberList = ArrayList<MemberVO>()
+        var boardList = ArrayList<BoardIdVO>()
+        var review = ArrayList<ReviewVO>()
 
-        rvPopularGosu.layoutManager = GridLayoutManager(context, 4)
-        var adapter = HomeGosuAdapter(list, requireContext())
+        database = FirebaseDatabase.getInstance().getReference("board")
+        boardList.add(BoardIdVO("제목1", "내용1", "작성자1", "20230802", "", 18, 3, null ))
+        boardList.add(BoardIdVO("제목2", "내용2", "작성자2", "20230805", "", 8, 1, null ))
+        boardList.add(BoardIdVO("제목3", "내용3", "작성자3", "20230807", "", 28, 15, null ))
+
+
+
+        memberList.add(MemberVO("asdf", "01000000000", "asdf"))
+        memberList.add(MemberVO("qwer", "01000000000", "qwer"))
+        memberList.add(MemberVO("zxcv", "01000000000", "zxcv"))
+        review.add(ReviewVO("qwer", "좋아요", "", "20230802", 5))
+        review.add(ReviewVO("asdf", "짱", "", "20230802", 2))
+        review.add(ReviewVO("zxcv", "최고", "", "20230802", 3))
+
+        //인기있는 고수 출력
+        rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
+        var adapter = HomeGosuAdapter(memberList, review, requireContext())
         rvPopularGosu.adapter = adapter
+//        val listener = object : ValueEventListener {
+//
+//            override fun onDataChange(data: DataSnapshot) {
+//                for (data in data.children) {
+//                    val board = data.getValue(CommunityFragment::class.java) ?: continue
+//                    boardList.add(BoardIdVO("제목2", "내용1", "작성자1", "20230802", "", 22, 20, null))
+//                    boardList.add(BoardIdVO("제목3", "내용1", "작성자1", "20230802", "", 30, 25, null))
+//                    boardList.add(BoardIdVO("제목6", "내용1", "작성자1", "20230802", "", 2, 30, null))
+//                }
+//                val top = boardList.sortedByDescending { it.boardLikes }.take(2)
+//                val adapter = adapter
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                TODO("Not yet implemented")
+//            }
+//        }
 
-        rvCommunity.layoutManager = GridLayoutManager(context, 4)
+        //커뮤니티
+        rvCommunity.layoutManager = GridLayoutManager(context, 2)
+        var adapter2 = HomeCommunityAdapter(boardList, requireContext())
+        rvCommunity.adapter = adapter2
+
+        //C 클릭했을 때
+        ivC.setOnClickListener {
+//            val c = Intent(requireActivity(), )
+        }
+        //C++ 클릭했을 때
+        ivCPlus.setOnClickListener {
+
+        }
+        //C# 클릭했을 때
+        ivCShap.setOnClickListener {
+
+        }
+        //Python 클릭했을 때
+        ivPython.setOnClickListener {
+
+        }
+        //Java 클릭했을 때
+        ivJava.setOnClickListener {
+
+        }
+        //JavaScript 클릭했을 때
+        ivJS.setOnClickListener {
+
+        }
+        //Visual Basic 클릭했을 때
+        ivVB.setOnClickListener {
+
+        }
+        //PHP 클릭했을 때
+        ivPHP.setOnClickListener {
+
+        }
+        //일반 로그인 spf
+        val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        var loginMember = spf?.getString("memberId", "")
+        Log.d("loginMember", loginMember.toString())
+        //구글 로그인 spf
+        val spf2 = activity?.getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+        var googleMember = spf2?.getString("googleEmail", "")
+        Log.d("googleMember", googleMember.toString())
+
 
         //로그인 버튼 클릭했을 때
         btnLogin.setOnClickListener {
             val intent = Intent(requireActivity(), LoginActivity::class.java)
             startActivity(intent)
         }
+
+        if (loginMember.toString() == ""|| googleMember.toString() == "") {
+            //로그인 안되어 있을 때
+            btnLogout.visibility = View.INVISIBLE
+        } else {
+            //로그인되어 있을 때
+            btnLogin.visibility = View.INVISIBLE
+            btnLogout.setOnClickListener {
+                Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+                var editor = spf?.edit()
+                editor?.clear()
+                editor?.commit()
+                btnLogout.visibility = View.INVISIBLE
+                btnLogin.visibility = View.VISIBLE
+            }
+        }
+
+
         //마이페이지 버튼 클릭했을 때
         ibMyPage.setOnClickListener {
             val intent = Intent(requireActivity(), MypageActivity::class.java)
@@ -67,5 +192,4 @@ class HomeFragment : Fragment() {
 
         return view
     }
-
 }
