@@ -51,6 +51,7 @@ class ChattingFragment : Fragment() {
                                 it.getValue(object : GenericTypeIndicator<TeacherIdVO>() {})
 
                             if (teacherInfo != null) {
+                                Log.d("teacherInfo.teacherName", teacherInfo.teacherName)
                                 chatRoomList.add(
                                     DummyChatListVO(
                                         chatRoomIdList[i],
