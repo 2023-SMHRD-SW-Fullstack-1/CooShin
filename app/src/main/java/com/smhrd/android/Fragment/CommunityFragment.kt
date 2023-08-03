@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.smhrd.android.Community.CommunityAdapter
 import com.smhrd.android.Community.CommunityCreateActivity
+import com.smhrd.android.Community.CommunityDetailActivity
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.MemberIdVO
 import com.smhrd.android.R
@@ -54,22 +55,15 @@ class CommunityFragment : Fragment() {
             val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
             var loginMember = spf?.getString("memberId", "")
             Log.d("loginMember", loginMember.toString())
-//            val loggedInUserId = getLoggedInUserId() // Replace this with the correct method to get the logged-in user ID
-//            Log.d("ee", loggedInUserId.toString())
-//            if (loggedInUserId != null) {
-////                intent.putExtra("loggedInUserId", loggedInUserId)
-//                intent.putExtra("loggedInUserId", loggedInUserId)
                 startActivity(intent)
-//            } else {
-//                // Handle the case where the logged-in user ID is null (e.g., user is not logged in).
-//                Toast.makeText(requireContext(), "Please log in first.", Toast.LENGTH_SHORT).show()
-//            }
         }
 
 
 
         val databaseReference = FirebaseDatabase.getInstance().reference
         val data = ArrayList<BoardIdVO>()
+        var result : MutableMap<String, BoardIdVO> = mutableMapOf()
+
         databaseReference.child("boardList").addListenerForSingleValueEvent(object :
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -81,10 +75,25 @@ class CommunityFragment : Fragment() {
                         // Add the BoardIdVO object to the data ArrayList
                         data.add(boardIdVO)
                     }
+                    Log.d("snap", childSnapshot.key!!)
+
+
+                    result.put(childSnapshot.key.toString(), childSnapshot.getValue(BoardIdVO::class.java) as BoardIdVO )
                 }
 
                 // After retrieving data, create the adapter and set it to the RecyclerView
-                val adapter = CommunityAdapter(requireActivity(), data)
+                val adapter = CommunityAdapter(requireActivity(), data) { clickedBoard ->
+                    // Handle the click event here
+                    // Navigate to the detail page with the clickedBoard's information
+                    val intent = Intent(requireContext(), CommunityDetailActivity::class.java)
+                    intent.putExtra("c_title", clickedBoard.boardTitle) // Assuming "boardId" is the id of the post
+                    intent.putExtra("c_content",clickedBoard.boardContent)
+
+                    intent.putExtra("boardId",findKeyByValue(result, clickedBoard))
+//                    findKeyByValue(result, clickedBoard)
+
+                    startActivity(intent)
+                }
                 rc.layoutManager = LinearLayoutManager(view.context)
                 rc.adapter = adapter
             }
@@ -96,7 +105,14 @@ class CommunityFragment : Fragment() {
 
 
 
+
+
         return view
     }
 
+    fun findKeyByValue(map : MutableMap<String, BoardIdVO>, value : BoardIdVO): String? {
+        //탐색해서 반환을 String?로처리
+
+        return map.entries.find { it.value == value }?.key
+    }
 }

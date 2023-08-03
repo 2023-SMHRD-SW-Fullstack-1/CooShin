@@ -8,7 +8,7 @@ import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.CommentVO
 import com.smhrd.android.R
 
-class CommunityAdapter(var context : Context, var data : ArrayList<BoardIdVO>):
+class CommunityAdapter(var context : Context, var data : ArrayList<BoardIdVO>, private val onItemClick: (BoardIdVO) -> Unit):
 RecyclerView.Adapter<CommunityViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityViewHolder {
 
@@ -35,6 +35,9 @@ RecyclerView.Adapter<CommunityViewHolder>(){
         holder.c_Views.text = board.boardViews.toString()
 
 
+        holder.c_title.setOnClickListener {
+            onItemClick(board)
+        }
 
 
 
