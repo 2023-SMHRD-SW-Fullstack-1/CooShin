@@ -1,7 +1,9 @@
 package com.smhrd.android.User
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -91,17 +93,43 @@ class InfoChangeActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener { exception ->
                         // 업데이트 실패 시
-                        Toast.makeText(applicationContext, "회원 정보 수정 실패: ${exception.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "회원 정보 수정 실패", Toast.LENGTH_SHORT).show()
                     }
             } ?: run {
                 // memberId 없을때
 
-                Toast.makeText(applicationContext, "회원 정보 변경 실패: memberId 없음", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "회원 정보 변경 실패", Toast.LENGTH_SHORT).show()
             }
         }
         //회원탈퇴 버튼 눌렀을때
         infochangeBtn_deleteMem.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("회원 탈퇴")
+            builder.setMessage("회원 탈퇴하시겠습니까?")
+            builder.setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                Toast.makeText(this, "회원을 탈퇴합니다.", Toast.LENGTH_SHORT).show()
+                if (memberId != null) {
+                    reference.child(memberId).removeValue().addOnSuccessListener {
+                        // 회원 탈퇴 성공
+                        Toast.makeText(applicationContext, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show()
 
+                        // 로그아웃 후 로그인 화면으로 이동
+                        clearMemberSpf()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }.addOnFailureListener { exception ->
+                        // 회원 탈퇴 실패
+                        Toast.makeText(applicationContext, "회원 탈퇴 실패: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            })
+            builder.setNegativeButton("아니요", DialogInterface.OnClickListener { dialog, which ->
+                Toast.makeText(this, "회원 탈퇴를 취소합니다.", Toast.LENGTH_SHORT).show()
+            })
+
+            builder.show()
         }
 
     }
@@ -109,6 +137,12 @@ class InfoChangeActivity : AppCompatActivity() {
     fun getMemberInfoFromSpf(): String? {
         val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         return sharedPreferences.getString("memberId", null)
+    }
+
+    // SharedPreferences의 회원 정보 초기화
+    fun clearMemberSpf() {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
     }
 
 }

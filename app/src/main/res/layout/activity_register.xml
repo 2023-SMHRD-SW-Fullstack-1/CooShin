@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".User.RegisterActivity"
+
+    android:background="#FFFFFF"
     tools:layout_editor_absoluteX="-10dp"
     tools:layout_editor_absoluteY="0dp">
 
@@ -36,34 +37,39 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.92" />
 
+
     <TextView
-        android:id="@+id/infochangeTv_title"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="숨고에 오신 것을 환영합니다."
-        android:textSize="20dp"
+        android:layout_height="0dp"
+
+        android:backgroundTint="@null"
+        android:fontFamily="@font/strawberry"
+        android:text=" Coo Shin "
+        android:textColor="#8FB0CA"
+        android:textSize="30dp"
+        android:textStyle="italic"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
     <EditText
         android:id="@+id/registerEt_id"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="가입할 ID를 입력하세요."
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.286"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/registerTv_id" />
 
     <EditText
         android:id="@+id/infochangeEt_updatePw"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="비밀번호를 입력하세요."
         android:inputType="textPassword"
@@ -74,8 +80,9 @@
 
     <EditText
         android:id="@+id/infochangeEt_updateTel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="휴대폰번호를 입력하세요."
         android:inputType="phone"
@@ -86,54 +93,68 @@
 
     <Button
         android:id="@+id/infochangeBtn_update"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="128dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#ACABAB"
+        android:fontFamily="@font/ohmu"
+        android:minWidth="0dp"
+        android:minHeight="50dp"
+        android:shadowRadius="5"
         android:text="가입하기"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        android:textColor="#FFFEFE"
+        android:textSize="20dp"
+        app:cornerRadius="0dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/guideline8" />
+        app:layout_constraintHorizontal_bias="0.342"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/infochangeEt_updateNick" />
 
     <TextView
         android:id="@+id/registerTv_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:text="ID"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.117"
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/ohmu"
+        android:text="아이디"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/infochangeTv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <TextView
         android:id="@+id/infochangeTv_updatePw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="PW"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.123"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/ohmu"
+        android:text="비밀번호"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
-        app:layout_constraintTop_toBottomOf="@+id/registerEt_id" />
+        app:layout_constraintTop_toBottomOf="@+id/registerBtn_idCheck" />
 
     <TextView
         android:id="@+id/infochangeTv_updateTel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/ohmu"
         android:text="전화번호"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.129"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeEt_updatePw" />
 
     <TextView
         android:id="@+id/infochangeTv_updateNick"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/ohmu"
         android:text="닉네임"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.13"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
@@ -141,25 +162,33 @@
 
     <EditText
         android:id="@+id/infochangeEt_updateNick"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="닉네임을 입력하세요."
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updateNick" />
 
     <Button
         android:id="@+id/registerBtn_idCheck"
-        android:layout_width="95dp"
-        android:layout_height="42dp"
-        android:text="중복확인"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/registerEt_id"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.125"
-        app:layout_constraintStart_toEndOf="@+id/registerEt_id"
-        app:layout_constraintTop_toTopOf="@+id/registerEt_id" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/ohmu"
+        android:gravity="left"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:shadowRadius="5"
+        android:text="아이디 중복확인"
+        android:textColor="#272626"
+        android:textSize="13dp"
+        app:cornerRadius="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerEt_id" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
