@@ -5,6 +5,7 @@ import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
@@ -51,7 +52,7 @@ class ChattingRoomActivity : AppCompatActivity() {
             database.getReference("memberList").child(userId).child("chatRoom")
         val teacherChatRoomRef =
             database.getReference("memberList").child(teacherId).child("chatRoom")
-        val roomListRef = database.getReference("roomList")
+        var roomListRef = database.getReference("roomList")
 
         // member에 roomId가 없으면 저장
         checkAndSaveRoomId(loginUserChatRoomRef, roomId)
@@ -77,31 +78,33 @@ class ChattingRoomActivity : AppCompatActivity() {
                         println("이미 등록된 roomId입니다.")
                     }
                 }
+                Log.d("if문 끝나는 곳 :", key.toString())
+                var data = ArrayList<ChatVO>()
+
+                var adapter = ChatAdapter(applicationContext, data)
+
+                rv.layoutManager = LinearLayoutManager(applicationContext)
+                rv.adapter = adapter
+
+                btnSend.setOnClickListener {
+                    var msgTime = chatInputTime()
+                    var msgContent = edtMsg.text.toString()
+
+                    roomListRef.child(key.toString()).child(roomId).push()
+                        .setValue(ChatVO(userId, msgContent, msgTime))
+
+                    rv.smoothScrollToPosition(data.size - 1)
+
+                    edtMsg.text.clear()
+                }
+                roomListRef.child(key.toString()).child(roomId)
+                    .addChildEventListener(ChatChildEvent(data, adapter))
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 println("roomId 조회에 실패했습니다: ${databaseError.message}")
             }
         })
-
-//        var data = ArrayList<ChatVO>()
-//
-//        var adapter = ChatAdapter(applicationContext, data)
-//
-//        rv.layoutManager = LinearLayoutManager(applicationContext)
-//        rv.adapter = adapter
-//
-//        btnSend.setOnClickListener {
-//            var msgTime = chatInputTime()
-//            var msgContent = edtMsg.text.toString()
-//
-//            roomListRef.push().setValue(ChatVO(userId, msgContent, msgTime))
-//
-//            rv.smoothScrollToPosition(data.size - 1)
-//
-//            edtMsg.text.clear()
-//        }
-//        chatInputRef.addChildEventListener(ChatChildEvent(data, adapter))
     }
 
     fun checkAndSaveRoomId(ref: DatabaseReference, roomId: String) {
