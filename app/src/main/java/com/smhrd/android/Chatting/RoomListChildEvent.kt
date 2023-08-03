@@ -3,12 +3,14 @@ package com.smhrd.android.Chatting
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.GenericTypeIndicator
+import com.smhrd.android.Data.ChatVO
 
-class RoomListChildEvent(var data:ArrayList<String>):ChildEventListener {
+class RoomListChildEvent(var data:HashMap<String, ArrayList<ChatVO>?>):ChildEventListener {
     override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-        var temp = snapshot.getValue().toString()
-
-        data.add(temp!!)
+        val key = snapshot.key ?: return
+        val chatList = snapshot.getValue(object : GenericTypeIndicator<ArrayList<ChatVO>>() {})
+        data[key] = chatList
     }
 
     override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
