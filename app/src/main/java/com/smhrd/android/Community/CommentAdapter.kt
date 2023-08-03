@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smhrd.android.Data.CommentVO
 import com.smhrd.android.R
 
-class CommentAdapter(private var data: ArrayList<CommentVO>):
+class CommentAdapter(var context: ArrayList<CommentVO>,private var data: ArrayList<CommentVO>):
     RecyclerView.Adapter<CommentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {

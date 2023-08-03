@@ -1,6 +1,8 @@
 package com.smhrd.android.Community
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -46,23 +48,53 @@ class CommunityDetailActivity : AppCompatActivity() {
         tv_title.text = intent.getStringExtra("c_title")
         tv_content.text = intent.getStringExtra("c_content")
 
-
+        val spf = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        var loginMember = spf?.getString("memberId", "")
         val boardId = intent.getStringExtra("boardId")
         val content = intent.getStringExtra("c_content")
-        fetchComments(boardId)
+//        fetchComments(boardId)
+
+
+
+        //load comment  => 결과값을 ArrayList<CommentVO>
+        //commentArr에 담아주기
+
+        var commentArr: ArrayList<CommentVO> = arrayListOf()
 
         btn_comment.setOnClickListener {
-            val commentText = et_comment.text.toString().trim()
+            val commentText = boardId?.let { it1 ->
+                content?.let { it2 ->
+                    CommentVO(
+                        commentWriter = loginMember!!,
+                        commentContent = et_comment.text.toString()
+                    )
+                }
+            }
 
-            if (commentText.isNotEmpty()) {
-                // Create a new CommentVO object for the new comment
-                val newComment = CommentVO(boardId!!, commentText)
+            commentArr.add(commentText!!)
 
-                // Add the new comment to the comment list and update Firebase
-                addComment(newComment)
+            if (commentText != null) {
+                // Generate a unique ID for the comment
+//                val commentId = FirebaseDatabase.getInstance().reference.push().key ?: ""
 
-                // Clear the EditText after adding the comment
-                et_comment.text.clear()
+                if (boardId != null) {
+                    databaseReference.child("boardList").child(boardId).get()
+                }
+
+                // Save the comment to Firebase using the generated ID
+                val commentRef =
+                    FirebaseDatabase.getInstance().getReference("boardList").child(boardId!!)
+                commentRef.child("comment").setValue(commentArr)
+                    .addOnSuccessListener {
+                        // Comment added successfully
+                        Toast.makeText(this, "Comment added.", Toast.LENGTH_SHORT).show()
+                        // Clear the EditText after adding the comment
+                        et_comment.text.clear()
+                    }
+                    .addOnFailureListener {
+                        // Error occurred while adding the comment
+                        Toast.makeText(this, "Failed to add comment.", Toast.LENGTH_SHORT).show()
+                    }
             } else {
                 // Show a toast if the comment text is empty
                 Toast.makeText(this, "Comment cannot be empty.", Toast.LENGTH_SHORT).show()
@@ -70,51 +102,6 @@ class CommunityDetailActivity : AppCompatActivity() {
         }
     }
 
-    var commentArr: ArrayList<CommentVO> = arrayListOf()
-    private fun fetchComments(boardId: String?) {
-        if (boardId != null) {
-            val commentsRef = databaseReference.child("boardList").child(boardId).child("comments")
-            commentsRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val comments = commentArr
-                    for (commentSnapshot in snapshot.children) {
-                        val comment = commentSnapshot.getValue(CommentVO::class.java)
-                        comment?.let { comments.add(it) }
-                    }
-
-                    // After fetching the comments, create the adapter and set it to the RecyclerView
-                    val adapter = CommentAdapter(comments)
-                    rc_comment.layoutManager = LinearLayoutManager(this@CommunityDetailActivity)
-                    rc_comment.adapter = adapter
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    // Handle any errors that may occur during data retrieval
-                    Toast.makeText(
-                        this@CommunityDetailActivity,
-                        "Failed to fetch comments.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
-        }
-    }
-
-    private fun addComment(comment: CommentVO) {
-        val boardId = comment.commentWriter
-        if (boardId != null) {
-            val commentsRef = databaseReference.child("boardList").child(boardId).child("comments")
-            val newCommentRef = commentsRef.push()
-            newCommentRef.setValue(comment)
-                .addOnSuccessListener {
-                    // Comment added successfully
-                    Toast.makeText(this, "Comment added.", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    // Error occurred while adding the comment
-                    Toast.makeText(this, "Failed to add comment.", Toast.LENGTH_SHORT).show()
-                }
-        }
-    }
 }
+
 

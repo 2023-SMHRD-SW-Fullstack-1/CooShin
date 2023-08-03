@@ -14,19 +14,14 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
-import com.google.firebase.auth.FirebaseAuth
-
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
-import com.smhrd.android.Data.MemberVO
 import com.smhrd.android.Data.ReviewVO
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
@@ -50,10 +45,6 @@ class HomeFragment : Fragment() {
     lateinit var ivVB: ImageButton
     lateinit var ivPHP: ImageButton
 
-
-
-    private lateinit var mAuth: FirebaseAuth
-
     lateinit var database : DatabaseReference
 
 
@@ -61,8 +52,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        mAuth = FirebaseAuth.getInstance()
 
         // inflate 란? xml파일을 View객체로 바꿔주는 것
         var view = inflater.inflate(R.layout.fragment_home, container, false)
@@ -84,20 +73,6 @@ class HomeFragment : Fragment() {
         var teacherList = ArrayList<TeacherIdVO>()
         var boardList = ArrayList<BoardIdVO>()
         var review = ArrayList<ReviewVO>()
-
-
-
-        //인기있는 고수 출력
-        rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-        var adapter = HomeGosuAdapter(memberList, review, requireContext())
-        rvPopularGosu.adapter = adapter
-
-
-
-        //커뮤니티
-        rvCommunity.layoutManager = GridLayoutManager(context, 2)
-        var adapter2 = HomeCommunityAdapter(boardList, requireContext())
-        rvCommunity.adapter = adapter2
 
         //일반 로그인 spf
         val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
@@ -220,7 +195,6 @@ class HomeFragment : Fragment() {
         btnLogin.setOnClickListener {
             val intent = Intent(requireActivity(), LoginActivity::class.java)
             startActivity(intent)
-
         }
 
         if (loginMember.toString() == "" && googleMember.toString() == "") {
@@ -232,7 +206,7 @@ class HomeFragment : Fragment() {
             btnLogout.setOnClickListener {
                 Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
                 var editor = spf?.edit()
-                editor?.remove("memberId")
+                editor?.clear()
                 editor?.commit()
                 btnLogout.visibility = View.INVISIBLE
                 btnLogin.visibility = View.VISIBLE
@@ -244,7 +218,6 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireActivity(), MypageActivity::class.java)
             startActivity(intent)
         }
-
 
         return view
     }
@@ -262,4 +235,3 @@ class HomeFragment : Fragment() {
     }
 
 }
-

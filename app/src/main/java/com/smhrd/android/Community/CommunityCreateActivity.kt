@@ -39,9 +39,9 @@ class CommunityCreateActivity : AppCompatActivity() {
 
         etTitle = findViewById(R.id.etTitle)
         etContent = findViewById(R.id.etContent)
-        ivUpload = findViewById(R.id.ivUpload)
+//        ivUpload = findViewById(R.id.ivUpload)
         btnComplete = findViewById(R.id.btnComplete)
-        back = findViewById(R.id.back)
+//        back = findViewById(R.id.back)
         ibGallery = findViewById(R.id.ibGallery)
         ibcamera = findViewById(R.id.ibCamera)
 
