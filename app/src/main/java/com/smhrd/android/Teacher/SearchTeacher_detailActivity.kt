@@ -103,6 +103,9 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         tvTelTime.text = tvTelTime.text.toString() + " " + teacherTelTime
         tvWorkTime.text = tvWorkTime.text.toString() + " " + teacherWorkTime
 
+        //멤버정보 접근하기
+        
+
 
         val database = Firebase.database
 
@@ -130,6 +133,29 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
         //뒤로가기 버튼
         ibtnToBack.setOnClickListener { onBackPressed() }
+
+        //찜하기 버튼
+        //찜한 상태인지 확인하기
+
+        ibtnToBack.setOnClickListener {
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //채팅하기 버튼
