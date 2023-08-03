@@ -57,17 +57,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
+        android:fontFamily="@font/ohmu"
         android:text="TextView"
-        android:textSize="21sp"
+        android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toStartOf="@+id/guideline19"
         app:layout_constraintStart_toEndOf="@+id/ibtnToBack_detail"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
         app:layout_constraintVertical_bias="0.44" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
@@ -80,6 +81,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/targetView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -149,12 +151,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:backgroundTint="#ACABAB"
+                android:fontFamily="@font/ohmu"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="3dp"
+                android:shadowRadius="5"
                 android:text="리뷰 보기"
-                app:cornerRadius="3dp"
+                android:textColor="#FFFEFE"
+                android:textSize="20dp"
+                app:cornerRadius="0dp"
                 app:layout_constraintEnd_toStartOf="@+id/btnTeacherInfo_detail"
                 app:layout_constraintStart_toEndOf="@+id/btnServiceInfo_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tvTeacherLocate_detail" />
@@ -164,12 +171,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
+                android:backgroundTint="#ACABAB"
+                android:fontFamily="@font/ohmu"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="3dp"
+                android:shadowRadius="5"
                 android:text="수업 정보"
-                app:cornerRadius="3dp"
+                android:textColor="#FFFEFE"
+                android:textSize="20dp"
+                app:cornerRadius="0dp"
                 app:iconPadding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btnReview_detail" />
@@ -179,23 +191,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
+                android:backgroundTint="#ACABAB"
+                android:fontFamily="@font/ohmu"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="3dp"
+                android:shadowRadius="5"
                 android:text="코신 정보"
-                app:cornerRadius="3dp"
+                android:textColor="#FFFEFE"
+                android:textSize="20dp"
+                app:cornerRadius="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btnReview_detail" />
 
             <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/tvServiceInfoTitle_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="50dp"
+                android:fontFamily="@font/ohmu"
                 android:text="수업 상세 설명"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnReview_detail" />
@@ -210,8 +228,8 @@
                 android:text="연락가능시간 :"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView21"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                app:layout_constraintStart_toStartOf="@+id/tvServiceInfoTitle_detail"
+                app:layout_constraintTop_toBottomOf="@+id/tvServiceInfoTitle_detail" />
 
             <TextView
                 android:id="@+id/tvWorkTime_detail"
@@ -248,21 +266,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
             <TextView
-                android:id="@+id/textView26"
+                android:id="@+id/tvReviewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
+                android:fontFamily="@font/ohmu"
                 android:text="리뷰"
-                android:textSize="16sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintStart_toStartOf="@+id/tvServiceInfoTitle_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tvTeacherContent_detail" />
 
             <TextView
                 android:id="@+id/tvStarAvg_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5.0"
+                android:text="4.5"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView11"
                 app:layout_constraintStart_toEndOf="@+id/imageView11"
@@ -273,8 +292,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                app:layout_constraintStart_toStartOf="@+id/textView26"
-                app:layout_constraintTop_toBottomOf="@+id/textView26"
+                app:layout_constraintStart_toStartOf="@+id/tvReviewTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvReviewTitle"
                 app:srcCompat="@android:drawable/btn_star_big_on" />
 
             <TextView
@@ -282,7 +301,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="TextView"
+                android:text="( 33개 평가 )"
                 app:layout_constraintBottom_toBottomOf="@+id/tvStarAvg_detail"
                 app:layout_constraintStart_toEndOf="@+id/tvStarAvg_detail" />
 
@@ -305,7 +324,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="TextView"
+                        android:text="김수*"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -317,7 +336,7 @@
                         android:layout_marginTop="5dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvReviewStar1_detail"
-                        app:srcCompat="@drawable/ic_launcher_background" />
+                        app:srcCompat="@drawable/engineer" />
 
                     <TextView
                         android:id="@+id/tvReviewContent1_detail"
@@ -326,7 +345,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
-                        android:text="TextView"
+                        android:text=" 코딩이 맛있고 사장님이 잘해요 ^^ 다음에 또 신청할 것 같네요"
                         app:layout_constraintBottom_toBottomOf="@+id/ivReviewImg1_detail"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivReviewImg1_detail"
@@ -356,7 +375,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="TextView"
+                        android:text="박수*"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -368,7 +387,7 @@
                         android:layout_marginTop="5dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvReviewStar2_detail"
-                        app:srcCompat="@drawable/ic_launcher_background" />
+                        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
                     <TextView
                         android:id="@+id/tvReviewContent2_detail"
@@ -377,7 +396,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="20dp"
-                        android:text="TextView"
+                        android:text=" 항상 어려워 했던 코딩이었는데, 선생님 덕분에 깔끔하게 포기할 수 있게 되었습니다 ㅎㅎ 감사합니다"
                         app:layout_constraintBottom_toBottomOf="@+id/ivReviewImg2_detail"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivReviewImg2_detail"
@@ -397,6 +416,32 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline24"
                 app:layout_constraintStart_toStartOf="@+id/guideline23"
                 app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+
+            <TextView
+                android:id="@+id/tvTeacherInfoTitle_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/ohmu"
+                android:text="코신정보"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/tvReviewTitle"
+                app:layout_constraintTop_toBottomOf="@+id/tvToReviewList_detail" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:fontFamily="@font/ohmu"
+                android:text="상담 바랍니다💌"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTeacherInfoTitle_detail" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -424,15 +469,17 @@
         android:id="@+id/btnSendTalk_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#6EBFE4"
+        android:backgroundTint="#ACABAB"
+        android:fontFamily="@font/ohmu"
         android:paddingLeft="0sp"
         android:paddingTop="0sp"
         android:paddingRight="0sp"
         android:paddingBottom="0sp"
-        android:text="📰 상담하기"
-        android:textColor="#4A4944"
-        android:textSize="20sp"
-        app:cornerRadius="3dp"
+        android:shadowRadius="5"
+        android:text="📩 상담하기"
+        android:textColor="#FFFEFE"
+        android:textSize="30sp"
+        app:cornerRadius="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toStartOf="@+id/guideline19"
         app:layout_constraintStart_toStartOf="@+id/guideline18"

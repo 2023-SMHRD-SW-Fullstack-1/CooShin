@@ -115,7 +115,7 @@ class AddGosuActivity : AppCompatActivity() {
                 val teacherListRef = database.getReference("teacherList").child(memberId)
                 teacherListRef.setValue(teacherIdVO)
                     .addOnSuccessListener {
-                        Log.d("고수 등록 성공", teacherIdVO.toString())
+                        Log.d("코신 등록 성공", teacherIdVO.toString())
                         Toast.makeText(applicationContext, "등록 완료", Toast.LENGTH_SHORT).show()
 
                         val intent = Intent(this@AddGosuActivity, MainActivity::class.java)
@@ -123,7 +123,7 @@ class AddGosuActivity : AppCompatActivity() {
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(applicationContext, "등록 실패", Toast.LENGTH_SHORT).show()
-                        Log.d("고수 등록 error", e.toString())
+                        Log.d("코신 등록 error", e.toString())
                     }
             } else {
                 Toast.makeText(

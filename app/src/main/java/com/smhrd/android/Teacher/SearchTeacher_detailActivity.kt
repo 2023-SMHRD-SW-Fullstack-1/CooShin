@@ -5,9 +5,11 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -129,10 +131,42 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
             }
         )
 
+        btnServiceInfo.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.scrollView)
+            val targetView = findViewById<TextView>(R.id.tvServiceInfoTitle_detail)
 
+            // targetView가 스크롤 뷰 내에서 위치한 Y 좌표를 구함
+            val targetY = targetView.y
+
+            // 스크롤 뷰를 targetView의 위치로 스크롤
+            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+        }
+
+
+        btnReview.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.scrollView)
+            val targetView = findViewById<TextView>(R.id.tvReviewTitle)
+
+            // targetView가 스크롤 뷰 내에서 위치한 Y 좌표를 구함
+            val targetY = targetView.y
+
+            // 스크롤 뷰를 targetView의 위치로 스크롤
+            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+        }
+
+        btnTeacherInfo.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.scrollView)
+            val targetView = findViewById<TextView>(R.id.tvTeacherInfoTitle_detail)
+
+            // targetView가 스크롤 뷰 내에서 위치한 Y 좌표를 구함
+            val targetY = targetView.y
+
+            // 스크롤 뷰를 targetView의 위치로 스크롤
+            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+        }
 
         //뒤로가기 버튼
-        ibtnToBack.setOnClickListener { onBackPressed() }
+        ibtnToBack.setOnClickListener { finish() }
 
         //찜하기 버튼
         //찜한 상태인지 확인하기
@@ -143,26 +177,10 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         //채팅하기 버튼
         btnSendTalk.setOnClickListener {
             val sendIntent = Intent(this.applicationContext, ChattingRoomActivity::class.java)
             var roomId = " ${memberId} room ${teacherId} "
-
 
 
             sendIntent.putExtra("roomId", roomId)
