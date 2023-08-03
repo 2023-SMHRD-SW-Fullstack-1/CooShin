@@ -8,7 +8,7 @@ import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.CommentVO
 import com.smhrd.android.R
 
-class CommunityAdapter(var context : Context, var data : ArrayList<BoardIdVO>):
+class CommunityAdapter(var context : Context, var data : ArrayList<BoardIdVO>, private val onItemClick: (BoardIdVO) -> Unit):
 RecyclerView.Adapter<CommunityViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityViewHolder {
 
@@ -29,12 +29,15 @@ RecyclerView.Adapter<CommunityViewHolder>(){
 
         //type이 CharSequence이기 때문에 .toString() 붙여줌
         holder.c_title.text = board.boardTitle
-        holder.c_writer.text = board.boardWriter
+        holder.c_writer.text = board.boardWriter.toString()
         holder.c_date.text = board.boardDate
         holder.c_Likes.text = board.boardLikes.toString()
         holder.c_Views.text = board.boardViews.toString()
 
 
+        holder.c_title.setOnClickListener {
+            onItemClick(board)
+        }
 
 
 
