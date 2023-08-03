@@ -44,8 +44,8 @@ class SearchGosuFragment : Fragment() {
 
 
         service?.let{result = result.filter{ value -> value.teacherService.contains(service)}.toCollection(ArrayList())}
-        city?.let{result = data.filter { value -> value.teacherService.contains(city) }.toCollection(ArrayList())}
-        sigungu?.let{result = data.filter { value -> value.teacherService.contains(sigungu) }.toCollection(ArrayList())}
+        city?.let{result = data.filter { value -> value.teacherCity.contains(city) }.toCollection(ArrayList())}
+        sigungu?.let{result = data.filter { value -> value.teacherCity.contains(sigungu) }.toCollection(ArrayList())}
 
 
         var rvAdapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, result,  object : SearchTeacherOnClick {

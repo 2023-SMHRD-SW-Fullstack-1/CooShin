@@ -7,7 +7,7 @@
     tools:context=".Fragment.SearchGosuFragment">
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/tvServiceInfoTitle_detail"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -149,7 +149,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/ohmu"
         android:text="언어"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
@@ -158,7 +160,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/ohmu"
         android:text="지역"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/spinService_search"
         app:layout_constraintTop_toBottomOf="@+id/spinService_search" />
 
