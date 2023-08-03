@@ -142,10 +142,12 @@ class LoginActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)
                 Log.d("구글로그인성공","로그인 성공")
                 Toast.makeText(applicationContext, "구글 로그인 성공!", Toast.LENGTH_SHORT).show()
-                googleEmailSPF(account)
+
                 val userEmail = account.email
-              // val user
+                saveGoogleEmailToSpf(userEmail.toString())
                 Log.d("googleemail",userEmail.toString())
+                val intent = Intent(this@LoginActivity,MainActivity::class.java)
+                startActivity(intent)
             } catch (e: ApiException) {
                 Log.d( "Google sign in failed", e.toString())
                 Toast.makeText(applicationContext, "구글 로그인 실패! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
@@ -172,13 +174,24 @@ class LoginActivity : AppCompatActivity() {
 //        editor.clear()
 //        editor.apply()
 //    }
- fun googleEmailSPF(account: GoogleSignInAccount) {
-    val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
-    with(sharedPreferences.edit()) {
-     //   putString("googleid", account.id)
-//        putString("user_display_name", account.displayName)
-        putString("googleEmail", account.email)
-        apply()
+//        fun googleEmailSPF(account: GoogleSignInAccount) {
+//        val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+//        with(sharedPreferences.edit()) {
+//            putString("googleid", account.id)
+//            putString("user_display_name", account.displayName)
+//            putString("googleEmail", account.email)
+//            apply()
+//        }
+
+    fun saveGoogleEmailToSpf(googleEmail: String) {
+        val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            // putString("googleid", account.id)
+            // putString("user_display_name", account.displayName)
+            putString("googleEmail", googleEmail)
+            apply()
     }
 }
+
 }
+

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -14,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -120,9 +118,24 @@ class MypageActivity : AppCompatActivity() {
                     val memberNick = dataSnapshot.child("memberNick").getValue(String::class.java)
                     Log.d("memberNick", memberNick.toString())
 
-                // memberNick이 null이 아니라면 화면에 닉네임 띄우기
+                    val googleEmail = getGoogleEmailFromSpf()
+                    Log.d("googleEmail",googleEmail.toString())
+
+
+                    // memberNick이 null이 아니라면 화면에 닉네임 띄우기
                     if (memberNick != null) {
                         mypageTv_nick.text= "${memberNick}고객님"
+                    }else if(!googleEmail.isNullOrEmpty()){
+                        mypageTv_nick.text = "$googleEmail 고객님"
+                        // 구글 로그아웃 버튼 띄우기 (예를 들어, 바로 아래 코드처럼 버튼 객체 생성 후 setOnClickListener 설정)
+                        /*
+                        val logoutButton = Button(this@MypageActivity)
+                        logoutButton.text = "로그아웃"
+                        someLayout.addView(logoutButton)
+                        logoutButton.setOnClickListener {
+                            // 로그아웃 코드
+                        }
+                        */
                     }
 
                     // Firebase에서 이미지 URL 가져오기
@@ -261,6 +274,24 @@ class MypageActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun getGoogleEmailFromSpf(): String? {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("googleEmail", null)
+    }
+
+    private fun saveGoogleEmailToSpf(email: String) {
+        // getSharedPreferences 객체 생성, "memberInfoSpf"는 파일 이름, Context.MODE_PRIVATE는 접근 권한
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        // SharedPreferences.Editor 인터페이스를 사용하여 데이터 저장
+        val editor = sharedPreferences.edit()
+        // putString 메소드를 사용하여 이메일 저장 ("googleEmail"은 키, email은 값)
+        editor.putString("googleEmail", email)
+        // 변경 사항 저장
+        editor.apply()
+    }
+
+
 
 }
 
