@@ -1,6 +1,8 @@
 package com.smhrd.android.Community
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -9,18 +11,25 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.smhrd.android.Data.CommentVO
 import com.smhrd.android.R
 
 class CommunityDetailActivity : AppCompatActivity() {
-    lateinit var img : ImageView
-    lateinit var tv_title : TextView
-    lateinit var tv_content : TextView
-    lateinit var et_comment : EditText
-    lateinit var btn_comment : Button
-    lateinit var rc_comment : RecyclerView
-    lateinit var ibtn_back : ImageButton
+    lateinit var img: ImageView
+    lateinit var tv_title: TextView
+    lateinit var tv_content: TextView
+    lateinit var et_comment: EditText
+    lateinit var btn_comment: Button
+    lateinit var rc_comment: RecyclerView
+    lateinit var ibtn_back: ImageButton
+    val databaseReference = FirebaseDatabase.getInstance().reference
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,37 +42,66 @@ class CommunityDetailActivity : AppCompatActivity() {
         rc_comment = findViewById(R.id.rc_comment)
         ibtn_back = findViewById(R.id.ibtn_back)
 
+        val intent = getIntent()
+
+
+        tv_title.text = intent.getStringExtra("c_title")
+        tv_content.text = intent.getStringExtra("c_content")
+
+        val spf = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        var loginMember = spf?.getString("memberId", "")
+        val boardId = intent.getStringExtra("boardId")
+        val content = intent.getStringExtra("c_content")
+//        fetchComments(boardId)
+
+
+
+        //load comment  => 결과값을 ArrayList<CommentVO>
+        //commentArr에 담아주기
+
+        var commentArr: ArrayList<CommentVO> = arrayListOf()
+
+        btn_comment.setOnClickListener {
+            val commentText = boardId?.let { it1 ->
+                content?.let { it2 ->
+                    CommentVO(
+                        commentWriter = loginMember!!,
+                        commentContent = et_comment.text.toString()
+                    )
+                }
+            }
+
+            commentArr.add(commentText!!)
+
+            if (commentText != null) {
+                // Generate a unique ID for the comment
+//                val commentId = FirebaseDatabase.getInstance().reference.push().key ?: ""
+
+                if (boardId != null) {
+                    databaseReference.child("boardList").child(boardId).get()
+                }
+
+                // Save the comment to Firebase using the generated ID
+                val commentRef =
+                    FirebaseDatabase.getInstance().getReference("boardList").child(boardId!!)
+                commentRef.child("comment").setValue(commentArr)
+                    .addOnSuccessListener {
+                        // Comment added successfully
+                        Toast.makeText(this, "Comment added.", Toast.LENGTH_SHORT).show()
+                        // Clear the EditText after adding the comment
+                        et_comment.text.clear()
+                    }
+                    .addOnFailureListener {
+                        // Error occurred while adding the comment
+                        Toast.makeText(this, "Failed to add comment.", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                // Show a toast if the comment text is empty
+                Toast.makeText(this, "Comment cannot be empty.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
-    fun updateComment(commentId: String, updatedComment: String) {
-        // Firebase Realtime Database의 댓글 데이터 참조 경로
-        val commentRef = FirebaseDatabase.getInstance().getReference("memberList").child(commentId)
-
-        // 댓글 데이터 수정
-        commentRef.child("comment").setValue(updatedComment)
-            .addOnSuccessListener {
-                // 데이터 수정이 완료되었을 때의 처리
-                Toast.makeText(this, "댓글이 수정되었습니다.", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                // 데이터 수정 중 에러가 발생했을 때의 처리
-                Toast.makeText(this, "댓글 수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            }
-    }
-
-    fun deleteComment(commentId: String) {
-        // Firebase Realtime Database의 댓글 데이터 참조 경로
-        val commentRef = FirebaseDatabase.getInstance().getReference("memberList").child(commentId)
-
-        // 댓글 데이터 삭제
-        commentRef.removeValue()
-            .addOnSuccessListener {
-                // 데이터 삭제가 완료되었을 때의 처리
-                Toast.makeText(this, "댓글이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                // 데이터 삭제 중 에러가 발생했을 때의 처리
-                Toast.makeText(this, "댓글 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            }
-    }
 }
+
+
