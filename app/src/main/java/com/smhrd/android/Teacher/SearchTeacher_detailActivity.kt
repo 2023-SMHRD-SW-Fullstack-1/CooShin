@@ -9,6 +9,13 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.values
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Chatting.ChattingRoomActivity
@@ -96,9 +103,59 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         tvTelTime.text = tvTelTime.text.toString() + " " + teacherTelTime
         tvWorkTime.text = tvWorkTime.text.toString() + " " + teacherWorkTime
 
+        //멤버정보 접근하기
+        
+
+
+        val database = Firebase.database
+
+        //코신 이미지 불러오기
+        var imageUrl :String? = null
+
+        database.getReference("memberList").child(teacherId!!).child("member").child("memberImg").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    imageUrl = snapshot.getValue(String::class.java)
+                    if (!imageUrl.isNullOrEmpty()) {
+                        Glide.with(this@SearchTeacher_detailActivity)
+                            .load(imageUrl)
+                            .into(ivTeacherImage)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            }
+        )
+
+
 
         //뒤로가기 버튼
         ibtnToBack.setOnClickListener { onBackPressed() }
+
+        //찜하기 버튼
+        //찜한 상태인지 확인하기
+
+        ibtnToBack.setOnClickListener {
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //채팅하기 버튼

@@ -4,7 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.smhrd.android.Data.TeacherIdVO
+import com.smhrd.android.Fragment.SearchGosuFragment.Companion.dataMap_searchGosu
 
 class SearchTeacherAdapter(var context: Context, var template : Int, var data : ArrayList<TeacherIdVO>,  private val onItemClickListener: SearchTeacherOnClick) :
     RecyclerView.Adapter<SearchTeacherHolder>() {
@@ -19,12 +26,33 @@ class SearchTeacherAdapter(var context: Context, var template : Int, var data : 
 
     override fun onBindViewHolder(holder: SearchTeacherHolder, position: Int) {
         holder.tvOneLine.text = data.get(position).teacherOneLine
-        holder.tvTeacherGender.text = data[position].teacherGender.toString()
+        holder.tvTeacherGender.text = data[position].teacherService
         holder.tvTeacherName.text = data[position].teacherName
+
+        val database = Firebase.database
+        //코신 이미지 불러오기
+        var imageUrl :String? = null
+
+        var teacherId = findKeyByValue(dataMap_searchGosu, data[position])
+
+        database.getReference("memberList").child(teacherId!!).child("member").child("memberImg").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    imageUrl = snapshot.getValue(String::class.java)
+                    if (!imageUrl.isNullOrEmpty()) {
+                        Glide.with(context)
+                            .load(imageUrl)
+                            .into(holder.ivTeacherImg)
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            }
+        )
 
 
         //리뷰개수 확인하기
-
         data[position].reviews?.let{ holder.tvReviewNum.text = "( ${it.size.toString()} )"}?: run{holder.tvReviewNum.text = "( 0 )"}
 
 
@@ -41,14 +69,8 @@ class SearchTeacherAdapter(var context: Context, var template : Int, var data : 
         }?: run {
             holder.tvStarAvg.text = starAvg.toString()
         }
-//        holder.ivTeacherImg.resources =
-
-        //화면전환이 필요한가?
-//        //Activity가 아닌데 화면전환
-//        //Flag
-//        var it = Intent()
-//        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        //mainACTIVIY 화면 정보를 생성자의 변수로 호출
-//        context.startActivity(it!!)
+    }
+    fun findKeyByValue(map: Map<String, Any>, value: Any): String? {
+        return map.entries.find { it.value == value }?.key
     }
 }

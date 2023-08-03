@@ -157,36 +157,35 @@ class HomeFragment : Fragment() {
 
         //C 클릭했을 때
         ivC.setOnClickListener {
-            val language = navigateToSearchGosuFragment("C")
-            Log.d("language", language.toString())
+            navigateToSearchGosuFragment("C")
         }
         //C++ 클릭했을 때
         ivCPlus.setOnClickListener {
-            val language = navigateToSearchGosuFragment("C++")
+            navigateToSearchGosuFragment("C++")
         }
         //C# 클릭했을 때
         ivCShap.setOnClickListener {
-            val language = navigateToSearchGosuFragment("C#")
+            navigateToSearchGosuFragment("C#")
         }
         //Python 클릭했을 때
         ivPython.setOnClickListener {
-            val language = navigateToSearchGosuFragment("Python")
+            navigateToSearchGosuFragment("Python")
         }
         //Java 클릭했을 때
         ivJava.setOnClickListener {
-            val language = navigateToSearchGosuFragment("Java")
+            navigateToSearchGosuFragment("Java")
         }
         //JavaScript 클릭했을 때
         ivJS.setOnClickListener {
-            val language = navigateToSearchGosuFragment("JavaScript")
+            navigateToSearchGosuFragment("JavaScript")
         }
         //Visual Basic 클릭했을 때
         ivVB.setOnClickListener {
-            val language = navigateToSearchGosuFragment("Visual Basic")
+            navigateToSearchGosuFragment("Visual Basic")
         }
         //PHP 클릭했을 때
         ivPHP.setOnClickListener {
-            val language = navigateToSearchGosuFragment("PHP")
+            navigateToSearchGosuFragment("PHP")
         }
 
 
@@ -230,11 +229,9 @@ class HomeFragment : Fragment() {
         searchGosuFragment.arguments = bundle
 
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.container2, searchGosuFragment)
+            .replace(R.id.fl, searchGosuFragment)
             .addToBackStack(null)
             .commit()
     }
-
-
 
 }
