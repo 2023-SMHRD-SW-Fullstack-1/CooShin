@@ -183,8 +183,6 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
             val sendIntent = Intent(this.applicationContext, ChattingRoomActivity::class.java)
             var roomId = " ${memberId} room ${teacherId} "
 
-            database.getReference("roomList").child(roomId).push().setValue(ChatVO(teacherId, "안녕하세요 ${teacherId}입니다.", ""))
-
             sendIntent.putExtra("roomId", roomId)
             startActivity(sendIntent)
         }

@@ -73,7 +73,9 @@ class ChattingRoomActivity : AppCompatActivity() {
 
             roomListRef.child(roomId).push().setValue(ChatVO(userId, msgContent, msgTime))
 
-            rv.smoothScrollToPosition(data.size - 1)
+            if (data.size >= 1) {
+                rv.smoothScrollToPosition(data.size - 1)
+            }
 
             edtMsg.text.clear()
         }
