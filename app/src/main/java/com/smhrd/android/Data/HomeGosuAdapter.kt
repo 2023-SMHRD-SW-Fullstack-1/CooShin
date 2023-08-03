@@ -11,7 +11,7 @@ import com.smhrd.android.R
 import com.smhrd.android.User.LoginActivity
 import java.util.Arrays
 
-class HomeGosuAdapter (var datas : ArrayList<MemberVO>, var review : ArrayList<ReviewVO>, var context: Context) : RecyclerView.Adapter<HomeGosuViewHolder>() {
+class HomeGosuAdapter (var datas : ArrayList<TeacherIdVO>, var review : ArrayList<ReviewVO>, var context: Context) : RecyclerView.Adapter<HomeGosuViewHolder>() {
     //View Holder 생성
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeGosuViewHolder {
         return HomeGosuViewHolder(
@@ -45,9 +45,9 @@ class HomeGosuAdapter (var datas : ArrayList<MemberVO>, var review : ArrayList<R
             }
         }
         if (displayCount < datas.size && displayCount < review.size) {
-            val member: MemberVO = datas[position]
+            val teacher: TeacherIdVO = datas[position]
 
-            holder.tvGosuName.text = member.memberNick
+            holder.tvGosuName.text = teacher.teacherName
             holder.tvReviewStar.text = review[position].reviewStars.toString()
 
             holder.itemView.setOnClickListener() {
@@ -55,8 +55,8 @@ class HomeGosuAdapter (var datas : ArrayList<MemberVO>, var review : ArrayList<R
                 var intent = Intent(context, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-                intent.putExtra("gosuNick", member.memberNick)
-                Log.d("gosuNick", member.memberNick)
+                intent.putExtra("teacherNick", teacher.teacherName)
+                Log.d("teacherNick", teacher.teacherName)
 
                 context.startActivity(intent)
             }

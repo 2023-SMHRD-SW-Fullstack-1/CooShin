@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ListView
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,13 +22,11 @@ import com.google.firebase.database.ValueEventListener
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
-import com.smhrd.android.Data.MemberVO
 import com.smhrd.android.Data.ReviewVO
+import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
 import com.smhrd.android.User.LoginActivity
 import com.smhrd.android.User.MypageActivity
-import java.util.Arrays
-import java.util.Collections
 
 
 class HomeFragment : Fragment() {
@@ -73,31 +70,75 @@ class HomeFragment : Fragment() {
         ivJS = view.findViewById(R.id.ivJS)
         ivVB = view.findViewById(R.id.ivVB)
         ivPHP = view.findViewById(R.id.ivPHP)
-        var memberList = ArrayList<MemberVO>()
+        var teacherList = ArrayList<TeacherIdVO>()
         var boardList = ArrayList<BoardIdVO>()
         var review = ArrayList<ReviewVO>()
 
+        //일반 로그인 spf
+        val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        var loginMember = spf?.getString("memberId", "")
+        Log.d("loginMember", loginMember.toString())
 
-        database = FirebaseDatabase.getInstance().getReference("board")
+        //구글 로그인 spf
+        val spf2 = activity?.getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+        var googleMember = spf2?.getString("googleEmail", "")
+        Log.d("googleMember", googleMember.toString())
 
-        //가데이터
-        boardList.add(BoardIdVO("제목1", "내용1", "작성자1", "20230802", "", 18, 3, null ))
-        boardList.add(BoardIdVO("제목2", "내용2", "작성자2", "20230805", "", 8, 1, null ))
-        boardList.add(BoardIdVO("제목3", "내용3", "작성자3", "20230807", "", 28, 15, null ))
+        //firebase에서 데이터를 가져오기 위함!
+        val database = FirebaseDatabase.getInstance()
+        val teacherListD = database.getReference("teacherList")
+        val boardListD = database.getReference("boardList")
 
-        memberList.add(MemberVO("asdf", "01000000000", "asdf"))
-        memberList.add(MemberVO("qwer", "01000000000", "qwer"))
-        memberList.add(MemberVO("zxcv", "01000000000", "zxcv"))
-        review.add(ReviewVO("qwer", "좋아요", "", "20230802", 5))
-        review.add(ReviewVO("asdf", "짱", "", "20230802", 2))
-        review.add(ReviewVO("zxcv", "최고", "", "20230802", 3))
+
+        if (loginMember != null) {
+            teacherListD.child(loginMember).child("teacherName").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val teacherName = dataSnapshot.getValue(String::class.java)
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("데이터베이스오류", error.toString())
+                }
+            })
+        }
+        if (loginMember != null) {
+            teacherListD.child(loginMember).child("reviewList").child("reviewStar").addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val reviewStar = dataSnapshot.getValue(String::class.java)
+                    Log.d("reviewStar", "Img: $reviewStar")
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("데이터베이스오류", error.toString())
+                }
+            })
+        }
+
+
+        if (loginMember != null) {
+            boardListD.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (snapshot in dataSnapshot.children) {
+                        val key = snapshot.key
+                        val boardTitle = snapshot.child("boardTitle").getValue(String::class.java)
+                        val boardImg = snapshot.child("boardImg").getValue(String::class.java)
+//                        val boardLikes = snapshot.child("boardLikes").getValue(String::class.java)
+                        Log.d("boardImg", "Img: $boardImg")
+//                        Log.d("boardLikes", "Likes: $boardLikes")
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("데이터베이스오류", error.toString())
+                }
+            })
+
+        }
+
 
         //인기있는 코신 출력
         for(i in 0 until review.size) {
             val reviewStar =  review.get(i).reviewStars
             if(reviewStar > 4){
                 rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-                var adapter = HomeGosuAdapter(memberList, review, requireContext())
+                var adapter = HomeGosuAdapter(teacherList, review, requireContext())
                 rvPopularGosu.adapter = adapter
             }
         }
@@ -116,46 +157,39 @@ class HomeFragment : Fragment() {
 
         //C 클릭했을 때
         ivC.setOnClickListener {
-//            val c = Intent(requireActivity(), )
+            val language = navigateToSearchGosuFragment("C")
+            Log.d("language", language.toString())
         }
         //C++ 클릭했을 때
         ivCPlus.setOnClickListener {
-
+            val language = navigateToSearchGosuFragment("C++")
         }
         //C# 클릭했을 때
         ivCShap.setOnClickListener {
-
+            val language = navigateToSearchGosuFragment("C#")
         }
         //Python 클릭했을 때
         ivPython.setOnClickListener {
-
+            val language = navigateToSearchGosuFragment("Python")
         }
         //Java 클릭했을 때
         ivJava.setOnClickListener {
-
+            val language = navigateToSearchGosuFragment("Java")
         }
         //JavaScript 클릭했을 때
         ivJS.setOnClickListener {
-
+            val language = navigateToSearchGosuFragment("JavaScript")
         }
         //Visual Basic 클릭했을 때
         ivVB.setOnClickListener {
-
+            val language = navigateToSearchGosuFragment("Visual Basic")
         }
         //PHP 클릭했을 때
         ivPHP.setOnClickListener {
-
+            val language = navigateToSearchGosuFragment("PHP")
         }
 
-        //일반 로그인 spf
-        val spf = activity?.getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
-        var loginMember = spf?.getString("memberId", "")
-        Log.d("loginMember", loginMember.toString())
 
-        //구글 로그인 spf
-        val spf2 = activity?.getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
-        var googleMember = spf2?.getString("googleEmail", "")
-        Log.d("googleMember", googleMember.toString())
 
 
         //로그인 버튼 클릭했을 때
@@ -188,4 +222,19 @@ class HomeFragment : Fragment() {
 
         return view
     }
+    private fun navigateToSearchGosuFragment(language: String) {
+        val searchGosuFragment = SearchGosuFragment()
+
+        val bundle = Bundle()
+        bundle.putString("language", language)
+        searchGosuFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.container2, searchGosuFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+
+
 }
