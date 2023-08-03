@@ -108,34 +108,26 @@ class MypageActivity : AppCompatActivity() {
 
         val memberId = getMemberInfoFromSpf()
         Log.d("memberID",memberId.toString())
+        val googleEmail = getGoogleEmailFromSpf()
+        Log.d("googleEmail",googleEmail.toString())
+        if (!googleEmail.isNullOrEmpty()){
+             val googleEmailPart = googleEmail.split('@')[0]
+            mypageTv_nick.text = "${googleEmailPart} 고객님"
+        }
 
         // SharedPreferences에서 이미지 URL 가져오기
         val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         val imageUrl = sharedPreferences.getString("memberImg", null)
         if (memberId != null) {
             reference.child(memberId).child("member").addListenerForSingleValueEvent(object : ValueEventListener {
+                @SuppressLint("SetTextI18n")
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val memberNick = dataSnapshot.child("memberNick").getValue(String::class.java)
                     Log.d("memberNick", memberNick.toString())
 
-                    val googleEmail = getGoogleEmailFromSpf()
-                    Log.d("googleEmail",googleEmail.toString())
 
-
-                    // memberNick이 null이 아니라면 화면에 닉네임 띄우기
                     if (memberNick != null) {
-                        mypageTv_nick.text= "${memberNick}고객님"
-                    }else if(!googleEmail.isNullOrEmpty()){
-                        mypageTv_nick.text = "$googleEmail 고객님"
-                        // 구글 로그아웃 버튼 띄우기 (예를 들어, 바로 아래 코드처럼 버튼 객체 생성 후 setOnClickListener 설정)
-                        /*
-                        val logoutButton = Button(this@MypageActivity)
-                        logoutButton.text = "로그아웃"
-                        someLayout.addView(logoutButton)
-                        logoutButton.setOnClickListener {
-                            // 로그아웃 코드
-                        }
-                        */
+                        mypageTv_nick.text = "${memberNick}고객님"
                     }
 
                     // Firebase에서 이미지 URL 가져오기
@@ -155,13 +147,11 @@ class MypageActivity : AppCompatActivity() {
 
                 }
 
-
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("데이터베이스오류", error.toString())
                 }
             })
         }
-
 
         // 마이페이지 프로필 이미지 버튼 눌렀을 때
         mypageBtn_img.setOnClickListener{
@@ -280,16 +270,16 @@ class MypageActivity : AppCompatActivity() {
         return sharedPreferences.getString("googleEmail", null)
     }
 
-    private fun saveGoogleEmailToSpf(email: String) {
-        // getSharedPreferences 객체 생성, "memberInfoSpf"는 파일 이름, Context.MODE_PRIVATE는 접근 권한
-        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
-        // SharedPreferences.Editor 인터페이스를 사용하여 데이터 저장
-        val editor = sharedPreferences.edit()
-        // putString 메소드를 사용하여 이메일 저장 ("googleEmail"은 키, email은 값)
-        editor.putString("googleEmail", email)
-        // 변경 사항 저장
-        editor.apply()
-    }
+//    private fun saveGoogleEmailToSpf(email: String) {
+//        // getSharedPreferences 객체 생성, "memberInfoSpf"는 파일 이름, Context.MODE_PRIVATE는 접근 권한
+//        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+//        // SharedPreferences.Editor 인터페이스를 사용하여 데이터 저장
+//        val editor = sharedPreferences.edit()
+//        // putString 메소드를 사용하여 이메일 저장 ("googleEmail"은 키, email은 값)
+//        editor.putString("googleEmail", email)
+//        // 변경 사항 저장
+//        editor.apply()
+//    }
 
 
 

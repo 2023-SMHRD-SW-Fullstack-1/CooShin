@@ -189,7 +189,8 @@ class LoginActivity : AppCompatActivity() {
                 val userEmail = account.email
 
                 saveGoogleEmailToSpf(userEmail.toString())
-                Log.d("googleemail",userEmail.toString())
+                Log.d("googleemail", userEmail.toString())
+
                 val intent = Intent(this@LoginActivity,MainActivity::class.java)
                 startActivity(intent)
 
@@ -231,7 +232,7 @@ class LoginActivity : AppCompatActivity() {
 //        }
 
     fun saveGoogleEmailToSpf(googleEmail: String) {
-        val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             // putString("googleid", account.id)
             // putString("user_display_name", account.displayName)
@@ -258,16 +259,16 @@ class LoginActivity : AppCompatActivity() {
         editor.apply()
     }
 
-        fun googleEmailSPF(account: GoogleSignInAccount) {
-            val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
-            with(sharedPreferences.edit()) {
-                //   putString("googleid", account.id)
-//        putString("user_display_name", account.displayName)
-                putString("googleEmail", account.email)
-                apply()
-
-            }
-        }
+//        fun googleEmailSPF(account: GoogleSignInAccount) {
+//            val sharedPreferences = getSharedPreferences("googleEmail", Context.MODE_PRIVATE)
+//            with(sharedPreferences.edit()) {
+//                //   putString("googleid", account.id)
+////        putString("user_display_name", account.displayName)
+//                putString("googleEmail", account.email)
+//                apply()
+//
+//            }
+//        }
 
 
 }
