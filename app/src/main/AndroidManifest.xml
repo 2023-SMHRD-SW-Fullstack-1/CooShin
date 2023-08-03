@@ -15,6 +15,7 @@
         android:theme="@style/Theme.Android"
         tools:targetApi="31">
         <activity
+<<<<<<< Updated upstream
             android:name=".IntroActivity"
             android:exported="true" >
             <intent-filter>
@@ -22,6 +23,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+=======
+            android:name=".Teacher.SearchTeacher_detailActivity"
+            android:exported="true" >
+
+>>>>>>> Stashed changes
         </activity>
         <activity
             android:name=".User.AddGosuActivity"
