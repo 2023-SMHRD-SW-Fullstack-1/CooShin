@@ -47,7 +47,9 @@ class CommunityCreateActivity : AppCompatActivity() {
 
         val databaseReference = FirebaseDatabase.getInstance().reference
         val spf = getSharedPreferences("mySPF", Context.MODE_PRIVATE)
+
         val storageReference = FirebaseStorage.getInstance().reference
+
 
 
 
