@@ -22,6 +22,7 @@ import com.smhrd.android.Chatting.ChattingRoomActivity
 import com.smhrd.android.Chatting.OnItemClickListener
 import com.smhrd.android.Data.DummyChatListVO
 import com.smhrd.android.Data.MemberIdVO
+import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
 
 class ChattingFragment : Fragment() {
@@ -40,21 +41,30 @@ class ChattingFragment : Fragment() {
                 if (list != null) {
                     for (i in 0 until list.size) {
                         var roomId = list[i]
-
                         chatRoomIdList.add(roomId)
 
-                        chatRoomList.add(
-                            DummyChatListVO(
-                                chatRoomIdList[i],
-                                null,
-                                "김신영",
-                                "오후 04:30",
-                                "광주광역시 북구",
-                                "레슨",
-                                "총 200,000원",
-                                "안녕하세요"
-                            )
-                        )
+                        // 선생님ID 추출
+                        val teacherId = (roomId!!.trim().split(" "))[2]
+
+                        db.getReference("teacherList").child(teacherId).get().addOnSuccessListener {
+                            val teacherInfo =
+                                it.getValue(object : GenericTypeIndicator<TeacherIdVO>() {})
+
+                            if (teacherInfo != null) {
+                                chatRoomList.add(
+                                    DummyChatListVO(
+                                        chatRoomIdList[i],
+                                        null,
+                                        teacherInfo.teacherName,
+                                        teacherInfo.teacherWorkTime,
+                                        teacherInfo.teacherCity,
+                                        teacherInfo.teacherService,
+                                        "총 200,000원",
+                                        "안녕하세요"
+                                    )
+                                )
+                            }
+                        }
                     }
 
                     // 데이터를 읽어오고 나서 어댑터 설정을 진행합니다.
