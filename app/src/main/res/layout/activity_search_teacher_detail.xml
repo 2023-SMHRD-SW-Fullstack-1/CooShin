@@ -151,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:backgroundTint="#ACABAB"
+                android:backgroundTint="#8EAFC9"
                 android:fontFamily="@font/ohmu"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
@@ -161,7 +161,7 @@
                 android:text="리뷰 보기"
                 android:textColor="#FFFEFE"
                 android:textSize="20dp"
-                app:cornerRadius="0dp"
+                app:cornerRadius="5dp"
                 app:layout_constraintEnd_toStartOf="@+id/btnTeacherInfo_detail"
                 app:layout_constraintStart_toEndOf="@+id/btnServiceInfo_detail"
                 app:layout_constraintTop_toBottomOf="@+id/tvTeacherLocate_detail" />
@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:backgroundTint="#ACABAB"
+                android:backgroundTint="#8EAFC9"
                 android:fontFamily="@font/ohmu"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
@@ -181,7 +181,7 @@
                 android:text="수업 정보"
                 android:textColor="#FFFEFE"
                 android:textSize="20dp"
-                app:cornerRadius="0dp"
+                app:cornerRadius="5dp"
                 app:iconPadding="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btnReview_detail" />
@@ -191,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="30dp"
-                android:backgroundTint="#ACABAB"
+                android:backgroundTint="#8EAFC9"
                 android:fontFamily="@font/ohmu"
                 android:paddingLeft="10dp"
                 android:paddingTop="3dp"
@@ -201,7 +201,7 @@
                 android:text="코신 정보"
                 android:textColor="#FFFEFE"
                 android:textSize="20dp"
-                app:cornerRadius="0dp"
+                app:cornerRadius="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btnReview_detail" />
 
