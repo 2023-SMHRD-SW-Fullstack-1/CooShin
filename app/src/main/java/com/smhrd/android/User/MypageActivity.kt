@@ -168,18 +168,18 @@ class MypageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 마이페이지 찜한 고수 눌렀을때
+        // 마이페이지 찜한 코신 눌렀을때
         mypageBtn_likesGosu.setOnClickListener{
 
         }
 
-        // 마이페이지 고수 프로필 수정 눌렀을 때
+        // 마이페이지 코신 프로필 수정 눌렀을 때
         mypageBtn_changeGosu.setOnClickListener {
             val teacherReference = database.getReference("teacherList")
             if (memberId != null) { // memberId가 null이 아닐 때
                 teacherReference.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        Log.d("마이페이지 고수프로필수정 snapshot",snapshot.toString())
+                        Log.d("마이페이지 코신 프로필수정 snapshot",snapshot.toString())
                         if (snapshot.child(memberId).exists()) {
                             // memberId가 teacherList에 존재하는 경우
                             Log.d("memberId teacherList에 존재", snapshot.child(memberId).toString())
@@ -187,7 +187,7 @@ class MypageActivity : AppCompatActivity() {
                             startActivity(intent)
                         } else {
                             // memberId가 teacherList에 존재하지 않는 경우
-                            Toast.makeText(this@MypageActivity, "고수로 등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MypageActivity, "코신으로 등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                     override fun onCancelled(error: DatabaseError) {
@@ -200,7 +200,7 @@ class MypageActivity : AppCompatActivity() {
         }
 
 
-        //마이페이지 고수 등록 눌렀을때
+        //마이페이지 코신 등록 눌렀을때
         mypageBtn_addGosu.setOnClickListener {
             val teacherReference = database.getReference("teacherList")
             if (memberId != null) { //memberId가 null 아닐때
@@ -208,7 +208,7 @@ class MypageActivity : AppCompatActivity() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.child(memberId).exists()) {
                             // memberId가 teacherList에 존재하는 경우
-                            Toast.makeText(this@MypageActivity, "이미 등록된 고수입니다. 추가 등록은 불가능합니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MypageActivity, "이미 등록된 코신입니다. 추가 등록은 불가능합니다.", Toast.LENGTH_SHORT).show()
                         } else {
                             // memberId가 teacherList에 존재하지 않는 경우
                             val intent = Intent(this@MypageActivity, AddGosuActivity::class.java)

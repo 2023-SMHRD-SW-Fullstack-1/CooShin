@@ -61,7 +61,7 @@ class TeacherChangeInfoActivity : AppCompatActivity() {
         }
 
 
-        //화면에 고수 정보 띄우기
+        //화면에 코신 정보 띄우기
         // memberId가 null이 아닐 때
         if (memberId != null) {
             teacherReference.child(memberId)
@@ -109,8 +109,8 @@ class TeacherChangeInfoActivity : AppCompatActivity() {
                 teacherReference.child(memberId).child("teacherService").setValue(updatedTeacherService)
                 teacherReference.child(memberId).child("teacherTelTime").setValue(updatedTeacherTelTime)
                 teacherReference.child(memberId).child("teacherWorkTime").setValue(updatedTeacherWorkTime)
-                Toast.makeText(applicationContext,"고수 프로필 수정 완료",Toast.LENGTH_SHORT).show()
-                Log.d("고수프로필수정완료", "고수프로필수정완료")
+                Toast.makeText(applicationContext,"코신 프로필 수정 완료",Toast.LENGTH_SHORT).show()
+                Log.d("코신프로필수정완료", "코신프로필수정완료")
 
                 val intent = Intent(this,MypageActivity::class.java)
                 startActivity(intent)
