@@ -26,7 +26,7 @@ class SearchTeacherAdapter(var context: Context, var template : Int, var data : 
 
     override fun onBindViewHolder(holder: SearchTeacherHolder, position: Int) {
         holder.tvOneLine.text = data.get(position).teacherOneLine
-        holder.tvTeacherGender.text = data[position].teacherGender.toString()
+        holder.tvTeacherGender.text = data[position].teacherService
         holder.tvTeacherName.text = data[position].teacherName
 
         val database = Firebase.database

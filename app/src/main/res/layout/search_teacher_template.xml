@@ -47,12 +47,14 @@
         android:id="@+id/tvTeacherGender_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/textview_border"
+        android:padding="3dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/tvTeacherName_search"
         app:layout_constraintStart_toEndOf="@+id/tvTeacherName_search"
         app:layout_constraintTop_toTopOf="@+id/tvTeacherName_search"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.51" />
 
     <ImageView
         android:id="@+id/imageView3"
