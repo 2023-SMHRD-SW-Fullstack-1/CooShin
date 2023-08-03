@@ -60,7 +60,7 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         var data = ArrayList<ChatVO>()
 
-        var adapter = ChatAdapter(applicationContext, data)
+        var adapter = ChatAdapter(applicationContext, data, userId)
 
         rv.layoutManager = LinearLayoutManager(applicationContext)
         rv.adapter = adapter
