@@ -13,14 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.92" />
+        app:layout_constraintGuide_percent="0.85" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
@@ -40,9 +40,9 @@
         android:id="@+id/infochangeTv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="회원 정보 수정"
-        android:textSize="20dp"
+        android:fontFamily="@font/ohmu"
+        android:text="회원수정"
+        android:textSize="40dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
@@ -50,30 +50,33 @@
 
     <EditText
         android:id="@+id/infochangeEt_updatePw"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="비밀번호를 입력하세요."
         android:inputType="textPassword"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.294"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/infochangeTv_updatePw"
         app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updatePw" />
 
     <TextView
         android:id="@+id/infochangeTv_updatePw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PW"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.126"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/ohmu"
+        android:text="비밀번호"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeTv_title" />
 
     <EditText
         android:id="@+id/infochangeEt_updateTel"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="휴대폰번호를 입력하세요."
         android:inputType="phone"
@@ -84,23 +87,30 @@
 
     <Button
         android:id="@+id/infochangeBtn_update"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="168dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#ACABAB"
+        android:fontFamily="@font/ohmu"
+        android:minHeight="50dp"
+        android:shadowRadius="5"
         android:text="회원정보수정"
-        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        android:textColor="#FFFEFE"
+        android:textSize="20dp"
+        app:cornerRadius="0dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/guideline8" />
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/infochangeEt_updateNick" />
 
     <TextView
         android:id="@+id/infochangeTv_updateTel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/ohmu"
         android:text="전화번호"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.129"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeEt_updatePw" />
 
@@ -109,21 +119,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:fontFamily="@font/ohmu"
         android:text="닉네임"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.13"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeEt_updateTel" />
 
     <EditText
         android:id="@+id/infochangeEt_updateNick"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="닉네임을 입력하세요."
         android:inputType="text"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.294"
+        app:layout_constraintHorizontal_bias="0.316"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeTv_updateNick" />
 
@@ -131,12 +143,19 @@
         android:id="@+id/infochangeBtn_deleteMem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="28dp"
-        android:text="회원계정탈퇴"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/ohmu"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:shadowRadius="5"
+        android:text="계정탈퇴"
+        android:textColor="#1B1B1B"
+        android:textSize="15dp"
+        app:cornerRadius="0dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toBottomOf="@+id/infochangeBtn_update" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

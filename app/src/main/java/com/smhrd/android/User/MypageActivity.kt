@@ -1,5 +1,6 @@
 package com.smhrd.android.User
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -33,6 +35,7 @@ class MypageActivity : AppCompatActivity() {
     lateinit var mypageBtn_infoChange: Button
     lateinit var mypageBtn_likesGosu: Button
     lateinit var mypageBtn_addGosu : Button
+    lateinit var mypageBtn_changeGosu : Button
    // val STORAGE_CODE = 1000
     companion object {
         const val STORAGE_REQUEST_CODE = 100
@@ -42,10 +45,11 @@ class MypageActivity : AppCompatActivity() {
     //이미지 불러오기
     override fun onResume() {
         super.onResume()
-
         // SharedPreferences에서 이미지 URL 가져오기
         val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         val imageUrl = sharedPreferences.getString("memberImg", null)
+
+        Log.d("imageUrl마이페이지", imageUrl.toString())
 
         // 저장된 이미지가 있다면 프로필 이미지로 설정
         if (!imageUrl.isNullOrEmpty()) {
@@ -87,6 +91,7 @@ class MypageActivity : AppCompatActivity() {
 
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mypage)
@@ -97,6 +102,7 @@ class MypageActivity : AppCompatActivity() {
         mypageBtn_infoChange = findViewById(R.id.mypageBtn_infoChange)
         mypageBtn_likesGosu = findViewById(R.id.mypageBtn_likesGosu)
         mypageBtn_addGosu = findViewById(R.id.mypageBtn_addGosu)
+        mypageBtn_changeGosu = findViewById(R.id.mypageBtn_changeGosu)
 
         //firebase에서 데이터를 가져오기 위함!
         val database = FirebaseDatabase.getInstance()
@@ -104,17 +110,38 @@ class MypageActivity : AppCompatActivity() {
 
         val memberId = getMemberInfoFromSpf()
         Log.d("memberID",memberId.toString())
+
+        // SharedPreferences에서 이미지 URL 가져오기
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        val imageUrl = sharedPreferences.getString("memberImg", null)
         if (memberId != null) {
             reference.child(memberId).child("member").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val memberNick = dataSnapshot.child("memberNick").getValue(String::class.java)
                     Log.d("memberNick", memberNick.toString())
 
-            // memberNick이 null이 아니라면 화면에 회원정보 띄우기
+                // memberNick이 null이 아니라면 화면에 닉네임 띄우기
                     if (memberNick != null) {
                         mypageTv_nick.text= "${memberNick}고객님"
                     }
+
+                    // Firebase에서 이미지 URL 가져오기
+                    val memberImgUrl = dataSnapshot.child("memberImg").getValue(String::class.java)
+
+                    // memberImgUrl이 null이 아니고 SharedPreferences에 저장된 값과 다른 경우,
+                    // Glide를 사용하여 이미지 뷰에 적용하고 SharedPreferences에 URL을 저장
+                    if (memberImgUrl != null && memberImgUrl != imageUrl) {
+                        Glide.with(this@MypageActivity)
+                            .load(memberImgUrl)
+                            .into(mypageIv_img)
+
+                        val sharedPreferencesEditor = sharedPreferences.edit()
+                        sharedPreferencesEditor.putString("memberImg", memberImgUrl)
+                        sharedPreferencesEditor.apply()
+                    }
+
                 }
+
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("데이터베이스오류", error.toString())
@@ -123,7 +150,7 @@ class MypageActivity : AppCompatActivity() {
         }
 
 
-// 마이페이지 프로필 이미지 버튼 눌렀을 때
+        // 마이페이지 프로필 이미지 버튼 눌렀을 때
         mypageBtn_img.setOnClickListener{
 
             val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -135,22 +162,66 @@ class MypageActivity : AppCompatActivity() {
 
         }
 
-// 마이페이지 회원정보수정 눌렀을때
+        // 마이페이지 회원정보수정 눌렀을때
         mypageBtn_infoChange.setOnClickListener{
             val intent = Intent(this@MypageActivity, InfoChangeActivity::class.java)
             startActivity(intent)
         }
 
-// 마이페이지 찜한 고수 눌렀을때
+        // 마이페이지 찜한 고수 눌렀을때
         mypageBtn_likesGosu.setOnClickListener{
 
         }
 
-//마이페이지 고수 등록 눌렀을때
-        mypageBtn_addGosu.setOnClickListener{
-            val intent = Intent(this@MypageActivity, AddGosuActivity::class.java)
-            startActivity(intent)
+        // 마이페이지 고수 프로필 수정 눌렀을 때
+        mypageBtn_changeGosu.setOnClickListener {
+            val teacherReference = database.getReference("teacherList")
+            if (memberId != null) { // memberId가 null이 아닐 때
+                teacherReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        Log.d("마이페이지 고수프로필수정 snapshot",snapshot.toString())
+                        if (snapshot.child(memberId).exists()) {
+                            // memberId가 teacherList에 존재하는 경우
+                            Log.d("memberId teacherList에 존재", snapshot.child(memberId).toString())
+                            val intent = Intent(this@MypageActivity, TeacherChangeInfoActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            // memberId가 teacherList에 존재하지 않는 경우
+                            Toast.makeText(this@MypageActivity, "고수로 등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("Database Error", error.toString())
+                    }
+                })
+            } else {
+                Toast.makeText(this@MypageActivity, "로그인 정보를 확인할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
+
+
+        //마이페이지 고수 등록 눌렀을때
+        mypageBtn_addGosu.setOnClickListener {
+            val teacherReference = database.getReference("teacherList")
+            if (memberId != null) { //memberId가 null 아닐때
+                teacherReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.child(memberId).exists()) {
+                            // memberId가 teacherList에 존재하는 경우
+                            Toast.makeText(this@MypageActivity, "이미 등록된 고수입니다. 추가 등록은 불가능합니다.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // memberId가 teacherList에 존재하지 않는 경우
+                            val intent = Intent(this@MypageActivity, AddGosuActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("Database Error", error.toString())
+                    }
+                })
+            }
+        }
+
     }
 
 
