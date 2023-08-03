@@ -58,11 +58,13 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:text="TextView"
+        android:textSize="21sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toStartOf="@+id/guideline19"
         app:layout_constraintStart_toEndOf="@+id/ibtnToBack_detail"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintVertical_bias="0.44" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -124,8 +126,8 @@
                 android:layout_marginTop="10dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toStartOf="@+id/guideline24"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/tvTeacherOneLine_detail"
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintStart_toStartOf="@+id/guideline23"
                 app:layout_constraintTop_toBottomOf="@+id/tvTeacherOneLine_detail" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -193,6 +195,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="50dp"
                 android:text="수업 상세 설명"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnReview_detail" />
 
@@ -249,6 +253,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:text="리뷰"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/textView21"
                 app:layout_constraintTop_toBottomOf="@+id/tvTeacherContent_detail" />
 
@@ -339,6 +345,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/cardView3"
                 app:layout_constraintStart_toStartOf="@+id/cardView3"
                 app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -381,15 +388,6 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1500dp"
-                android:text="TextView"
-                app:layout_constraintTop_toBottomOf="@+id/tvTeacherLocate_detail"
-                tools:layout_editor_absoluteX="204dp" />
-
-            <TextView
                 android:id="@+id/tvToReviewList_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -425,10 +423,19 @@
     <Button
         android:id="@+id/btnSendTalk_detail"
         android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:text="Button"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#6EBFE4"
+        android:paddingLeft="0sp"
+        android:paddingTop="0sp"
+        android:paddingRight="0sp"
+        android:paddingBottom="0sp"
+        android:text="📰 상담하기"
+        android:textColor="#4A4944"
+        android:textSize="20sp"
+        app:cornerRadius="3dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toStartOf="@+id/guideline19"
+        app:layout_constraintStart_toStartOf="@+id/guideline18"
         app:layout_constraintTop_toTopOf="@+id/view2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
