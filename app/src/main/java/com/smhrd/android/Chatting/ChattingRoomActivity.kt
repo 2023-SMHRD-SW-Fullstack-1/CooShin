@@ -5,7 +5,6 @@ import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
@@ -13,12 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.smhrd.android.Data.ChatVO
-import com.smhrd.android.Data.DummyChatItemVO
 import com.smhrd.android.R
+import java.util.ArrayList
 import java.util.Date
 import java.util.Locale
 
@@ -45,52 +45,81 @@ class ChattingRoomActivity : AppCompatActivity() {
         var roomId = intent.getStringExtra("roomId")
 
         // 상대방ID 추출
-        val chatUserId = (roomId!!.trim().split(" "))[2]
+        val teacherId = (roomId!!.trim().split(" "))[2]
 
-        // DB에 roomId가 없으면 저장
-        checkAndSaveRoomId(userId, roomId)
-        checkAndSaveRoomId(chatUserId, roomId)
+        val loginUserChatRoomRef =
+            database.getReference("memberList").child(userId).child("chatRoom")
+        val teacherChatRoomRef =
+            database.getReference("memberList").child(teacherId).child("chatRoom")
+        val roomListRef = database.getReference("roomList")
 
-        val chatInputRef = database.getReference("roomList")
+        // member에 roomId가 없으면 저장
+        checkAndSaveRoomId(loginUserChatRoomRef, roomId)
+        checkAndSaveRoomId(teacherChatRoomRef, roomId)
+        // roomList에 roomId가 없으면 저장
+        var key: String? = ""
+        roomListRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    var checkRoomId = false
+                    for (i in snapshot.children) {
+                        val dbRoomId = i.getValue(String::class.java)
+                        if (dbRoomId == roomId) {
+                            checkRoomId = true
+                            key = i.key
+                        }
+                    }
+                    if (!checkRoomId) {
+                        var roomIdData = ArrayList<String>()
+                        roomListRef.push().setValue(roomId)
+                        roomListRef.addChildEventListener(RoomListChildEvent(roomIdData))
+                    } else {
+                        println("이미 등록된 roomId입니다.")
+                    }
+                }
+            }
 
-        var data = ArrayList<ChatVO>()
+            override fun onCancelled(databaseError: DatabaseError) {
+                println("roomId 조회에 실패했습니다: ${databaseError.message}")
+            }
+        })
 
-        var adapter = ChatAdapter(applicationContext, data)
-
-        rv.layoutManager = LinearLayoutManager(applicationContext)
-        rv.adapter = adapter
-
-        btnSend.setOnClickListener {
-            var msgTime = chatInputTime()
-            var msgContent = edtMsg.text.toString()
-
-            chatInputRef.push().setValue(ChatVO(userId, msgContent, msgTime))
-
-            rv.smoothScrollToPosition(data.size - 1)
-
-            edtMsg.text.clear()
-        }
-        chatInputRef.addChildEventListener(ChatChildEvent(data, adapter))
+//        var data = ArrayList<ChatVO>()
+//
+//        var adapter = ChatAdapter(applicationContext, data)
+//
+//        rv.layoutManager = LinearLayoutManager(applicationContext)
+//        rv.adapter = adapter
+//
+//        btnSend.setOnClickListener {
+//            var msgTime = chatInputTime()
+//            var msgContent = edtMsg.text.toString()
+//
+//            roomListRef.push().setValue(ChatVO(userId, msgContent, msgTime))
+//
+//            rv.smoothScrollToPosition(data.size - 1)
+//
+//            edtMsg.text.clear()
+//        }
+//        chatInputRef.addChildEventListener(ChatChildEvent(data, adapter))
     }
 
-    fun checkAndSaveRoomId(userId: String, roomId: String) {
-        val chatRoomRef = database.getReference("memberList").child(userId).child("chatRoom")
-
-        chatRoomRef.addListenerForSingleValueEvent(object : ValueEventListener {
+    fun checkAndSaveRoomId(ref: DatabaseReference, roomId: String) {
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val chatRoomList = mutableListOf<String>()
+                val roomIdList = mutableListOf<String>()
 
                 if (snapshot.exists()) {
                     for (i in snapshot.children) {
-                        val chatRoomId = i.getValue(String::class.java)
-                        chatRoomId?.let {
-                            chatRoomList.add(it)
+                        val roomId = i.getValue(String::class.java)
+                        roomId?.let {
+                            roomIdList.add(it)
                         }
                     }
                 }
-                if (!chatRoomList.contains(roomId)) {
-                    chatRoomList.add(roomId)
-                    chatRoomRef.setValue(chatRoomList).addOnSuccessListener {
+                if (!roomIdList.contains(roomId)) {
+                    roomIdList.add(roomId)
+                    ref.setValue(roomIdList).addOnSuccessListener {
                         println("roomId가 저장되었습니다.")
                     }.addOnFailureListener {
                         println("roomId 저장에 실패했습니다: ${it.message}")
