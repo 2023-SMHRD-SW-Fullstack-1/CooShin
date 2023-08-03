@@ -4,10 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.smhrd.android.Data.ChatVO
 import com.smhrd.android.Data.DummyChatItemVO
 import com.smhrd.android.R
 
-class ChatAdapter(var context: Context, var data: ArrayList<DummyChatItemVO>) :
+class ChatAdapter(var context: Context, var data: ArrayList<ChatVO>) :
     Adapter<ChatViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         return ChatViewHolder(
@@ -20,7 +21,7 @@ class ChatAdapter(var context: Context, var data: ArrayList<DummyChatItemVO>) :
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        holder.tvMsg.text = data.get(position).tvMsg
-        holder.tvDate.text = data.get(position).tvDate
+        holder.tvMsg.text = data.get(position).chatContent
+        holder.tvDate.text = data.get(position).chatTime
     }
 }

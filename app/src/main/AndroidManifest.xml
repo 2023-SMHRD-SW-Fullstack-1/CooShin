@@ -63,6 +63,9 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"/>
+        <activity
+            android:name=".Teacher.SearchTeacher_detailActivity"
+            android:exported="false"/>
 
     </application>
 
