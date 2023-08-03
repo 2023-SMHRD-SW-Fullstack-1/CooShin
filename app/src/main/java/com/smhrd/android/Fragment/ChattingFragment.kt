@@ -67,6 +67,10 @@ class ChattingFragment : Fragment() {
 
     // RecyclerView 어댑터 설정
     private fun setupRecyclerView(chatRoomList: ArrayList<DummyChatListVO>) {
+        if (!isAdded) {
+            return
+        }
+
         val adapter =
             ChatListAdapter(requireActivity(), chatRoomList, object : OnItemClickListener {
                 override fun onItemClick(position: Int) {
