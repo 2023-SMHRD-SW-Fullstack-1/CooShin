@@ -52,10 +52,6 @@ class SearchTeacherAdapter(var context: Context, var template : Int, var data : 
         )
 
 
-
-
-
-
         //리뷰개수 확인하기
         data[position].reviews?.let{ holder.tvReviewNum.text = "( ${it.size.toString()} )"}?: run{holder.tvReviewNum.text = "( 0 )"}
 
@@ -73,18 +69,8 @@ class SearchTeacherAdapter(var context: Context, var template : Int, var data : 
         }?: run {
             holder.tvStarAvg.text = starAvg.toString()
         }
-//        holder.ivTeacherImg.resources =
-
-        //화면전환이 필요한가?
-//        //Activity가 아닌데 화면전환
-//        //Flag
-//        var it = Intent()
-//        it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        //mainACTIVIY 화면 정보를 생성자의 변수로 호출
-//        context.startActivity(it!!)
     }
-}
-
-fun findKeyByValue(map: Map<String, Any>, value: Any): String? {
-    return map.entries.find { it.value == value }?.key
+    fun findKeyByValue(map: Map<String, Any>, value: Any): String? {
+        return map.entries.find { it.value == value }?.key
+    }
 }
