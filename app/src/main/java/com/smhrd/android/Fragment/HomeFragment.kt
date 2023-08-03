@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
+import com.smhrd.android.Data.MemberVO
 import com.smhrd.android.Data.ReviewVO
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
@@ -84,22 +85,12 @@ class HomeFragment : Fragment() {
         var boardList = ArrayList<BoardIdVO>()
         var review = ArrayList<ReviewVO>()
 
-        boardList.add(BoardIdVO("제목1", "내용1", "작성자1", "20230802", "", 18, 3, null ))
-        boardList.add(BoardIdVO("제목2", "내용2", "작성자2", "20230805", "", 8, 1, null ))
-        boardList.add(BoardIdVO("제목3", "내용3", "작성자3", "20230807", "", 28, 15, null ))
 
-
-//        memberList.add(MemberVO("asdf", "01000000000", "asdf"))
-//        memberList.add(MemberVO("qwer", "01000000000", "qwer"))
-//        memberList.add(MemberVO("zxcv", "01000000000", "zxcv"))
-        review.add(ReviewVO("qwer", "좋아요", "", "20230802", 5))
-        review.add(ReviewVO("asdf", "짱", "", "20230802", 2))
-        review.add(ReviewVO("zxcv", "최고", "", "20230802", 3))
 
         //인기있는 고수 출력
         rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-//        var adapter = HomeGosuAdapter(memberList, review, requireContext())
-//        rvPopularGosu.adapter = adapter
+        var adapter = HomeGosuAdapter(memberList, review, requireContext())
+        rvPopularGosu.adapter = adapter
 
 
 
