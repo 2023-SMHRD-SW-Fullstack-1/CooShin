@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.smhrd.android.Data.CommentVO
 import com.smhrd.android.R
 
-class CommentAdapter(var context : Context, var data : ArrayList<CommentVO>):
+class CommentAdapter(var context: ArrayList<CommentVO>,private var data: ArrayList<CommentVO>):
     RecyclerView.Adapter<CommentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -27,6 +27,7 @@ class CommentAdapter(var context : Context, var data : ArrayList<CommentVO>):
         //type이 CharSequence이기 때문에 .toString() 붙여줌
         holder.tv_writer.text = holder.tv_writer.toString()
         holder.tv_comment.text = holder.tv_comment.toString()
-
     }
+
+
 }
