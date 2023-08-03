@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -22,25 +21,24 @@ import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.R
 import com.smhrd.android.Teacher.SearchTeacherOnClick
 import com.smhrd.android.Teacher.SearchTeacher_detailActivity
-import org.json.JSONArray
-import org.json.JSONObject
 
 class SearchGosuFragment : Fragment() {
 
     lateinit var citySpinner: Spinner
     lateinit var sigunguSpinner: Spinner
-    lateinit var rvTeacherList : RecyclerView
-    lateinit var serviceSpinner :Spinner
+    lateinit var rvTeacherList: RecyclerView
+    lateinit var serviceSpinner: Spinner
     val gson = Gson()
     var data = ArrayList<TeacherIdVO>()
-    var sigunguId : Int = 0
+    var sigunguId: Int = 0
     val database = Firebase.database
-    var cityValue : String? = null
-    var sigunguValue : String? = null
-    var serviceValue : String? = null
+    var cityValue: String? = null
+    var sigunguValue: String? = null
+    var serviceValue: String? = null
 
-    lateinit var dataMap : Map<String, TeacherIdVO>
-
+    companion object {
+    lateinit var dataMap_searchGosu: Map<String, TeacherIdVO>
+}
     fun reLoadRV(service : String? = null, city : String? = null, sigungu : String? = null){
         var result = data
 
@@ -53,21 +51,21 @@ class SearchGosuFragment : Fragment() {
         var rvAdapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, result,  object : SearchTeacherOnClick {
             override fun onItemClick(position: Int) {
                 var intent = Intent(requireActivity(), SearchTeacher_detailActivity::class.java)
-                var selectedTeacherId = findKeyByValue(dataMap, data[position])
+                var selectedTeacherId = findKeyByValue(dataMap_searchGosu, data[position])
                 Log.d("ss", data[position].toString())
 
                 //데이터 가공 해서 전송
                 intent.putExtra("teacherId", selectedTeacherId.toString())
-                intent.putExtra("teacherName", dataMap[selectedTeacherId.toString()]!!.teacherName)
-                intent.putExtra("teacherContent", dataMap[selectedTeacherId.toString()]!!.teacherContent)
-                intent.putExtra("teacherOneLine", dataMap[selectedTeacherId.toString()]!!.teacherOneLine)
-                intent.putExtra("teacherGender", dataMap[selectedTeacherId.toString()]!!.teacherGender)
-                intent.putExtra("teacherService", dataMap[selectedTeacherId.toString()]!!.teacherService)
-                intent.putExtra("teacherCity", dataMap[selectedTeacherId.toString()]!!.teacherCity)
-                intent.putExtra("teacherTelTime", dataMap[selectedTeacherId.toString()]!!.teacherTelTime)
-                intent.putExtra("teacherWorkTime", dataMap[selectedTeacherId.toString()]!!.teacherWorkTime)
-                intent.putExtra("teacherLikes", dataMap[selectedTeacherId.toString()]!!.teacherLikes)
-                intent.putExtra("reviews", dataMap[selectedTeacherId.toString()]!!.reviews)
+                intent.putExtra("teacherName", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherName)
+                intent.putExtra("teacherContent", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherContent)
+                intent.putExtra("teacherOneLine", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherOneLine)
+                intent.putExtra("teacherGender", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherGender)
+                intent.putExtra("teacherService", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherService)
+                intent.putExtra("teacherCity", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherCity)
+                intent.putExtra("teacherTelTime", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherTelTime)
+                intent.putExtra("teacherWorkTime", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherWorkTime)
+                intent.putExtra("teacherLikes", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherLikes)
+                intent.putExtra("reviews", dataMap_searchGosu[selectedTeacherId.toString()]!!.reviews)
                 startActivity(intent)
             }
         })
@@ -129,16 +127,17 @@ class SearchGosuFragment : Fragment() {
         //리싸이클러 뷰 data에 teacheridVO넣어줄 것
         rvTeacherList = views.findViewById(R.id.rvTeacherList_search)
 
+
         requireActivity().runOnUiThread {
             database.getReference("teacherList").get().addOnSuccessListener{
                 var jsonResult = gson.toJson(it.getValue())
 
                 // JSON 문자열을 Map으로 파싱
                 val mapType = object : TypeToken<Map<String, TeacherIdVO>>() {}.type
-                dataMap = gson.fromJson(jsonResult, mapType)
+                dataMap_searchGosu = gson.fromJson(jsonResult, mapType)
 
                 // 모든 key값들을 추출하여 출력
-                for (value in dataMap.values) {
+                for (value in dataMap_searchGosu.values) {
                     //값들을 전부 data에 저장
                     data.add(value)
                     Log.d("r", data.get(0).teacherOneLine)
@@ -147,21 +146,21 @@ class SearchGosuFragment : Fragment() {
                 var rvAdapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, data,  object : SearchTeacherOnClick {
                     override fun onItemClick(position: Int) {
                         var intent = Intent(requireActivity(), SearchTeacher_detailActivity::class.java)
-                        var selectedTeacherId = findKeyByValue(dataMap, data[position])
+                        var selectedTeacherId = findKeyByValue(dataMap_searchGosu, data[position])
                         Log.d("ss", data[position].toString())
 
                         //데이터 가공 해서 전송
                         intent.putExtra("teacherId", selectedTeacherId.toString())
-                        intent.putExtra("teacherName", dataMap[selectedTeacherId.toString()]!!.teacherName)
-                        intent.putExtra("teacherContent", dataMap[selectedTeacherId.toString()]!!.teacherContent)
-                        intent.putExtra("teacherOneLine", dataMap[selectedTeacherId.toString()]!!.teacherOneLine)
-                        intent.putExtra("teacherGender", dataMap[selectedTeacherId.toString()]!!.teacherGender)
-                        intent.putExtra("teacherService", dataMap[selectedTeacherId.toString()]!!.teacherService)
-                        intent.putExtra("teacherCity", dataMap[selectedTeacherId.toString()]!!.teacherCity)
-                        intent.putExtra("teacherTelTime", dataMap[selectedTeacherId.toString()]!!.teacherTelTime)
-                        intent.putExtra("teacherWorkTime", dataMap[selectedTeacherId.toString()]!!.teacherWorkTime)
-                        intent.putExtra("teacherLikes", dataMap[selectedTeacherId.toString()]!!.teacherLikes)
-                        intent.putExtra("reviews", dataMap[selectedTeacherId.toString()]!!.reviews)
+                        intent.putExtra("teacherName", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherName)
+                        intent.putExtra("teacherContent", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherContent)
+                        intent.putExtra("teacherOneLine", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherOneLine)
+                        intent.putExtra("teacherGender", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherGender)
+                        intent.putExtra("teacherService", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherService)
+                        intent.putExtra("teacherCity", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherCity)
+                        intent.putExtra("teacherTelTime", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherTelTime)
+                        intent.putExtra("teacherWorkTime", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherWorkTime)
+                        intent.putExtra("teacherLikes", dataMap_searchGosu[selectedTeacherId.toString()]!!.teacherLikes)
+                        intent.putExtra("reviews", dataMap_searchGosu[selectedTeacherId.toString()]!!.reviews)
                         startActivity(intent)
                     }
                 })

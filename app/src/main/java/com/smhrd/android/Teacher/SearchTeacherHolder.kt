@@ -15,6 +15,7 @@ class SearchTeacherHolder(itemView : View, private val onItemClickListener : Sea
     var ivTeacherImg : ImageView
     var tvReviewNum : TextView
 
+
     init {
         tvTeacherName =itemView.findViewById(R.id.tvTeacherName_search)
         tvOneLine =itemView.findViewById(R.id.tvOneLine_search)

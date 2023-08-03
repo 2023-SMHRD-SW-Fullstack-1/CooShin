@@ -113,9 +113,9 @@
                 android:id="@+id/imageView8"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginEnd="2dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tvTeacherLocate_detail"
                 app:layout_constraintEnd_toStartOf="@+id/tvTeacherLocate_detail"
-                app:layout_constraintStart_toStartOf="@+id/guideline23"
                 app:layout_constraintTop_toTopOf="@+id/tvTeacherLocate_detail"
                 app:srcCompat="@drawable/gps_detail" />
 

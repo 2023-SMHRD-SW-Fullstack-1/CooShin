@@ -9,6 +9,13 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.values
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Chatting.ChattingRoomActivity
@@ -95,6 +102,30 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         tvTeacherLocate.text = teacherCity
         tvTelTime.text = tvTelTime.text.toString() + " " + teacherTelTime
         tvWorkTime.text = tvWorkTime.text.toString() + " " + teacherWorkTime
+
+
+        val database = Firebase.database
+
+        //코신 이미지 불러오기
+        var imageUrl :String? = null
+
+        database.getReference("memberList").child(teacherId!!).child("member").child("memberImg").addListenerForSingleValueEvent(
+            object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    imageUrl = snapshot.getValue(String::class.java)
+                    if (!imageUrl.isNullOrEmpty()) {
+                        Glide.with(this@SearchTeacher_detailActivity)
+                            .load(imageUrl)
+                            .into(ivTeacherImage)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            }
+        )
+
 
 
         //뒤로가기 버튼
