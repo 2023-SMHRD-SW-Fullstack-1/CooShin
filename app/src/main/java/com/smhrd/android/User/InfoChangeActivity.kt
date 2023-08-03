@@ -27,6 +27,7 @@ class InfoChangeActivity : AppCompatActivity() {
     lateinit var infochangeEt_updateTel: EditText
     lateinit var infochangeEt_updateNick: EditText
     lateinit var infochangeBtn_update: Button
+    lateinit var infochangeBtn_deleteMem : Button
     val database = Firebase.database
 
     @SuppressLint("MissingInflatedId")
@@ -37,11 +38,13 @@ class InfoChangeActivity : AppCompatActivity() {
         infochangeEt_updateTel = findViewById(R.id.infochangeEt_updateTel)
         infochangeEt_updateNick = findViewById(R.id.infochangeEt_updateNick)
         infochangeBtn_update = findViewById(R.id.infochangeBtn_update)
+        infochangeBtn_deleteMem = findViewById(R.id.infochangeBtn_deleteMem)
 
         //firebase에서 데이터를 가져오기 위함!
         val database = FirebaseDatabase.getInstance()
         val reference = database.getReference("memberList")
 
+        //화면 나올 때 회원정보 바로 보이게 하기
         val memberId = getMemberInfoFromSpf()
         if (memberId != null) {
             reference.child(memberId).addListenerForSingleValueEvent(object : ValueEventListener {
@@ -95,6 +98,10 @@ class InfoChangeActivity : AppCompatActivity() {
 
                 Toast.makeText(applicationContext, "회원 정보 변경 실패: memberId 없음", Toast.LENGTH_SHORT).show()
             }
+        }
+        //회원탈퇴 버튼 눌렀을때
+        infochangeBtn_deleteMem.setOnClickListener {
+
         }
 
     }
