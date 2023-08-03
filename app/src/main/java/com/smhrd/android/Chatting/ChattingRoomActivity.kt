@@ -1,11 +1,11 @@
 package com.smhrd.android.Chatting
 
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.smhrd.android.CreateReviewActivity
 import com.smhrd.android.Data.ChatVO
 import com.smhrd.android.R
 import java.util.ArrayList
@@ -28,6 +29,7 @@ class ChattingRoomActivity : AppCompatActivity() {
     lateinit var rv: RecyclerView
     lateinit var edtMsg: EditText
     lateinit var btnSend: Button
+    lateinit var btnCreateReview: Button
 
     val database = Firebase.database
 
@@ -39,6 +41,7 @@ class ChattingRoomActivity : AppCompatActivity() {
         rv = findViewById(R.id.rv)
         btnSend = findViewById(R.id.btnSend)
         edtMsg = findViewById(R.id.edtMsg)
+        btnCreateReview = findViewById(R.id.btnCreateReview)
 
         var intent = getIntent()
 
@@ -73,13 +76,19 @@ class ChattingRoomActivity : AppCompatActivity() {
 
             roomListRef.child(roomId).push().setValue(ChatVO(userId, msgContent, msgTime))
 
-            if (data.size >= 1) {
+            if (data.size > 0) {
                 rv.smoothScrollToPosition(data.size - 1)
             }
 
             edtMsg.text.clear()
         }
         roomListRef.child(roomId).addChildEventListener(ChatChildEvent(data, adapter))
+
+        btnCreateReview.setOnClickListener {
+            intent = Intent(this, CreateReviewActivity::class.java)
+            intent.putExtra("teacherId", teacherId)
+            startActivity(intent)
+        }
     }
 
     fun checkAndSaveRoomId(ref: DatabaseReference, roomId: String) {
