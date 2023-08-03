@@ -65,11 +65,10 @@ class ChattingFragment : Fragment() {
                                     )
                                 )
                             }
+                            // 데이터를 읽어오고 나서 어댑터 설정을 진행합니다.
+                            setupRecyclerView(chatRoomList)
                         }
                     }
-
-                    // 데이터를 읽어오고 나서 어댑터 설정을 진행합니다.
-                    setupRecyclerView(chatRoomList)
                 }
             }.addOnFailureListener { e ->
                 Log.e("firebase", "Error getting data", e)
