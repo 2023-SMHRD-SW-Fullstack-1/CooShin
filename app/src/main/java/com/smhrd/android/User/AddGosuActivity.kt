@@ -8,9 +8,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.smhrd.android.R
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.MainActivity
 
@@ -25,6 +30,7 @@ class AddGosuActivity : AppCompatActivity() {
     lateinit var addteacherEt_teltime : EditText
     lateinit var addteacherEt_worktime : EditText
     lateinit var addteacherBtn_add : Button
+    lateinit var addteacherIv_img : ImageView
 
 
     @SuppressLint("MissingInflatedId", "SuspiciousIndentation")
@@ -32,21 +38,51 @@ class AddGosuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_gosu)
 
-        addteacherEt_name = findViewById(R.id.addteacherEt_name)
-        addteacherEt_content = findViewById(R.id.addteacherEt_content)
-        addteacherEt_oneline = findViewById(R.id.addteacherEt_oneline)
-        addteacherEt_gender = findViewById(R.id.addteacherEt_gender)
-        addteacherEt_service = findViewById(R.id.addteacherEt_service)
-        addteacherEt_city = findViewById(R.id.addteacherEt_city)
-        addteacherEt_teltime = findViewById(R.id.addteacherEt_teltime)
-        addteacherEt_worktime = findViewById(R.id.addteacherEt_worktime)
-        addteacherBtn_add = findViewById(R.id.addteacherBtn_add)
+        addteacherEt_name = findViewById(R.id.changeteacherEt_name)
+        addteacherEt_content = findViewById(R.id.changeteacherEt_content)
+        addteacherEt_oneline = findViewById(R.id.changeteacherEt_oneline)
+        addteacherEt_gender = findViewById(R.id.changeteacherEt_gender)
+        addteacherEt_service = findViewById(R.id.changeteacherEt_service)
+        addteacherEt_city = findViewById(R.id.changeteacherEt_city)
+        addteacherEt_teltime = findViewById(R.id.changeteacherEt_teltime)
+        addteacherEt_worktime = findViewById(R.id.changeteacherEt_worktime)
+        addteacherBtn_add = findViewById(R.id.changeteacherBtn_update)
+        addteacherIv_img = findViewById(R.id.changeteacherIv_img)
 
         //firebase에서 데이터를 가져오기 위함!
         val database = FirebaseDatabase.getInstance()
         val reference = database.getReference("memberList")
-
         val memberId = getMemberInfoFromSpf()
+
+        val imgRef = memberId?.let { reference.child(it).child("member").child("memberImg") }
+        Log.d("imgRef",imgRef.toString())
+
+        if (imgRef != null) {
+            imgRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        // memberId 안에 있는 memberImg가 있는 경우
+                        val imageUrl = snapshot.getValue(String::class.java)
+
+                        // 사용자가 등록한 이미지를 ImageView에 로드하기 위해서 Glide 라이브러리를 사용합니다.
+                        Glide.with(this@AddGosuActivity)
+                            .load(imageUrl)
+                            .into(addteacherIv_img)
+                    } else {
+                        // memberImg가 없는 경우 기본 이미지 로드
+                        Glide.with(this@AddGosuActivity)
+                            .load(R.drawable.defaultprofileimage) // 기본 이미지 (예를 들어, R.drawable.default_profile_image 로 변경하십시오.)
+                            .into(addteacherIv_img)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("Database Error", error.toString())
+                }
+            })
+        }
+
+
 
         //등록 버튼 눌렀을때
         addteacherBtn_add.setOnClickListener {
