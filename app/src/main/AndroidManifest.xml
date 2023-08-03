@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
         <activity
+        android:name=".Teacher.SearchTeacher_detailActivity"
+        android:exported="false" />
+        <activity
             android:name=".User.AddGosuActivity"
             android:exported="false" />
         <activity

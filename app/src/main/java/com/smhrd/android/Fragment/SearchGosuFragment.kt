@@ -39,7 +39,41 @@ class SearchGosuFragment : Fragment() {
     var sigunguValue : String? = null
     var serviceValue : String? = null
 
-    inner class reLoadRV(var service : String? = null, var city : String? = null, val sigungu : String? = null){
+    lateinit var dataMap : Map<String, TeacherIdVO>
+
+    fun reLoadRV(service : String? = null, city : String? = null, sigungu : String? = null){
+        var result = data
+
+
+        service?.let{result = result.filter{ value -> value.teacherService.contains(service)}.toCollection(ArrayList())}
+        city?.let{result = data.filter { value -> value.teacherService.contains(city) }.toCollection(ArrayList())}
+        sigungu?.let{result = data.filter { value -> value.teacherService.contains(sigungu) }.toCollection(ArrayList())}
+
+
+        var rvAdapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, result,  object : SearchTeacherOnClick {
+            override fun onItemClick(position: Int) {
+                var intent = Intent(requireActivity(), SearchTeacher_detailActivity::class.java)
+                var selectedTeacherId = findKeyByValue(dataMap, data[position])
+                Log.d("ss", data[position].toString())
+
+                //데이터 가공 해서 전송
+                intent.putExtra("teacherId", selectedTeacherId.toString())
+                intent.putExtra("teacherName", dataMap[selectedTeacherId.toString()]!!.teacherName)
+                intent.putExtra("teacherContent", dataMap[selectedTeacherId.toString()]!!.teacherContent)
+                intent.putExtra("teacherOneLine", dataMap[selectedTeacherId.toString()]!!.teacherOneLine)
+                intent.putExtra("teacherGender", dataMap[selectedTeacherId.toString()]!!.teacherGender)
+                intent.putExtra("teacherService", dataMap[selectedTeacherId.toString()]!!.teacherService)
+                intent.putExtra("teacherCity", dataMap[selectedTeacherId.toString()]!!.teacherCity)
+                intent.putExtra("teacherTelTime", dataMap[selectedTeacherId.toString()]!!.teacherTelTime)
+                intent.putExtra("teacherWorkTime", dataMap[selectedTeacherId.toString()]!!.teacherWorkTime)
+                intent.putExtra("teacherLikes", dataMap[selectedTeacherId.toString()]!!.teacherLikes)
+                intent.putExtra("reviews", dataMap[selectedTeacherId.toString()]!!.reviews)
+                startActivity(intent)
+            }
+        })
+        rvTeacherList.layoutManager = LinearLayoutManager(requireContext())
+        rvTeacherList.adapter = rvAdapter // 어댑터에 새로운 데이터 설정
+        rvAdapter.notifyDataSetChanged() // 어댑터에 변경 사항 알림
 
     }
 
@@ -75,7 +109,6 @@ class SearchGosuFragment : Fragment() {
         cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         citySpinner.adapter = cityAdapter
 
-        initAddressSpinner()
 
         //기본 시군구 ( 도시 선택 X)
         var sigunguAdapter = ArrayAdapter.createFromResource(
@@ -85,6 +118,8 @@ class SearchGosuFragment : Fragment() {
         )
         sigunguAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         sigunguSpinner.adapter = sigunguAdapter
+
+        initAddressSpinner()
         //===============================Spinner End=============================================
 
 
@@ -100,7 +135,7 @@ class SearchGosuFragment : Fragment() {
 
                 // JSON 문자열을 Map으로 파싱
                 val mapType = object : TypeToken<Map<String, TeacherIdVO>>() {}.type
-                val dataMap: Map<String, TeacherIdVO> = gson.fromJson(jsonResult, mapType)
+                dataMap = gson.fromJson(jsonResult, mapType)
 
                 // 모든 key값들을 추출하여 출력
                 for (value in dataMap.values) {
@@ -113,18 +148,29 @@ class SearchGosuFragment : Fragment() {
                     override fun onItemClick(position: Int) {
                         var intent = Intent(requireActivity(), SearchTeacher_detailActivity::class.java)
                         var selectedTeacherId = findKeyByValue(dataMap, data[position])
-                        Log.d("ss", selectedTeacherId.toString())
+                        Log.d("ss", data[position].toString())
+
+                        //데이터 가공 해서 전송
                         intent.putExtra("teacherId", selectedTeacherId.toString())
-//                        intent.putExtra("teacherVO", data[position].toString())
+                        intent.putExtra("teacherName", dataMap[selectedTeacherId.toString()]!!.teacherName)
+                        intent.putExtra("teacherContent", dataMap[selectedTeacherId.toString()]!!.teacherContent)
+                        intent.putExtra("teacherOneLine", dataMap[selectedTeacherId.toString()]!!.teacherOneLine)
+                        intent.putExtra("teacherGender", dataMap[selectedTeacherId.toString()]!!.teacherGender)
+                        intent.putExtra("teacherService", dataMap[selectedTeacherId.toString()]!!.teacherService)
+                        intent.putExtra("teacherCity", dataMap[selectedTeacherId.toString()]!!.teacherCity)
+                        intent.putExtra("teacherTelTime", dataMap[selectedTeacherId.toString()]!!.teacherTelTime)
+                        intent.putExtra("teacherWorkTime", dataMap[selectedTeacherId.toString()]!!.teacherWorkTime)
+                        intent.putExtra("teacherLikes", dataMap[selectedTeacherId.toString()]!!.teacherLikes)
+                        intent.putExtra("reviews", dataMap[selectedTeacherId.toString()]!!.reviews)
                         startActivity(intent)
                     }
                 })
                 rvTeacherList.layoutManager = LinearLayoutManager(requireContext())
-                rvTeacherList.adapter = rvAdapter
+
+                rvTeacherList.adapter = rvAdapter // 어댑터에 새로운 데이터 설정
+                rvAdapter.notifyDataSetChanged() // 어댑터에 변경 사항 알림
             }
         }
-
-
 
         return views
     }
@@ -171,6 +217,13 @@ class SearchGosuFragment : Fragment() {
                 }
 
                 cityValue = citySpinner.selectedItem.toString()
+                serviceValue = serviceSpinner.selectedItem.toString()
+                sigunguValue = sigunguSpinner.selectedItem.toString()
+                if(cityValue == "선택") cityValue = null
+                if(serviceValue == "선택") serviceValue = null
+                if(sigunguValue == "선택") sigunguValue = null
+
+
                 reLoadRV(serviceValue, cityValue, sigunguValue)
             }
 
@@ -178,11 +231,60 @@ class SearchGosuFragment : Fragment() {
             }
 
         }
+
+
+
+        serviceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ): Unit {
+                cityValue = citySpinner.selectedItem.toString()
+                serviceValue = serviceSpinner.selectedItem.toString()
+                sigunguValue = sigunguSpinner.selectedItem.toString()
+                if(cityValue == "선택") cityValue = null
+                if(serviceValue == "선택") serviceValue = null
+                if(sigunguValue == "선택") sigunguValue = null
+
+
+                reLoadRV(serviceValue, cityValue, sigunguValue)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
+
+        sigunguSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ): Unit {
+                cityValue = citySpinner.selectedItem.toString()
+                serviceValue = serviceSpinner.selectedItem.toString()
+                sigunguValue = sigunguSpinner.selectedItem.toString()
+
+                if(cityValue == "선택") cityValue = null
+                if(serviceValue == "선택") serviceValue = null
+                if(sigunguValue == "선택") sigunguValue = null
+
+                reLoadRV(serviceValue, cityValue, sigunguValue)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
     }
 
     fun findKeyByValue(map: Map<String, Any>, value: Any): String? {
         return map.entries.find { it.value == value }?.key
     }
+
+
 }
 
 
