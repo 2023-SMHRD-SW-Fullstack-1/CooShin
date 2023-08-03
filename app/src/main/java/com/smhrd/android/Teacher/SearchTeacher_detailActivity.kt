@@ -76,14 +76,26 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
         //코신 정보 불러오기
         val intent = getIntent()
+
         val teacherId = intent.getStringExtra("teacherId")
-//        val teacherVO = gson.toJson(intent.getStringExtra("teacherVO"))
+        val teacherName = intent.getStringExtra("teacherName")
+        val teacherContent = intent.getStringExtra("teacherContent")
+        val teacherOneLine = intent.getStringExtra("teacherOneLine")
+        val teacherGender = intent.getStringExtra("teacherGender") //사용 x
+        val teacherService = intent.getStringExtra("teacherService") //사용 x
+        val teacherCity = intent.getStringExtra("teacherCity")
+        val teacherTelTime = intent.getStringExtra("teacherTelTime")
+        val teacherWorkTime = intent.getStringExtra("teacherWorkTime")
+        val teacherLikes = intent.getStringExtra("teacherLikes") //사용 x
+        val reviews = intent.getStringExtra("reviews") //사용 x
 
-        // JSON 문자열을 Map으로 파싱
-//        val mapType = object : TypeToken<TeacherIdVO>() {}.type
-//        val dataMap: TeacherIdVO = gson.fromJson(teacherVO, mapType)
+        tvTeacherName.text = teacherName.toString()
+        tvTeacherContent.text = teacherContent.toString()
+        tvTeacherOneLine.text = teacherOneLine
+        tvTeacherLocate.text = teacherCity
+        tvTelTime.text = tvTelTime.text.toString() + " " + teacherTelTime
+        tvWorkTime.text = tvWorkTime.text.toString() + " " + teacherWorkTime
 
-//        Log.d("sse", dataMap.teacherOneLine)
 
         //뒤로가기 버튼
         ibtnToBack.setOnClickListener { onBackPressed() }
@@ -93,6 +105,8 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         btnSendTalk.setOnClickListener {
             val sendIntent = Intent(this.applicationContext, ChattingRoomActivity::class.java)
             var roomId = " ${memberId} room ${teacherId} "
+
+
 
             sendIntent.putExtra("roomId", roomId)
             startActivity(sendIntent)
