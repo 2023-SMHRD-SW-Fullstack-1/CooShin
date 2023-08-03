@@ -21,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Chatting.ChattingRoomActivity
+import com.smhrd.android.Data.ChatVO
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.Fragment.ChattingFragment
 import com.smhrd.android.R
@@ -182,6 +183,7 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
             val sendIntent = Intent(this.applicationContext, ChattingRoomActivity::class.java)
             var roomId = " ${memberId} room ${teacherId} "
 
+            database.getReference("roomList").child(roomId).push().setValue(ChatVO(teacherId, "안녕하세요 ${teacherId}입니다.", ""))
 
             sendIntent.putExtra("roomId", roomId)
             startActivity(sendIntent)

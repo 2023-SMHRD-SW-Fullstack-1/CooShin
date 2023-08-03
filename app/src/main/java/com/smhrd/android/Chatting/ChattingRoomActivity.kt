@@ -40,9 +40,11 @@ class ChattingRoomActivity : AppCompatActivity() {
         btnSend = findViewById(R.id.btnSend)
         edtMsg = findViewById(R.id.edtMsg)
 
+        var intent = getIntent()
+
         val spf = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
         var userId = spf.getString("memberId", null).toString()
-        var intent = getIntent()
+
         var roomId = intent.getStringExtra("roomId")
 
         // 상대방ID 추출
