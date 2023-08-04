@@ -59,6 +59,7 @@ class CommunityDetailActivity : AppCompatActivity() {
         //load comment  => 결과값을 ArrayList<CommentVO>
         //commentArr에 담아주기
 
+
         var commentArr: ArrayList<CommentVO> = arrayListOf()
 
         btn_comment.setOnClickListener {
