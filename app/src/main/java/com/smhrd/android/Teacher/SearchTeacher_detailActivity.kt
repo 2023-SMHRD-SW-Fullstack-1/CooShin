@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.values
@@ -22,8 +23,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Chatting.ChattingRoomActivity
 import com.smhrd.android.Data.ChatVO
+import com.smhrd.android.Data.ReviewVO
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.Fragment.ChattingFragment
+import com.smhrd.android.Fragment.SearchGosuFragment
 import com.smhrd.android.R
 
 class SearchTeacher_detailActivity : AppCompatActivity() {
@@ -108,7 +111,21 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         val database = Firebase.database
 
         // 리뷰 데이터 불러오기
-        
+        database.getReference("teacherList").child(teacherId.toString()).child("reviewList").get().addOnSuccessListener {
+            if (it.exists()) {
+                var list_sy = gson.toJson(it.getValue())
+
+                val mapType_sy = object : TypeToken<Map<String, ReviewVO>>() {}.type
+                val dataMapy_sy : Map<String, ReviewVO> = gson.fromJson(list_sy, mapType_sy)
+                var reviewList_sy : ArrayList<ReviewVO> = arrayListOf()
+                for( i in dataMapy_sy.values) {
+                    reviewList_sy.add(i)
+                }
+                tvReviewStar_1.text = reviewList_sy.get(0).memberId
+                tvReviewContent_1.text = reviewList_sy.get(0).reviewContent
+            }
+        }
+
 
 
         //멤버정보 접근하기
