@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.values
@@ -22,6 +23,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Chatting.ChattingRoomActivity
 import com.smhrd.android.Data.ChatVO
+import com.smhrd.android.Data.ReviewVO
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.Fragment.ChattingFragment
 import com.smhrd.android.R
@@ -108,7 +110,12 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         val database = Firebase.database
 
         // 리뷰 데이터 불러오기
-        
+        database.getReference("teacherList").child(teacherId.toString()).child("reviewList").get()
+            .addOnSuccessListener { snapshot ->
+                val key = snapshot.children
+
+                Log.d("key", key.toString())
+            }
 
 
         //멤버정보 접근하기
