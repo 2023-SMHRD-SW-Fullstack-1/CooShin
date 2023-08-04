@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@drawable/myrect"
-    android:backgroundTint="#F1EBEB"
+    android:backgroundTint="#F1F8E9"
     android:elevation="5dp"
     android:paddingTop="25dp"
     android:paddingBottom="25dp">
