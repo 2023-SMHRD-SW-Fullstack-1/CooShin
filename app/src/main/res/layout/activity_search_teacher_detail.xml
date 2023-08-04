@@ -455,16 +455,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline18" />
 
-    <ImageButton
-        android:id="@+id/btnIsLike_detail"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="3dp"
-        android:background="@drawable/img2"
-        app:layout_constraintEnd_toStartOf="@+id/guideline19"
-        app:layout_constraintTop_toTopOf="@+id/guideline16" />
-
     <Button
         android:id="@+id/btnSendTalk_detail"
         android:layout_width="0dp"

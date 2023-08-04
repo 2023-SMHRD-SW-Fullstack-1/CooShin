@@ -29,7 +29,6 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
     lateinit var ibtnToBack : ImageButton
     lateinit var tvTeacherName : TextView
-    lateinit var btnIsLike : ImageButton
     lateinit var ivTeacherImage : ImageView
     lateinit var tvTeacherOneLine : TextView
     lateinit var tvTeacherLocate : TextView
@@ -57,7 +56,6 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
         ibtnToBack = findViewById(R.id.ibtnToBack_detail)
         tvTeacherName  = findViewById(R.id.tvTeacherName_detail)
-        btnIsLike = findViewById(R.id.btnIsLike_detail)
         ivTeacherImage = findViewById(R.id.ivTeacherImg_detail)
         tvTeacherOneLine = findViewById(R.id.tvTeacherOneLine_detail)
         tvTeacherLocate = findViewById(R.id.tvTeacherLocate_detail)
