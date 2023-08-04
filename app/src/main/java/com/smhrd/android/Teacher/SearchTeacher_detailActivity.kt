@@ -26,6 +26,7 @@ import com.smhrd.android.Data.ChatVO
 import com.smhrd.android.Data.ReviewVO
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.Fragment.ChattingFragment
+import com.smhrd.android.Fragment.SearchGosuFragment
 import com.smhrd.android.R
 
 class SearchTeacher_detailActivity : AppCompatActivity() {
@@ -110,12 +111,19 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         val database = Firebase.database
 
         // 리뷰 데이터 불러오기
-        database.getReference("teacherList").child(teacherId.toString()).child("reviewList").get()
-            .addOnSuccessListener { snapshot ->
-                val key = snapshot.children
+        database.getReference("teacherList").child(teacherId.toString()).child("reviewList").get().addOnSuccessListener {
+            var list = gson.toJson(it.getValue())
 
-                Log.d("key", key.toString())
-            }
+            val mapType = object : TypeToken<Map<String, ReviewVO>>() {}.type
+            val dataMapy : Map<String, ReviewVO> = gson.fromJson(list, mapType)
+            var reviewList : ArrayList<ReviewVO> = arrayListOf()
+                for( i in dataMapy.values) {
+                    reviewList.add(i)
+                }
+            tvReviewStar_1.text = reviewList.get(0).memberId
+            tvReviewContent_1.text = reviewList.get(0).reviewContent
+        }
+
 
 
         //멤버정보 접근하기
