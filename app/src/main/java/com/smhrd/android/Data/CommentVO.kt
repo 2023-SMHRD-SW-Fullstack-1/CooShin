@@ -1,4 +1,4 @@
 package com.smhrd.android.Data
 
-data class CommentVO(val commentWriter : String, val commentContent : String)
+data class CommentVO(val commentWriter : String= "", val commentContent : String= "")
 

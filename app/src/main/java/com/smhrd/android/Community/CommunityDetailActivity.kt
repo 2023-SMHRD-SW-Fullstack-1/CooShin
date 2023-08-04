@@ -2,7 +2,6 @@ package com.smhrd.android.Community
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -30,6 +29,8 @@ class CommunityDetailActivity : AppCompatActivity() {
     lateinit var ibtn_back: ImageButton
     val databaseReference = FirebaseDatabase.getInstance().reference
 
+    private var adapter: CommentAdapter? = null
+
     @SuppressLint("MissingInflatedId", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +46,8 @@ class CommunityDetailActivity : AppCompatActivity() {
         val intent = getIntent()
 
 
+
+
         tv_title.text = intent.getStringExtra("c_title")
         tv_content.text = intent.getStringExtra("c_content")
 
@@ -55,12 +58,29 @@ class CommunityDetailActivity : AppCompatActivity() {
         val content = intent.getStringExtra("c_content")
 //        fetchComments(boardId)
 
+        fetchComments(boardId)
+
 
         //load comment  => 결과값을 ArrayList<CommentVO>
         //commentArr에 담아주기
 
 
         var commentArr: ArrayList<CommentVO> = arrayListOf()
+
+        val adapter = CommentAdapter(this, commentArr)
+
+        rc_comment.adapter = adapter
+        rc_comment.layoutManager = LinearLayoutManager(this)
+        val commentText = boardId?.let { it1 ->
+            content?.let { it2 ->
+                CommentVO(
+                    commentWriter = loginMember!!,
+                    commentContent = et_comment.text.toString()
+                )
+            }
+        }
+        commentArr.add(commentText!!)
+
 
         btn_comment.setOnClickListener {
             val commentText = boardId?.let { it1 ->
@@ -71,8 +91,9 @@ class CommunityDetailActivity : AppCompatActivity() {
                     )
                 }
             }
-
             commentArr.add(commentText!!)
+
+
 
             if (commentText != null) {
                 // Generate a unique ID for the comment
@@ -101,8 +122,47 @@ class CommunityDetailActivity : AppCompatActivity() {
                 Toast.makeText(this, "Comment cannot be empty.", Toast.LENGTH_SHORT).show()
             }
         }
+
+
+        // Call the fetchComments function with the boardId to fetch and display comments
+        fetchComments(boardId)
+
+    }
+
+    private fun fetchComments(boardId: String?) {
+        if (boardId != null) {
+            val commentRef = databaseReference.child("boardList").child(boardId).child("comment")
+            commentRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val comments = ArrayList<CommentVO>()
+
+                    for (commentSnapshot in snapshot.children) {
+                        val commentWriter =
+                            commentSnapshot.child("commentWriter").getValue(String::class.java)
+                        val commentContent =
+                            commentSnapshot.child("commentContent").getValue(String::class.java)
+
+                        if (commentWriter != null && commentContent != null) {
+                            val comment = CommentVO(commentWriter, commentContent)
+                            comments.add(comment)
+                        }
+                    }
+
+                    // After fetching the comments, update the adapter with the new data
+                    adapter?.updateData(comments)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle any errors that may occur during data retrieval
+                    Toast.makeText(
+                        this@CommunityDetailActivity,
+                        "Failed to fetch comments.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        }
     }
 
 }
-
 

@@ -35,6 +35,7 @@ RecyclerView.Adapter<CommunityViewHolder>(){
 //        holder.c_Views.text = board.boardViews.toString()
 
 
+
         holder.c_title.setOnClickListener {
             onItemClick(board)
         }
