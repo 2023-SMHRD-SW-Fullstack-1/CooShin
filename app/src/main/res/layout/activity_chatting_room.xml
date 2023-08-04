@@ -49,19 +49,33 @@
 
         <Button
             android:id="@+id/inputData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="거래하기" />
+            android:backgroundTint="#FFFFFF"
+            android:fontFamily="@font/ohmu"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:shadowRadius="5"
+            android:text="거래하기"
+            android:textColor="#1B1B1B"
+            android:textSize="15dp"
+            app:cornerRadius="0dp" />
 
         <Button
-            android:id="@+id/button6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btnCreateReview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:backgroundTint="#ACABAB"
+            android:fontFamily="@font/ohmu"
+            android:minWidth="0dp"
+            android:minHeight="50dp"
+            android:shadowRadius="5"
             android:text="리뷰작성"
-            android:textColor="#6750A3"
-            app:backgroundTint="@android:color/transparent" />
+            android:textColor="#FFFEFE"
+            android:textSize="20dp"
+            app:cornerRadius="0dp" />
     </LinearLayout>
 
     <ImageView
@@ -114,8 +128,14 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:text="전송"
-        android:textColor="@color/black"
-        app:backgroundTint="@android:color/transparent"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/ohmu"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:shadowRadius="5"
+        android:textColor="#1B1B1B"
+        android:textSize="15dp"
+        app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/edtMsg" />

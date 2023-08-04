@@ -69,18 +69,21 @@ class CommunityFragment : Fragment() {
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Iterate through the children nodes of "boardList"
-                for (childSnapshot in snapshot.children) {
-                    // Deserialize each child node to a BoardIdVO object
-                    val boardIdVO = childSnapshot.getValue(BoardIdVO::class.java)
-                    if (boardIdVO != null) {
-                        // Add the BoardIdVO object to the data ArrayList
-                        data.add(boardIdVO)
+                if(snapshot.exists()){
+                    for (childSnapshot in snapshot.children) {
+                        // Deserialize each child node to a BoardIdVO object
+                        val boardIdVO = childSnapshot.getValue(BoardIdVO::class.java)
+                        if (boardIdVO != null) {
+                            // Add the BoardIdVO object to the data ArrayList
+                            data.add(boardIdVO)
+                        }
+                        Log.d("snap", childSnapshot.key!!)
+
+
+                        result.put(childSnapshot.key.toString(), childSnapshot.getValue(BoardIdVO::class.java) as BoardIdVO )
                     }
-                    Log.d("snap", childSnapshot.key!!)
-
-
-                    result.put(childSnapshot.key.toString(), childSnapshot.getValue(BoardIdVO::class.java) as BoardIdVO )
                 }
+
 
                 // After retrieving data, create the adapter and set it to the RecyclerView
                 var adapter = CommunityAdapter(requireContext(), data) { clickedBoard ->

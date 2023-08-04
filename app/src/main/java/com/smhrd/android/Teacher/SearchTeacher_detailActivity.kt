@@ -28,35 +28,36 @@ import com.smhrd.android.R
 
 class SearchTeacher_detailActivity : AppCompatActivity() {
 
-    lateinit var ibtnToBack : ImageButton
-    lateinit var tvTeacherName : TextView
-    lateinit var ivTeacherImage : ImageView
-    lateinit var tvTeacherOneLine : TextView
-    lateinit var tvTeacherLocate : TextView
-    lateinit var btnReview : Button
-    lateinit var btnServiceInfo : Button
-    lateinit var btnTeacherInfo : Button
-    lateinit var tvTelTime : TextView
-    lateinit var tvWorkTime : TextView
-    lateinit var tvTeacherContent : TextView
-    lateinit var tvStarAvg : TextView
-    lateinit var tvReviewNum : TextView
-    lateinit var tvReviewStar_1 : TextView
-    lateinit var ivReviewImg_1 : ImageView
-    lateinit var tvReviewContent_1 : TextView
-    lateinit var tvReviewStar_2 : TextView
-    lateinit var ivReviewImg_2 : ImageView
-    lateinit var tvReviewContent_2 : TextView
-    lateinit var tvToReviewList : TextView
+    lateinit var ibtnToBack: ImageButton
+    lateinit var tvTeacherName: TextView
+    lateinit var btnIsLike: ImageButton
+    lateinit var ivTeacherImage: ImageView
+    lateinit var tvTeacherOneLine: TextView
+    lateinit var tvTeacherLocate: TextView
+    lateinit var btnReview: Button
+    lateinit var btnServiceInfo: Button
+    lateinit var btnTeacherInfo: Button
+    lateinit var tvTelTime: TextView
+    lateinit var tvWorkTime: TextView
+    lateinit var tvTeacherContent: TextView
+    lateinit var tvStarAvg: TextView
+    lateinit var tvReviewNum: TextView
+    lateinit var tvReviewStar_1: TextView
+    lateinit var ivReviewImg_1: ImageView
+    lateinit var tvReviewContent_1: TextView
+    lateinit var tvReviewStar_2: TextView
+    lateinit var ivReviewImg_2: ImageView
+    lateinit var tvReviewContent_2: TextView
+    lateinit var tvToReviewList: TextView
 
-    lateinit var btnSendTalk : Button
+    lateinit var btnSendTalk: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_teacher_detail)
 
         ibtnToBack = findViewById(R.id.ibtnToBack_detail)
-        tvTeacherName  = findViewById(R.id.tvTeacherName_detail)
+        tvTeacherName = findViewById(R.id.tvTeacherName_detail)
         ivTeacherImage = findViewById(R.id.ivTeacherImg_detail)
         tvTeacherOneLine = findViewById(R.id.tvTeacherOneLine_detail)
         tvTeacherLocate = findViewById(R.id.tvTeacherLocate_detail)
@@ -104,31 +105,35 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         tvTelTime.text = tvTelTime.text.toString() + " " + teacherTelTime
         tvWorkTime.text = tvWorkTime.text.toString() + " " + teacherWorkTime
 
-        //멤버정보 접근하기
+        val database = Firebase.database
+
+        // 리뷰 데이터 불러오기
         
 
 
-        val database = Firebase.database
+        //멤버정보 접근하기
+
 
         //코신 이미지 불러오기
-        var imageUrl :String? = null
+        var imageUrl: String? = null
 
-        database.getReference("memberList").child(teacherId!!).child("member").child("memberImg").addListenerForSingleValueEvent(
-            object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    imageUrl = snapshot.getValue(String::class.java)
-                    if (!imageUrl.isNullOrEmpty()) {
-                        Glide.with(this@SearchTeacher_detailActivity)
-                            .load(imageUrl)
-                            .into(ivTeacherImage)
+        database.getReference("memberList").child(teacherId!!).child("member").child("memberImg")
+            .addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        imageUrl = snapshot.getValue(String::class.java)
+                        if (!imageUrl.isNullOrEmpty()) {
+                            Glide.with(this@SearchTeacher_detailActivity)
+                                .load(imageUrl)
+                                .into(ivTeacherImage)
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
                     }
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            }
-        )
+            )
 
         btnServiceInfo.setOnClickListener {
             val scrollView = findViewById<ScrollView>(R.id.scrollView)
@@ -138,7 +143,7 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
             val targetY = targetView.y
 
             // 스크롤 뷰를 targetView의 위치로 스크롤
-            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+            scrollView.smoothScrollTo(0, targetY.toInt() - 20)
         }
 
 
@@ -150,7 +155,7 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
             val targetY = targetView.y
 
             // 스크롤 뷰를 targetView의 위치로 스크롤
-            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+            scrollView.smoothScrollTo(0, targetY.toInt() - 20)
         }
 
         btnTeacherInfo.setOnClickListener {
@@ -161,7 +166,7 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
             val targetY = targetView.y
 
             // 스크롤 뷰를 targetView의 위치로 스크롤
-            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+            scrollView.smoothScrollTo(0, targetY.toInt() - 20)
         }
 
         //뒤로가기 버튼
@@ -173,7 +178,6 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         ibtnToBack.setOnClickListener {
 
         }
-
 
 
         //채팅하기 버튼
