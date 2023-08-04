@@ -144,17 +144,6 @@ class HomeFragment : Fragment() {
         }
 
 
-        //인기있는 코신 출력 ( 별점기준 )
-//        for(i in 0 until review.size) {
-//            val reviewStar =  review.get(i).reviewStars
-//            if(reviewStar > 4){
-//                rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-//                var adapter = HomeGosuAdapter(teacherList, review, requireContext())
-//                rvPopularGosu.adapter = adapter
-//            }
-//        }
-
-
         // 인기있는 코신 ( likes 기준 )
         //like를 가져올 통신이 필요함
         val gson = Gson()
@@ -173,106 +162,111 @@ class HomeFragment : Fragment() {
                 //값들을 전부 data에 저장
                 if (value.teacherLikes!! > 3){
                     likeTeacher.add(value)
-                 }
+                }
             }
 
 
             for(i in 0 until likeTeacher.size) {
-                    rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-                    var adapter = HomeGosuAdapter(likeTeacher, review, requireContext())
-                    rvPopularGosu.adapter = adapter
+                rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
+                var adapter = HomeGosuAdapter(likeTeacher, review, requireContext())
+                rvPopularGosu.adapter = adapter
 
             }
 
         }
+        boardList.add(BoardIdVO("코딩ㅜㅜㅜ", "코딩배우는 중", "ㅎㅎ", "20230402", "https://cdn.startupn.kr/news/photo/202302/32055_33948_4723.jpg", 50, 25, null))
+        boardList.add(BoardIdVO("다들 너무 잘해", "코딩 어려워", "tete", "20230802", "https://www.mangoboard.net/images/character_03.png", 80, 15, null))
 
-            //커뮤니티 출력
-            for (i in 0 until boardList.size) {
-                val boardLikes = boardList.get(i).boardLikes
-                if (boardLikes!!.toInt() > 3) {
-
-                    rvCommunity.layoutManager = GridLayoutManager(context, 2)
-                    var adapter2 = HomeCommunityAdapter(boardList, requireContext())
-                    rvCommunity.adapter = adapter2
-                }
-            }
-
-
-            //C 클릭했을 때
-            ivC.setOnClickListener {
-                navigateToSearchGosuFragment("C")
-            }
-            //C++ 클릭했을 때
-            ivCPlus.setOnClickListener {
-                navigateToSearchGosuFragment("C++")
-            }
-            //C# 클릭했을 때
-            ivCShap.setOnClickListener {
-                navigateToSearchGosuFragment("C#")
-            }
-            //Python 클릭했을 때
-            ivPython.setOnClickListener {
-                navigateToSearchGosuFragment("Python")
-            }
-            //Java 클릭했을 때
-            ivJava.setOnClickListener {
-                navigateToSearchGosuFragment("Java")
-            }
-            //JavaScript 클릭했을 때
-            ivJS.setOnClickListener {
-                navigateToSearchGosuFragment("JavaScript")
-            }
-            //Visual Basic 클릭했을 때
-            ivVB.setOnClickListener {
-                navigateToSearchGosuFragment("Visual Basic")
-            }
-            //PHP 클릭했을 때
-            ivPHP.setOnClickListener {
-                navigateToSearchGosuFragment("PHP")
-            }
+//            //커뮤니티 출력
+        rvCommunity.layoutManager = GridLayoutManager(context, 2)
+        var adapter2 = HomeCommunityAdapter(boardList, requireContext())
+        rvCommunity.adapter = adapter2
+//            for (i in 0 until boardList.size) {
+//                val boardLikes = boardList.get(i).boardLikes
+//                if (boardLikes!!.toInt() > 3) {
+//
+//                    rvCommunity.layoutManager = GridLayoutManager(context, 2)
+//                    var adapter2 = HomeCommunityAdapter(boardList, requireContext())
+//                    rvCommunity.adapter = adapter2
+//                }
+//            }
 
 
-            //로그인 버튼 클릭했을 때
-            btnLogin.setOnClickListener {
-                val intent = Intent(requireActivity(), LoginActivity::class.java)
-                startActivity(intent)
-            }
+        //C 클릭했을 때
+        ivC.setOnClickListener {
+            navigateToSearchGosuFragment("C")
+        }
+        //C++ 클릭했을 때
+        ivCPlus.setOnClickListener {
+            navigateToSearchGosuFragment("C++")
+        }
+        //C# 클릭했을 때
+        ivCShap.setOnClickListener {
+            navigateToSearchGosuFragment("C#")
+        }
+        //Python 클릭했을 때
+        ivPython.setOnClickListener {
+            navigateToSearchGosuFragment("Python")
+        }
+        //Java 클릭했을 때
+        ivJava.setOnClickListener {
+            navigateToSearchGosuFragment("Java")
+        }
+        //JavaScript 클릭했을 때
+        ivJS.setOnClickListener {
+            navigateToSearchGosuFragment("JavaScript")
+        }
+        //Visual Basic 클릭했을 때
+        ivVB.setOnClickListener {
+            navigateToSearchGosuFragment("Visual Basic")
+        }
+        //PHP 클릭했을 때
+        ivPHP.setOnClickListener {
+            navigateToSearchGosuFragment("PHP")
+        }
 
-            if (loginMember.toString() == "" && googleMember.toString() == "") {
-                //로그인 안되어 있을 때
+
+        //로그인 버튼 클릭했을 때
+        btnLogin.setOnClickListener {
+            val intent = Intent(requireActivity(), LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        if (loginMember.toString() == "" && googleMember.toString() == "") {
+            //로그인 안되어 있을 때
+            btnLogout.visibility = View.INVISIBLE
+        } else {
+            //로그인되어 있을 때
+            btnLogin.visibility = View.INVISIBLE
+            btnLogout.setOnClickListener {
+                Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+                var editor = spf?.edit()
+                editor?.clear()
+                editor?.commit()
                 btnLogout.visibility = View.INVISIBLE
-            } else {
-                //로그인되어 있을 때
-                btnLogin.visibility = View.INVISIBLE
-                btnLogout.setOnClickListener {
-                    Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
-                    var editor = spf?.edit()
-                    editor?.clear()
-                    editor?.commit()
-                    btnLogout.visibility = View.INVISIBLE
-                    btnLogin.visibility = View.VISIBLE
-                }
+                btnLogin.visibility = View.VISIBLE
             }
-
-            //마이페이지 버튼 클릭했을 때
-            ibMyPage.setOnClickListener {
-                val intent = Intent(requireActivity(), MypageActivity::class.java)
-                startActivity(intent)
-            }
-
-            return view
-        }
-        private fun navigateToSearchGosuFragment(language: String) {
-            val searchGosuFragment = SearchGosuFragment()
-
-            val bundle = Bundle()
-            bundle.putString("language", language)
-            searchGosuFragment.arguments = bundle
-
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fl, searchGosuFragment)
-                .addToBackStack(null)
-                .commit()
         }
 
+        //마이페이지 버튼 클릭했을 때
+        ibMyPage.setOnClickListener {
+            val intent = Intent(requireActivity(), MypageActivity::class.java)
+            startActivity(intent)
+        }
+
+        return view
     }
+    private fun navigateToSearchGosuFragment(language: String) {
+        val searchGosuFragment = SearchGosuFragment()
+
+        val bundle = Bundle()
+        bundle.putString("language", language)
+        searchGosuFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fl, searchGosuFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+}
