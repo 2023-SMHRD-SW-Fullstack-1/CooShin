@@ -29,10 +29,10 @@ RecyclerView.Adapter<CommunityViewHolder>(){
 
         //type이 CharSequence이기 때문에 .toString() 붙여줌
         holder.c_title.text = board.boardTitle
-        holder.c_writer.text = board.boardWriter.toString()
-        holder.c_date.text = board.boardDate
+//        holder.c_writer.text = board.boardWriter.toString()
+//        holder.c_date.text = board.boardDate
         holder.c_Likes.text = board.boardLikes.toString()
-        holder.c_Views.text = board.boardViews.toString()
+//        holder.c_Views.text = board.boardViews.toString()
 
 
         holder.c_title.setOnClickListener {

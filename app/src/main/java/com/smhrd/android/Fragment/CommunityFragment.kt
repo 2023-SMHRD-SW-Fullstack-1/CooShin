@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -82,7 +83,7 @@ class CommunityFragment : Fragment() {
                 }
 
                 // After retrieving data, create the adapter and set it to the RecyclerView
-                val adapter = CommunityAdapter(requireActivity(), data) { clickedBoard ->
+                var adapter = CommunityAdapter(requireContext(), data) { clickedBoard ->
                     // Handle the click event here
                     // Navigate to the detail page with the clickedBoard's information
                     val intent = Intent(requireContext(), CommunityDetailActivity::class.java)
@@ -94,7 +95,8 @@ class CommunityFragment : Fragment() {
 
                     startActivity(intent)
                 }
-                rc.layoutManager = LinearLayoutManager(view.context)
+                rc.layoutManager = GridLayoutManager(context, 2)
+
                 rc.adapter = adapter
             }
 
