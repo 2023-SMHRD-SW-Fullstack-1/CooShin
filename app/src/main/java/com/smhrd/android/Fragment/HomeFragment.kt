@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
@@ -45,7 +47,11 @@ class HomeFragment : Fragment() {
     lateinit var ivVB: ImageButton
     lateinit var ivPHP: ImageButton
 
-    lateinit var database : DatabaseReference
+    lateinit var database: DatabaseReference
+
+    companion object{
+        var dataMap_favGosu_home = mutableMapOf<String, TeacherIdVO>()
+    }
 
 
     override fun onCreateView(
@@ -91,25 +97,29 @@ class HomeFragment : Fragment() {
 
 
         if (loginMember != null) {
-            teacherListD.child(loginMember).child("teacherName").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val teacherName = dataSnapshot.getValue(String::class.java)
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("데이터베이스오류", error.toString())
-                }
-            })
+            teacherListD.child(loginMember).child("teacherName")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val teacherName = dataSnapshot.getValue(String::class.java)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("데이터베이스오류", error.toString())
+                    }
+                })
         }
         if (loginMember != null) {
-            teacherListD.child(loginMember).child("reviewList").child("reviewStar").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val reviewStar = dataSnapshot.getValue(String::class.java)
-                    Log.d("reviewStar", "Img: $reviewStar")
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("데이터베이스오류", error.toString())
-                }
-            })
+            teacherListD.child(loginMember).child("reviewList").child("reviewStar")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val reviewStar = dataSnapshot.getValue(String::class.java)
+                        Log.d("reviewStar", "Img: $reviewStar")
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("데이터베이스오류", error.toString())
+                    }
+                })
         }
 
 
@@ -125,6 +135,7 @@ class HomeFragment : Fragment() {
 //                        Log.d("boardLikes", "Likes: $boardLikes")
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("데이터베이스오류", error.toString())
                 }
@@ -133,105 +144,135 @@ class HomeFragment : Fragment() {
         }
 
 
-        //인기있는 코신 출력
-        for(i in 0 until review.size) {
-            val reviewStar =  review.get(i).reviewStars
-            if(reviewStar > 4){
-                rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-                var adapter = HomeGosuAdapter(teacherList, review, requireContext())
-                rvPopularGosu.adapter = adapter
+        //인기있는 코신 출력 ( 별점기준 )
+//        for(i in 0 until review.size) {
+//            val reviewStar =  review.get(i).reviewStars
+//            if(reviewStar > 4){
+//                rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
+//                var adapter = HomeGosuAdapter(teacherList, review, requireContext())
+//                rvPopularGosu.adapter = adapter
+//            }
+//        }
+
+
+        // 인기있는 코신 ( likes 기준 )
+        //like를 가져올 통신이 필요함
+        val gson = Gson()
+
+        var likeTeacher = arrayListOf<TeacherIdVO>()
+
+        teacherListD.get().addOnSuccessListener {
+            var jsonResult = gson.toJson(it.getValue())
+
+            // JSON 문자열을 Map으로 파싱
+            val mapType = object : TypeToken<Map<String, TeacherIdVO>>() {}.type
+            dataMap_favGosu_home = gson.fromJson(jsonResult, mapType)
+
+            // 모든 key값들을 추출하여 출력
+            for (value in dataMap_favGosu_home.values) {
+                //값들을 전부 data에 저장
+                if (value.teacherLikes!! > 3){
+                    likeTeacher.add(value)
+                 }
             }
-        }
 
-        //커뮤니티 출력
-        for(i in 0 until boardList.size){
-            val boardLikes =  boardList.get(i).boardLikes
-            if(boardLikes!!.toInt() > 3){
 
-                rvCommunity.layoutManager = GridLayoutManager(context, 2)
-                var adapter2 = HomeCommunityAdapter(boardList, requireContext())
-                rvCommunity.adapter = adapter2
+            for(i in 0 until likeTeacher.size) {
+                    rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
+                    var adapter = HomeGosuAdapter(likeTeacher, review, requireContext())
+                    rvPopularGosu.adapter = adapter
+
             }
+
         }
 
+            //커뮤니티 출력
+            for (i in 0 until boardList.size) {
+                val boardLikes = boardList.get(i).boardLikes
+                if (boardLikes!!.toInt() > 3) {
 
-        //C 클릭했을 때
-        ivC.setOnClickListener {
-            navigateToSearchGosuFragment("C")
-        }
-        //C++ 클릭했을 때
-        ivCPlus.setOnClickListener {
-            navigateToSearchGosuFragment("C++")
-        }
-        //C# 클릭했을 때
-        ivCShap.setOnClickListener {
-            navigateToSearchGosuFragment("C#")
-        }
-        //Python 클릭했을 때
-        ivPython.setOnClickListener {
-            navigateToSearchGosuFragment("Python")
-        }
-        //Java 클릭했을 때
-        ivJava.setOnClickListener {
-            navigateToSearchGosuFragment("Java")
-        }
-        //JavaScript 클릭했을 때
-        ivJS.setOnClickListener {
-            navigateToSearchGosuFragment("JavaScript")
-        }
-        //Visual Basic 클릭했을 때
-        ivVB.setOnClickListener {
-            navigateToSearchGosuFragment("Visual Basic")
-        }
-        //PHP 클릭했을 때
-        ivPHP.setOnClickListener {
-            navigateToSearchGosuFragment("PHP")
-        }
+                    rvCommunity.layoutManager = GridLayoutManager(context, 2)
+                    var adapter2 = HomeCommunityAdapter(boardList, requireContext())
+                    rvCommunity.adapter = adapter2
+                }
+            }
 
 
+            //C 클릭했을 때
+            ivC.setOnClickListener {
+                navigateToSearchGosuFragment("C")
+            }
+            //C++ 클릭했을 때
+            ivCPlus.setOnClickListener {
+                navigateToSearchGosuFragment("C++")
+            }
+            //C# 클릭했을 때
+            ivCShap.setOnClickListener {
+                navigateToSearchGosuFragment("C#")
+            }
+            //Python 클릭했을 때
+            ivPython.setOnClickListener {
+                navigateToSearchGosuFragment("Python")
+            }
+            //Java 클릭했을 때
+            ivJava.setOnClickListener {
+                navigateToSearchGosuFragment("Java")
+            }
+            //JavaScript 클릭했을 때
+            ivJS.setOnClickListener {
+                navigateToSearchGosuFragment("JavaScript")
+            }
+            //Visual Basic 클릭했을 때
+            ivVB.setOnClickListener {
+                navigateToSearchGosuFragment("Visual Basic")
+            }
+            //PHP 클릭했을 때
+            ivPHP.setOnClickListener {
+                navigateToSearchGosuFragment("PHP")
+            }
 
 
-        //로그인 버튼 클릭했을 때
-        btnLogin.setOnClickListener {
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            startActivity(intent)
-        }
+            //로그인 버튼 클릭했을 때
+            btnLogin.setOnClickListener {
+                val intent = Intent(requireActivity(), LoginActivity::class.java)
+                startActivity(intent)
+            }
 
-        if (loginMember.toString() == "" && googleMember.toString() == "") {
-            //로그인 안되어 있을 때
-            btnLogout.visibility = View.INVISIBLE
-        } else {
-            //로그인되어 있을 때
-            btnLogin.visibility = View.INVISIBLE
-            btnLogout.setOnClickListener {
-                Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
-                var editor = spf?.edit()
-                editor?.clear()
-                editor?.commit()
+            if (loginMember.toString() == "" && googleMember.toString() == "") {
+                //로그인 안되어 있을 때
                 btnLogout.visibility = View.INVISIBLE
-                btnLogin.visibility = View.VISIBLE
+            } else {
+                //로그인되어 있을 때
+                btnLogin.visibility = View.INVISIBLE
+                btnLogout.setOnClickListener {
+                    Toast.makeText(context, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+                    var editor = spf?.edit()
+                    editor?.clear()
+                    editor?.commit()
+                    btnLogout.visibility = View.INVISIBLE
+                    btnLogin.visibility = View.VISIBLE
+                }
             }
+
+            //마이페이지 버튼 클릭했을 때
+            ibMyPage.setOnClickListener {
+                val intent = Intent(requireActivity(), MypageActivity::class.java)
+                startActivity(intent)
+            }
+
+            return view
+        }
+        private fun navigateToSearchGosuFragment(language: String) {
+            val searchGosuFragment = SearchGosuFragment()
+
+            val bundle = Bundle()
+            bundle.putString("language", language)
+            searchGosuFragment.arguments = bundle
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fl, searchGosuFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
-        //마이페이지 버튼 클릭했을 때
-        ibMyPage.setOnClickListener {
-            val intent = Intent(requireActivity(), MypageActivity::class.java)
-            startActivity(intent)
-        }
-
-        return view
     }
-    private fun navigateToSearchGosuFragment(language: String) {
-        val searchGosuFragment = SearchGosuFragment()
-
-        val bundle = Bundle()
-        bundle.putString("language", language)
-        searchGosuFragment.arguments = bundle
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fl, searchGosuFragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-}
