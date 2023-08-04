@@ -15,7 +15,7 @@ class CommunityViewHolder(var itemView : View) : RecyclerView.ViewHolder(itemVie
 //    var c_date : TextView
     var c_Likes : TextView
 //    var c_Views : TextView
-    var c_img : ImageView
+
 
 
     init{
@@ -24,7 +24,7 @@ class CommunityViewHolder(var itemView : View) : RecyclerView.ViewHolder(itemVie
 //        c_date = itemView.findViewById(R.id.c_date)
         c_Likes = itemView.findViewById(R.id.c_Likes)
 //        c_Views = itemView.findViewById(R.id.c_Views)
-        c_img = itemView.findViewById(R.id.c_img)
+
 
 //        board_item.xml
 //

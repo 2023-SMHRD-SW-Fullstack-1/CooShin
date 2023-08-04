@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:backgroundTint="#FFFFFF">
 
     <androidx.constraintlayout.widget.Guideline
@@ -102,14 +103,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="@null"
-        android:backgroundTint="#FDFCFC"
+        android:backgroundTint="#FFFFFF"
         android:fontFamily="@font/ohmu"
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:shadowRadius="5"
         android:text="작성"
         android:textColor="#1B1B1B"
-        android:textSize="15dp"
+        android:textSize="20dp"
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"

@@ -21,30 +21,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/c_img"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/engineer" />
-
             <TextView
                 android:id="@+id/c_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/ohmu"
                 android:text="TextView"
                 android:textAlignment="center"
-                android:textSize="14sp"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ibLikes"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/c_img"
-                app:layout_constraintVertical_bias="0.636" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/c_Likes"
@@ -60,12 +50,10 @@
                 android:id="@+id/ibLikes"
                 android:layout_width="15dp"
                 android:layout_height="30dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:backgroundTint="#FFFFFF"
                 android:scaleType="centerCrop"
                 app:layout_constraintEnd_toStartOf="@+id/c_Likes"
-                app:layout_constraintStart_toEndOf="@+id/c_img"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/like" />
 
