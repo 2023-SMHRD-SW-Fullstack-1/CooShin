@@ -25,13 +25,14 @@ import java.util.Date
 import java.util.Locale
 
 class CommunityCreateActivity : AppCompatActivity() {
-    lateinit var etTitle : EditText
-    lateinit var etContent : EditText
-    lateinit var ivUpload : ImageView
-    lateinit var btnComplete : Button
-    lateinit var back : ImageButton
-    lateinit var ibGallery : ImageButton
-    lateinit var ibcamera : ImageButton
+    lateinit var etTitle: EditText
+    lateinit var etContent: EditText
+    lateinit var ivUpload: ImageView
+    lateinit var btnComplete: Button
+    lateinit var back: ImageButton
+    lateinit var ibGallery: ImageButton
+    lateinit var ibcamera: ImageButton
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +77,8 @@ class CommunityCreateActivity : AppCompatActivity() {
                 )
 
                 val boardId = databaseReference.child("boardList").push().key
-                val commentList: ArrayList<CommentVO> = ArrayList() // Add your comments if available
+                val commentList: ArrayList<CommentVO> =
+                    ArrayList() // Add your comments if available
 
                 val boardIdVO = BoardIdVO(
                     boardTitle = title,
@@ -138,7 +140,8 @@ class CommunityCreateActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
+            finish()
         }
-        }
-
     }
+
+}
