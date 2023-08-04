@@ -45,13 +45,14 @@ class ChattingFragment : Fragment() {
 
                         // 선생님ID 추출
                         val teacherId = (roomId!!.trim().split(" "))[2]
+                        var name2 = (roomId!!.trim().split(" "))[0]
+
 
                         db.getReference("teacherList").child(teacherId).get().addOnSuccessListener {
                             val teacherInfo =
                                 it.getValue(object : GenericTypeIndicator<TeacherIdVO>() {})
 
                             if (teacherInfo != null) {
-                                Log.d("teacherInfo.teacherName", teacherInfo.teacherName)
                                 chatRoomList.add(
                                     DummyChatListVO(
                                         chatRoomIdList[i],

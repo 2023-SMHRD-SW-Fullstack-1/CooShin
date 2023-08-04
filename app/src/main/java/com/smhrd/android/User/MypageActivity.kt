@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -14,7 +13,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,9 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
-import com.smhrd.android.Data.MemberIdVO
-import com.smhrd.android.Data.MemberVO
+
 import com.smhrd.android.R
 
 class MypageActivity : AppCompatActivity() {
@@ -33,7 +29,6 @@ class MypageActivity : AppCompatActivity() {
     lateinit var mypageBtn_img: ImageButton
     lateinit var mypageTv_nick: TextView
     lateinit var mypageBtn_infoChange: Button
-    lateinit var mypageBtn_likesGosu: Button
     lateinit var mypageBtn_addGosu : Button
     lateinit var mypageBtn_changeGosu : Button
    // val STORAGE_CODE = 1000
@@ -100,7 +95,6 @@ class MypageActivity : AppCompatActivity() {
         mypageBtn_img = findViewById(R.id.mypageBtn_img)
         mypageTv_nick = findViewById(R.id.mypageTv_nick)
         mypageBtn_infoChange = findViewById(R.id.mypageBtn_infoChange)
-        mypageBtn_likesGosu = findViewById(R.id.mypageBtn_likesGosu)
         mypageBtn_addGosu = findViewById(R.id.mypageBtn_addGosu)
         mypageBtn_changeGosu = findViewById(R.id.mypageBtn_changeGosu)
 
@@ -110,19 +104,26 @@ class MypageActivity : AppCompatActivity() {
 
         val memberId = getMemberInfoFromSpf()
         Log.d("memberID",memberId.toString())
+        val googleEmail = getGoogleEmailFromSpf()
+        Log.d("googleEmail",googleEmail.toString())
+        if (!googleEmail.isNullOrEmpty()){
+             val googleEmailPart = googleEmail.split('@')[0]
+            mypageTv_nick.text = "${googleEmailPart} 고객님"
+        }
 
         // SharedPreferences에서 이미지 URL 가져오기
         val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         val imageUrl = sharedPreferences.getString("memberImg", null)
         if (memberId != null) {
             reference.child(memberId).child("member").addListenerForSingleValueEvent(object : ValueEventListener {
+                @SuppressLint("SetTextI18n")
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val memberNick = dataSnapshot.child("memberNick").getValue(String::class.java)
                     Log.d("memberNick", memberNick.toString())
 
-                // memberNick이 null이 아니라면 화면에 닉네임 띄우기
+
                     if (memberNick != null) {
-                        mypageTv_nick.text= "${memberNick}고객님"
+                        mypageTv_nick.text = "${memberNick}고객님"
                     }
 
                     // Firebase에서 이미지 URL 가져오기
@@ -142,13 +143,11 @@ class MypageActivity : AppCompatActivity() {
 
                 }
 
-
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("데이터베이스오류", error.toString())
                 }
             })
         }
-
 
         // 마이페이지 프로필 이미지 버튼 눌렀을 때
         mypageBtn_img.setOnClickListener{
@@ -168,18 +167,14 @@ class MypageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 마이페이지 찜한 고수 눌렀을때
-        mypageBtn_likesGosu.setOnClickListener{
 
-        }
-
-        // 마이페이지 고수 프로필 수정 눌렀을 때
+        // 마이페이지 코신 프로필 수정 눌렀을 때
         mypageBtn_changeGosu.setOnClickListener {
             val teacherReference = database.getReference("teacherList")
             if (memberId != null) { // memberId가 null이 아닐 때
                 teacherReference.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        Log.d("마이페이지 고수프로필수정 snapshot",snapshot.toString())
+                        Log.d("마이페이지 코신 프로필수정 snapshot",snapshot.toString())
                         if (snapshot.child(memberId).exists()) {
                             // memberId가 teacherList에 존재하는 경우
                             Log.d("memberId teacherList에 존재", snapshot.child(memberId).toString())
@@ -187,7 +182,7 @@ class MypageActivity : AppCompatActivity() {
                             startActivity(intent)
                         } else {
                             // memberId가 teacherList에 존재하지 않는 경우
-                            Toast.makeText(this@MypageActivity, "고수로 등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MypageActivity, "코신으로 등록되지 않은 회원입니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                     override fun onCancelled(error: DatabaseError) {
@@ -200,7 +195,7 @@ class MypageActivity : AppCompatActivity() {
         }
 
 
-        //마이페이지 고수 등록 눌렀을때
+        //마이페이지 코신 등록 눌렀을때
         mypageBtn_addGosu.setOnClickListener {
             val teacherReference = database.getReference("teacherList")
             if (memberId != null) { //memberId가 null 아닐때
@@ -208,7 +203,7 @@ class MypageActivity : AppCompatActivity() {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.child(memberId).exists()) {
                             // memberId가 teacherList에 존재하는 경우
-                            Toast.makeText(this@MypageActivity, "이미 등록된 고수입니다. 추가 등록은 불가능합니다.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@MypageActivity, "이미 등록된 코신입니다. 추가 등록은 불가능합니다.", Toast.LENGTH_SHORT).show()
                         } else {
                             // memberId가 teacherList에 존재하지 않는 경우
                             val intent = Intent(this@MypageActivity, AddGosuActivity::class.java)
@@ -261,6 +256,24 @@ class MypageActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun getGoogleEmailFromSpf(): String? {
+        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("googleEmail", null)
+    }
+
+//    private fun saveGoogleEmailToSpf(email: String) {
+//        // getSharedPreferences 객체 생성, "memberInfoSpf"는 파일 이름, Context.MODE_PRIVATE는 접근 권한
+//        val sharedPreferences = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
+//        // SharedPreferences.Editor 인터페이스를 사용하여 데이터 저장
+//        val editor = sharedPreferences.edit()
+//        // putString 메소드를 사용하여 이메일 저장 ("googleEmail"은 키, email은 값)
+//        editor.putString("googleEmail", email)
+//        // 변경 사항 저장
+//        editor.apply()
+//    }
+
+
 
 }
 
