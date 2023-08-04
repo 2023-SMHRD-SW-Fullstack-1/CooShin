@@ -86,6 +86,7 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         btnCreateReview.setOnClickListener {
             intent = Intent(this, CreateReviewActivity::class.java)
+            intent.putExtra("userId", userId)
             intent.putExtra("teacherId", teacherId)
             startActivity(intent)
         }
