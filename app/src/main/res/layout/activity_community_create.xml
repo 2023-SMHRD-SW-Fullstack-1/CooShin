@@ -65,17 +65,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5512996" />
 
-    <ImageView
-        android:id="@+id/iv"
-        android:layout_width="160dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline10"
-        app:srcCompat="@drawable/pingu1" />
-
     <Button
         android:id="@+id/btnComplete"
         android:layout_width="0dp"
@@ -142,21 +131,19 @@
         android:layout_width="180dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv"
-        app:srcCompat="@drawable/picture" />
+        app:srcCompat="@drawable/picture"
+        tools:layout_editor_absoluteY="569dp" />
 
     <ImageButton
         android:id="@+id/ibCamera"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv"
-        app:srcCompat="@drawable/camera" />
+        app:srcCompat="@drawable/camera"
+        tools:layout_editor_absoluteY="569dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

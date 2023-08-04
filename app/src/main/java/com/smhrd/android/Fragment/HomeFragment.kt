@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Data.BoardIdVO
 import com.smhrd.android.Data.HomeCommunityAdapter
 import com.smhrd.android.Data.HomeGosuAdapter
@@ -45,7 +47,11 @@ class HomeFragment : Fragment() {
     lateinit var ivVB: ImageButton
     lateinit var ivPHP: ImageButton
 
-    lateinit var database : DatabaseReference
+    lateinit var database: DatabaseReference
+
+    companion object{
+        var dataMap_favGosu_home = mutableMapOf<String, TeacherIdVO>()
+    }
 
 
     override fun onCreateView(
@@ -91,25 +97,29 @@ class HomeFragment : Fragment() {
 
 
         if (loginMember != null) {
-            teacherListD.child(loginMember).child("teacherName").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val teacherName = dataSnapshot.getValue(String::class.java)
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("데이터베이스오류", error.toString())
-                }
-            })
+            teacherListD.child(loginMember).child("teacherName")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val teacherName = dataSnapshot.getValue(String::class.java)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("데이터베이스오류", error.toString())
+                    }
+                })
         }
         if (loginMember != null) {
-            teacherListD.child(loginMember).child("reviewList").child("reviewStar").addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val reviewStar = dataSnapshot.getValue(String::class.java)
-                    Log.d("reviewStar", "Img: $reviewStar")
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("데이터베이스오류", error.toString())
-                }
-            })
+            teacherListD.child(loginMember).child("reviewList").child("reviewStar")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        val reviewStar = dataSnapshot.getValue(String::class.java)
+                        Log.d("reviewStar", "Img: $reviewStar")
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("데이터베이스오류", error.toString())
+                    }
+                })
         }
 
 
@@ -125,6 +135,7 @@ class HomeFragment : Fragment() {
 //                        Log.d("boardLikes", "Likes: $boardLikes")
                     }
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.d("데이터베이스오류", error.toString())
                 }
@@ -133,26 +144,52 @@ class HomeFragment : Fragment() {
         }
 
 
-        //인기있는 코신 출력
-        for(i in 0 until review.size) {
-            val reviewStar =  review.get(i).reviewStars
-            if(reviewStar > 4){
+        // 인기있는 코신 ( likes 기준 )
+        //like를 가져올 통신이 필요함
+        val gson = Gson()
+
+        var likeTeacher = arrayListOf<TeacherIdVO>()
+
+        teacherListD.get().addOnSuccessListener {
+            var jsonResult = gson.toJson(it.getValue())
+
+            // JSON 문자열을 Map으로 파싱
+            val mapType = object : TypeToken<Map<String, TeacherIdVO>>() {}.type
+            dataMap_favGosu_home = gson.fromJson(jsonResult, mapType)
+
+            // 모든 key값들을 추출하여 출력
+            for (value in dataMap_favGosu_home.values) {
+                //값들을 전부 data에 저장
+                if (value.teacherLikes!! > 3){
+                    likeTeacher.add(value)
+                }
+            }
+
+
+            for(i in 0 until likeTeacher.size) {
                 rvPopularGosu.layoutManager = GridLayoutManager(context, 2)
-                var adapter = HomeGosuAdapter(teacherList, review, requireContext())
+                var adapter = HomeGosuAdapter(likeTeacher, review, requireContext())
                 rvPopularGosu.adapter = adapter
-            }
-        }
 
-        //커뮤니티 출력
-        for(i in 0 until boardList.size){
-            val boardLikes =  boardList.get(i).boardLikes
-            if(boardLikes!!.toInt() > 3){
-
-                rvCommunity.layoutManager = GridLayoutManager(context, 2)
-                var adapter2 = HomeCommunityAdapter(boardList, requireContext())
-                rvCommunity.adapter = adapter2
             }
+
         }
+        boardList.add(BoardIdVO("코딩ㅜㅜㅜ", "코딩배우는 중", "ㅎㅎ", "20230402", "https://cdn.startupn.kr/news/photo/202302/32055_33948_4723.jpg", 50, 25, null))
+        boardList.add(BoardIdVO("다들 너무 잘해", "코딩 어려워", "tete", "20230802", "https://www.mangoboard.net/images/character_03.png", 80, 15, null))
+
+//            //커뮤니티 출력
+        rvCommunity.layoutManager = GridLayoutManager(context, 2)
+        var adapter2 = HomeCommunityAdapter(boardList, requireContext())
+        rvCommunity.adapter = adapter2
+//            for (i in 0 until boardList.size) {
+//                val boardLikes = boardList.get(i).boardLikes
+//                if (boardLikes!!.toInt() > 3) {
+//
+//                    rvCommunity.layoutManager = GridLayoutManager(context, 2)
+//                    var adapter2 = HomeCommunityAdapter(boardList, requireContext())
+//                    rvCommunity.adapter = adapter2
+//                }
+//            }
 
 
         //C 클릭했을 때
@@ -187,8 +224,6 @@ class HomeFragment : Fragment() {
         ivPHP.setOnClickListener {
             navigateToSearchGosuFragment("PHP")
         }
-
-
 
 
         //로그인 버튼 클릭했을 때

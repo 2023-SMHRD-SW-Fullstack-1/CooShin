@@ -30,7 +30,7 @@ class CommunityDetailActivity : AppCompatActivity() {
     lateinit var ibtn_back: ImageButton
     val databaseReference = FirebaseDatabase.getInstance().reference
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_community_detail)
@@ -48,6 +48,7 @@ class CommunityDetailActivity : AppCompatActivity() {
         tv_title.text = intent.getStringExtra("c_title")
         tv_content.text = intent.getStringExtra("c_content")
 
+
         val spf = getSharedPreferences("memberInfoSpf", Context.MODE_PRIVATE)
         var loginMember = spf?.getString("memberId", "")
         val boardId = intent.getStringExtra("boardId")
@@ -55,9 +56,9 @@ class CommunityDetailActivity : AppCompatActivity() {
 //        fetchComments(boardId)
 
 
-
         //load comment  => 결과값을 ArrayList<CommentVO>
         //commentArr에 담아주기
+
 
         var commentArr: ArrayList<CommentVO> = arrayListOf()
 

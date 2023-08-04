@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -68,21 +69,24 @@ class CommunityFragment : Fragment() {
             ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Iterate through the children nodes of "boardList"
-                for (childSnapshot in snapshot.children) {
-                    // Deserialize each child node to a BoardIdVO object
-                    val boardIdVO = childSnapshot.getValue(BoardIdVO::class.java)
-                    if (boardIdVO != null) {
-                        // Add the BoardIdVO object to the data ArrayList
-                        data.add(boardIdVO)
+                if(snapshot.exists()){
+                    for (childSnapshot in snapshot.children) {
+                        // Deserialize each child node to a BoardIdVO object
+                        val boardIdVO = childSnapshot.getValue(BoardIdVO::class.java)
+                        if (boardIdVO != null) {
+                            // Add the BoardIdVO object to the data ArrayList
+                            data.add(boardIdVO)
+                        }
+                        Log.d("snap", childSnapshot.key!!)
+
+
+                        result.put(childSnapshot.key.toString(), childSnapshot.getValue(BoardIdVO::class.java) as BoardIdVO )
                     }
-                    Log.d("snap", childSnapshot.key!!)
-
-
-                    result.put(childSnapshot.key.toString(), childSnapshot.getValue(BoardIdVO::class.java) as BoardIdVO )
                 }
 
+
                 // After retrieving data, create the adapter and set it to the RecyclerView
-                val adapter = CommunityAdapter(requireActivity(), data) { clickedBoard ->
+                var adapter = CommunityAdapter(requireContext(), data) { clickedBoard ->
                     // Handle the click event here
                     // Navigate to the detail page with the clickedBoard's information
                     val intent = Intent(requireContext(), CommunityDetailActivity::class.java)
@@ -94,7 +98,8 @@ class CommunityFragment : Fragment() {
 
                     startActivity(intent)
                 }
-                rc.layoutManager = LinearLayoutManager(view.context)
+                rc.layoutManager = GridLayoutManager(context, 2)
+
                 rc.adapter = adapter
             }
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.smhrd.android.Community.CommunityDetailActivity
 import com.smhrd.android.R
 import com.smhrd.android.User.LoginActivity
@@ -54,6 +55,7 @@ class HomeCommunityAdapter (var datas : ArrayList<BoardIdVO>, var context: Conte
 
             holder.tvBoardLikes.text = board.boardLikes.toString()
             holder.tvBoardTitle.text = board.boardTitle
+            Glide.with(context).load(board.boardImg).into(holder.ivBoardImg)
 
 
             holder.itemView.setOnClickListener() {

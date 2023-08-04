@@ -21,9 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.google.gson.Gson
-import com.smhrd.android.Data.MemberIdVO
-import com.smhrd.android.Data.MemberVO
+
 import com.smhrd.android.R
 
 class MypageActivity : AppCompatActivity() {
@@ -31,7 +29,6 @@ class MypageActivity : AppCompatActivity() {
     lateinit var mypageBtn_img: ImageButton
     lateinit var mypageTv_nick: TextView
     lateinit var mypageBtn_infoChange: Button
-    lateinit var mypageBtn_likesGosu: Button
     lateinit var mypageBtn_addGosu : Button
     lateinit var mypageBtn_changeGosu : Button
    // val STORAGE_CODE = 1000
@@ -98,7 +95,6 @@ class MypageActivity : AppCompatActivity() {
         mypageBtn_img = findViewById(R.id.mypageBtn_img)
         mypageTv_nick = findViewById(R.id.mypageTv_nick)
         mypageBtn_infoChange = findViewById(R.id.mypageBtn_infoChange)
-        mypageBtn_likesGosu = findViewById(R.id.mypageBtn_likesGosu)
         mypageBtn_addGosu = findViewById(R.id.mypageBtn_addGosu)
         mypageBtn_changeGosu = findViewById(R.id.mypageBtn_changeGosu)
 
@@ -171,10 +167,6 @@ class MypageActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 마이페이지 찜한 코신 눌렀을때
-        mypageBtn_likesGosu.setOnClickListener{
-
-        }
 
         // 마이페이지 코신 프로필 수정 눌렀을 때
         mypageBtn_changeGosu.setOnClickListener {
