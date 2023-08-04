@@ -5,9 +5,11 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ScrollView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
@@ -19,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.smhrd.android.Chatting.ChattingRoomActivity
+import com.smhrd.android.Data.ChatVO
 import com.smhrd.android.Data.TeacherIdVO
 import com.smhrd.android.Fragment.ChattingFragment
 import com.smhrd.android.R
@@ -27,7 +30,6 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
     lateinit var ibtnToBack : ImageButton
     lateinit var tvTeacherName : TextView
-    lateinit var btnIsLike : ImageButton
     lateinit var ivTeacherImage : ImageView
     lateinit var tvTeacherOneLine : TextView
     lateinit var tvTeacherLocate : TextView
@@ -55,7 +57,6 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
         ibtnToBack = findViewById(R.id.ibtnToBack_detail)
         tvTeacherName  = findViewById(R.id.tvTeacherName_detail)
-        btnIsLike = findViewById(R.id.btnIsLike_detail)
         ivTeacherImage = findViewById(R.id.ivTeacherImg_detail)
         tvTeacherOneLine = findViewById(R.id.tvTeacherOneLine_detail)
         tvTeacherLocate = findViewById(R.id.tvTeacherLocate_detail)
@@ -129,10 +130,42 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
             }
         )
 
+        btnServiceInfo.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.scrollView)
+            val targetView = findViewById<TextView>(R.id.tvServiceInfoTitle_detail)
 
+            // targetView가 스크롤 뷰 내에서 위치한 Y 좌표를 구함
+            val targetY = targetView.y
+
+            // 스크롤 뷰를 targetView의 위치로 스크롤
+            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+        }
+
+
+        btnReview.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.scrollView)
+            val targetView = findViewById<TextView>(R.id.tvReviewTitle)
+
+            // targetView가 스크롤 뷰 내에서 위치한 Y 좌표를 구함
+            val targetY = targetView.y
+
+            // 스크롤 뷰를 targetView의 위치로 스크롤
+            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+        }
+
+        btnTeacherInfo.setOnClickListener {
+            val scrollView = findViewById<ScrollView>(R.id.scrollView)
+            val targetView = findViewById<TextView>(R.id.tvTeacherInfoTitle_detail)
+
+            // targetView가 스크롤 뷰 내에서 위치한 Y 좌표를 구함
+            val targetY = targetView.y
+
+            // 스크롤 뷰를 targetView의 위치로 스크롤
+            scrollView.smoothScrollTo(0, targetY.toInt()-20)
+        }
 
         //뒤로가기 버튼
-        ibtnToBack.setOnClickListener { onBackPressed() }
+        ibtnToBack.setOnClickListener { finish() }
 
         //찜하기 버튼
         //찜한 상태인지 확인하기
@@ -143,27 +176,10 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         //채팅하기 버튼
         btnSendTalk.setOnClickListener {
             val sendIntent = Intent(this.applicationContext, ChattingRoomActivity::class.java)
             var roomId = " ${memberId} room ${teacherId} "
-
-
 
             sendIntent.putExtra("roomId", roomId)
             startActivity(sendIntent)

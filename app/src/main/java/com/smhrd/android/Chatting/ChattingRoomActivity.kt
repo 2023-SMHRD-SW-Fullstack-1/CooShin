@@ -40,9 +40,11 @@ class ChattingRoomActivity : AppCompatActivity() {
         btnSend = findViewById(R.id.btnSend)
         edtMsg = findViewById(R.id.edtMsg)
 
+        var intent = getIntent()
+
         val spf = getSharedPreferences("memberInfoSpf", MODE_PRIVATE)
         var userId = spf.getString("memberId", null).toString()
-        var intent = getIntent()
+
         var roomId = intent.getStringExtra("roomId")
 
         // 상대방ID 추출
@@ -60,7 +62,7 @@ class ChattingRoomActivity : AppCompatActivity() {
 
         var data = ArrayList<ChatVO>()
 
-        var adapter = ChatAdapter(applicationContext, data)
+        var adapter = ChatAdapter(applicationContext, data, userId)
 
         rv.layoutManager = LinearLayoutManager(applicationContext)
         rv.adapter = adapter
@@ -71,7 +73,9 @@ class ChattingRoomActivity : AppCompatActivity() {
 
             roomListRef.child(roomId).push().setValue(ChatVO(userId, msgContent, msgTime))
 
-            rv.smoothScrollToPosition(data.size - 1)
+            if (data.size >= 1) {
+                rv.smoothScrollToPosition(data.size - 1)
+            }
 
             edtMsg.text.clear()
         }

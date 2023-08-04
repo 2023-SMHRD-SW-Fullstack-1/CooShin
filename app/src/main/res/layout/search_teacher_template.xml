@@ -28,8 +28,10 @@
         android:id="@+id/tvOneLine_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/ohmu"
         android:text="TextView"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/tvTeacherName_search"
         app:layout_constraintTop_toBottomOf="@+id/tvTeacherName_search" />
 
@@ -39,18 +41,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="25dp"
+        android:fontFamily="@font/ohmu"
         android:text="TextView"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTeacherGender_search"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@drawable/textview_border"
+        android:fontFamily="@font/ohmu"
         android:padding="3dp"
         android:text="TextView"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/tvTeacherName_search"
         app:layout_constraintStart_toEndOf="@+id/tvTeacherName_search"
         app:layout_constraintTop_toTopOf="@+id/tvTeacherName_search"
@@ -83,6 +89,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="4dp"
         android:text="TextView"
+        android:textColor="#9A9A9A"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

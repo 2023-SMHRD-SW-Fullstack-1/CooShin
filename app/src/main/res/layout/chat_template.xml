@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
 
     <TextView
         android:id="@+id/tvMsg"
@@ -24,6 +26,21 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/tvMsg2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:background="@drawable/dummy_chat_background"
+        android:gravity="start|center_vertical"
+        android:linksClickable="true"
+        android:padding="10dp"
+        android:text="안녕하세요."
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,6 +54,18 @@
         app:layout_constraintVertical_bias="0.8" />
 
     <TextView
+        android:id="@+id/tvDate2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="오전 10:23"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvMsg2"
+        app:layout_constraintStart_toEndOf="@+id/tvMsg2"
+        app:layout_constraintTop_toTopOf="@+id/tvMsg2"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <TextView
         android:id="@+id/tvIsRead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,4 +75,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvDate"
         app:layout_constraintEnd_toStartOf="@+id/tvDate"
         app:layout_constraintTop_toTopOf="@+id/tvDate" />
+
+    <TextView
+        android:id="@+id/tvIsRead2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="1"
+        android:textColor="#FFBE3C"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDate2"
+        app:layout_constraintStart_toEndOf="@+id/tvDate2"
+        app:layout_constraintTop_toTopOf="@+id/tvDate2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
