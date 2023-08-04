@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#FFFFFF">
+    android:background="#FFFFFF"
+    android:backgroundTint="@null">
 
     <TextView
         android:id="@+id/textView3"
@@ -92,10 +93,10 @@
         android:background="@null"
         android:ems="10"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintBottom_toBottomOf="@+id/tc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tc"
-        app:layout_constraintTop_toTopOf="@id/guideline6" />
+        app:layout_constraintTop_toTopOf="@+id/tc" />
 
     <EditText
         android:id="@+id/etContent"
