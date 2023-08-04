@@ -51,7 +51,7 @@ class SearchGosuFragment : Fragment() {
         var rvAdapter = SearchTeacherAdapter(requireContext(), R.layout.search_teacher_template, result,  object : SearchTeacherOnClick {
             override fun onItemClick(position: Int) {
                 var intent = Intent(requireActivity(), SearchTeacher_detailActivity::class.java)
-                var selectedTeacherId = findKeyByValue(dataMap_searchGosu, data[position])
+                var selectedTeacherId = findKeyByValue(dataMap_searchGosu, result[position])
                 Log.d("ss", data[position].toString())
 
                 //데이터 가공 해서 전송

@@ -113,16 +113,16 @@ class SearchTeacher_detailActivity : AppCompatActivity() {
         // 리뷰 데이터 불러오기
         database.getReference("teacherList").child(teacherId.toString()).child("reviewList").get().addOnSuccessListener {
             if (it.exists()) {
-                var list = gson.toJson(it.getValue())
+                var list_sy = gson.toJson(it.getValue())
 
-                val mapType = object : TypeToken<Map<String, ReviewVO>>() {}.type
-                val dataMapy : Map<String, ReviewVO> = gson.fromJson(list, mapType)
-                var reviewList : ArrayList<ReviewVO> = arrayListOf()
-                for( i in dataMapy.values) {
-                    reviewList.add(i)
+                val mapType_sy = object : TypeToken<Map<String, ReviewVO>>() {}.type
+                val dataMapy_sy : Map<String, ReviewVO> = gson.fromJson(list_sy, mapType_sy)
+                var reviewList_sy : ArrayList<ReviewVO> = arrayListOf()
+                for( i in dataMapy_sy.values) {
+                    reviewList_sy.add(i)
                 }
-                tvReviewStar_1.text = reviewList.get(0).memberId
-                tvReviewContent_1.text = reviewList.get(0).reviewContent
+                tvReviewStar_1.text = reviewList_sy.get(0).memberId
+                tvReviewContent_1.text = reviewList_sy.get(0).reviewContent
             }
         }
 
